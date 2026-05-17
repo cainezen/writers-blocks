@@ -54,6 +54,7 @@ Writer's Blocks gives you a beautiful, distraction-free workspace for AI-assiste
 
 ### Prerequisites
 - [LM Studio](https://lmstudio.ai) installed and running with a model loaded
+- You can connect to a Remote LM Studio instance if it's running in listening mode on the remote host.
 - The LM Studio local server enabled (default port: `1234`)
 - A modern web browser (Chrome, Firefox, Edge, Safari)
 

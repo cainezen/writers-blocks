@@ -8,7 +8,11 @@ Writer's Blocks gives you a beautiful, distraction-free workspace for AI-assiste
 
 ## Screenshot
 
-> *A parchment-toned writing environment with a collapsible sidebar and streaming story output.*
+## Screenshots
+
+**Main UI — Writer's features to help with detail and context.**
+![Main_UI](screenshots/UI_Overview.png)
+
 
 ---
 

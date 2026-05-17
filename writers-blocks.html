@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writer's Blocks</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
+<style>
+  :root {
+    --ink: #1a1209;
+    --parchment: #f5edd8;
+    --parchment-dark: #ede0c4;
+    --amber: #c8820a;
+    --amber-light: #e09c1a;
+    --rust: #8b3a0f;
+    --forest: #2d4a2a;
+    --charcoal: #2c2416;
+    --muted: #7a6a50;
+    --stop-red: #a82828;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--parchment);
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(200,130,10,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(45,74,42,0.06) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 24px 11px;
+    border-bottom: 2px solid var(--amber);
+    background: linear-gradient(180deg, rgba(200,130,10,0.08) 0%, transparent 100%);
+    position: relative; flex-wrap: wrap;
+  }
+  header::after {
+    content: ''; position: absolute;
+    bottom: -5px; left: 24px; right: 24px; height: 3px;
+    background: repeating-linear-gradient(90deg, var(--amber) 0, var(--amber) 8px, transparent 8px, transparent 14px);
+    opacity: 0.35;
+  }
+  .logo-svg { flex-shrink: 0; }
+  .brand { display: flex; flex-direction: column; }
+  .brand-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.85rem; font-weight: 900; letter-spacing: -0.01em;
+    color: var(--ink); line-height: 1;
+  }
+  .brand-title span { color: var(--amber); }
+  .brand-sub {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    font-weight: 300; letter-spacing: 0.25em; color: var(--muted);
+    text-transform: uppercase; margin-top: 3px;
+  }
+
+  .header-cluster {
+    display: flex; align-items: center; gap: 9px;
+    margin-left: auto; flex-wrap: wrap;
+  }
+
+  /* DOCX button */
+  .btn-docx {
+    display: flex; align-items: center; gap: 5px;
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    background: var(--forest); border: none; border-radius: 5px;
+    color: #ceebc9; padding: 5px 12px; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(45,74,42,0.28);
+    transition: background 0.2s, box-shadow 0.2s; white-space: nowrap;
+  }
+  .btn-docx:hover { background: #3a5e36; box-shadow: 0 3px 12px rgba(45,74,42,0.38); }
+  .btn-docx svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  /* Server input */
+  .server-wrap {
+    display: flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,0.5); border: 1px solid var(--parchment-dark);
+    border-radius: 6px; padding: 4px 9px;
+  }
+  .server-wrap label { font-family: 'DM Mono', monospace; font-size: 0.61rem; color: var(--muted); white-space: nowrap; }
+  .server-wrap input {
+    border: none; background: transparent; font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; color: var(--ink); width: 168px; outline: none;
+  }
+
+  /* TEST button */
+  .btn-test {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: none; border: 1.5px solid var(--muted);
+    border-radius: 5px; color: var(--muted); padding: 4px 11px;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .btn-test:hover, .btn-test.testing { border-color: var(--amber); color: var(--amber); background: rgba(200,130,10,0.06); }
+
+  /* Status */
+  .status-dot {
+    width: 9px; height: 9px; border-radius: 50%; background: #aaa;
+    transition: background 0.4s; box-shadow: 0 0 0 3px transparent; flex-shrink: 0;
+  }
+  .status-dot.connected { background: #5a9e5a; box-shadow: 0 0 0 3px rgba(90,158,90,0.2); }
+  .status-dot.error     { background: #c0392b; box-shadow: 0 0 0 3px rgba(192,57,43,0.2); }
+  .status-dot.testing   { background: var(--amber); box-shadow: 0 0 0 3px rgba(200,130,10,0.2); animation: pulse 0.8s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+  .status-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
+
+  /* ── LAYOUT ── */
+  .app {
+    display: grid; grid-template-columns: 308px 1fr;
+    height: calc(100vh - 68px); overflow: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    border-right: 2px solid var(--parchment-dark);
+    display: flex; flex-direction: column; overflow-y: auto;
+    background: rgba(255,255,255,0.28);
+    scrollbar-width: thin; scrollbar-color: var(--parchment-dark) transparent;
+  }
+  .section { border-bottom: 1px solid var(--parchment-dark); }
+  .section-header {
+    display: flex; align-items: center; gap: 9px;
+    padding: 10px 15px; cursor: pointer; user-select: none;
+    background: rgba(200,130,10,0.04); transition: background 0.2s;
+  }
+  .section-header:hover { background: rgba(200,130,10,0.09); }
+  .section-icon { width: 19px; height: 19px; color: var(--amber); flex-shrink: 0; }
+  .section-title {
+    font-family: 'Playfair Display', serif; font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase; color: var(--charcoal); flex: 1;
+  }
+  .section-chevron { width: 13px; height: 13px; color: var(--muted); transition: transform 0.25s; }
+  .section.collapsed .section-chevron { transform: rotate(-90deg); }
+  .section.collapsed .section-body { display: none; }
+  .section-body { padding: 10px 15px 13px; display: flex; flex-direction: column; gap: 8px; }
+
+  label.fl {
+    font-family: 'DM Mono', monospace; font-size: 0.59rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+    display: block; margin-bottom: 3px;
+  }
+  textarea, input[type="text"], select {
+    width: 100%; font-family: 'Crimson Pro', serif; font-size: 0.92rem; color: var(--ink);
+    background: rgba(255,255,255,0.6); border: 1px solid var(--parchment-dark);
+    border-radius: 6px; padding: 6px 9px; resize: vertical; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  textarea:focus, input[type="text"]:focus, select:focus {
+    border-color: var(--amber); box-shadow: 0 0 0 3px rgba(200,130,10,0.11);
+    background: rgba(255,255,255,0.88);
+  }
+  textarea { min-height: 66px; line-height: 1.45; }
+
+  /* Characters */
+  .char-list { display: flex; flex-direction: column; gap: 7px; }
+  .char-card {
+    background: rgba(255,255,255,0.55); border: 1px solid var(--parchment-dark);
+    border-radius: 8px; padding: 8px 10px; position: relative; animation: sIn 0.25s ease;
+  }
+  @keyframes sIn { from{opacity:0;transform:translateY(-7px)} to{opacity:1;transform:none} }
+  .char-card input { font-weight: 600; margin-bottom: 5px; background: transparent; border-color: transparent; padding-left: 0; }
+  .char-card input:focus { background: rgba(255,255,255,0.6); border-color: var(--amber); padding-left: 9px; }
+  .char-card textarea { min-height: 48px; font-size: 0.85rem; }
+  .char-rm {
+    position: absolute; top: 6px; right: 8px; background: none; border: none;
+    cursor: pointer; color: var(--muted); font-size: 0.85rem; transition: color 0.2s;
+  }
+  .char-rm:hover { color: var(--rust); }
+  .btn-add {
+    display: flex; align-items: center; gap: 5px; background: none;
+    border: 1.5px dashed var(--amber); border-radius: 6px; color: var(--amber);
+    font-family: 'DM Mono', monospace; font-size: 0.66rem; padding: 5px 10px;
+    cursor: pointer; width: 100%; justify-content: center; letter-spacing: 0.08em;
+    transition: background 0.2s;
+  }
+  .btn-add:hover { background: rgba(200,130,10,0.07); }
+
+  /* Params */
+  .param-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; }
+  .pv { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--amber); text-align: right; }
+
+  /* ── MAIN ── */
+  .main { display: grid; grid-template-rows: 1fr auto auto; overflow: hidden; }
+
+  /* Story area */
+  .story-area {
+    overflow-y: auto; padding: 26px 38px;
+    scrollbar-width: thin; scrollbar-color: var(--parchment-dark) transparent;
+  }
+  .story-placeholder {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 100%; gap: 13px; color: var(--muted); padding: 40px; text-align: center;
+  }
+  .story-placeholder svg { opacity: 0.2; width: 58px; height: 58px; }
+  .story-placeholder p { font-style: italic; font-size: 1rem; max-width: 290px; line-height: 1.6; opacity: 0.7; }
+
+  .story-content { max-width: 700px; margin: 0 auto; }
+
+  /* Each LLM response is a "story-section" */
+  .story-section { position: relative; }
+
+  .sec-text p {
+    font-size: 1.06rem; line-height: 1.86; color: var(--ink);
+    margin-bottom: 1.05em; text-indent: 2em;
+  }
+  .sec-text p:first-child { text-indent: 0; }
+
+  /* Divider bar between sections */
+  .sec-divider {
+    display: flex; align-items: center; gap: 10px;
+    margin: 16px 0 12px;
+    opacity: 0; transition: opacity 0.22s;
+  }
+  .story-section:hover .sec-divider { opacity: 1; }
+
+  .div-line { flex: 1; height: 1px; background: linear-gradient(90deg,transparent,var(--amber),transparent); opacity: 0.4; }
+  .div-gem { font-size: 0.8rem; color: var(--amber); opacity: 0.45; letter-spacing: 0.3em; user-select: none; }
+
+  .btn-del-sec {
+    display: flex; align-items: center; gap: 4px;
+    background: none; border: 1px solid transparent; border-radius: 4px;
+    color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.58rem;
+    letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 7px;
+    cursor: pointer; white-space: nowrap; transition: all 0.16s;
+  }
+  .btn-del-sec:hover { color: var(--rust); border-color: var(--rust); background: rgba(139,58,15,0.07); }
+  .btn-del-sec svg { width: 10px; height: 10px; }
+
+  /* Streaming cursor */
+  .gen-cursor {
+    display: inline-block; width: 2px; height: 1.1em;
+    background: var(--amber); vertical-align: text-bottom;
+    animation: blink 0.8s step-end infinite;
+  }
+  @keyframes blink { 50%{opacity:0} }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex; gap: 6px; padding: 6px 16px;
+    border-top: 1px solid var(--parchment-dark);
+    background: rgba(245,237,216,0.72); align-items: center; flex-wrap: wrap;
+  }
+  .tool-btn {
+    background: none; border: none; cursor: pointer; color: var(--muted);
+    padding: 3px 6px; border-radius: 4px;
+    display: flex; align-items: center; gap: 4px;
+    font-family: 'DM Mono', monospace; font-size: 0.61rem;
+    letter-spacing: 0.06em; white-space: nowrap; transition: color 0.2s, background 0.2s;
+  }
+  .tool-btn:hover { color: var(--amber); background: rgba(200,130,10,0.08); }
+  .tool-btn svg { width: 13px; height: 13px; }
+  .wc { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 0.59rem; color: var(--muted); }
+
+  /* Prompt section */
+  .prompt-section {
+    border-top: 2px solid var(--parchment-dark); padding: 11px 16px 13px;
+    display: flex; flex-direction: column; gap: 8px;
+    background: rgba(255,255,255,0.35);
+  }
+  .prompt-bar { display: flex; gap: 8px; align-items: flex-end; }
+  .prompt-bar textarea { flex: 1; min-height: 64px; max-height: 140px; resize: none; font-size: 0.98rem; }
+
+  /* Generate + Stop group */
+  .gen-group { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; }
+
+  .btn-gen {
+    background: var(--amber); color: #fff; border: none; border-radius: 8px;
+    padding: 0 18px; font-family: 'Playfair Display', serif; font-size: 0.94rem;
+    font-weight: 700; cursor: pointer; letter-spacing: 0.02em;
+    box-shadow: 0 3px 11px rgba(200,130,10,0.3); white-space: nowrap;
+    height: 40px; transition: background 0.18s, transform 0.1s, box-shadow 0.18s;
+  }
+  .btn-gen:hover { background: var(--amber-light); box-shadow: 0 5px 18px rgba(200,130,10,0.38); }
+  .btn-gen:active { transform: scale(0.97); }
+  .btn-gen:disabled { background: var(--muted); box-shadow: none; cursor: not-allowed; }
+
+  .btn-stop {
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    background: none; border: 1.5px solid var(--stop-red); border-radius: 6px;
+    color: var(--stop-red); font-family: 'DM Mono', monospace; font-size: 0.63rem;
+    letter-spacing: 0.1em; text-transform: uppercase; padding: 0 12px; height: 28px;
+    cursor: pointer; white-space: nowrap; transition: background 0.16s, opacity 0.2s;
+    opacity: 0; pointer-events: none;
+  }
+  .btn-stop.active { opacity: 1; pointer-events: auto; }
+  .btn-stop:hover { background: rgba(168,40,40,0.09); }
+  .btn-stop svg { width: 9px; height: 9px; }
+
+  .prompt-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .mode-btn {
+    font-family: 'DM Mono', monospace; font-size: 0.61rem; letter-spacing: 0.08em;
+    text-transform: uppercase; border: 1px solid var(--parchment-dark); border-radius: 4px;
+    background: none; color: var(--muted); padding: 3px 8px; cursor: pointer; transition: all 0.15s;
+  }
+  .mode-btn.active, .mode-btn:hover { border-color: var(--amber); color: var(--amber); background: rgba(200,130,10,0.06); }
+
+  .model-wrap { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+  .model-wrap label { font-family: 'DM Mono', monospace; font-size: 0.59rem; color: var(--muted); letter-spacing: 0.1em; }
+  .model-wrap select { width: auto; min-width: 145px; font-size: 0.74rem; padding: 3px 7px; }
+
+  /* Scrollbars */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-thumb { background: var(--parchment-dark); border-radius: 3px; }
+
+  /* Notification */
+  .notif {
+    position: fixed; bottom: 20px; right: 20px;
+    background: var(--charcoal); color: var(--parchment);
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    padding: 8px 15px; border-radius: 8px; border-left: 3px solid var(--amber);
+    opacity: 0; transform: translateY(10px); transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none; z-index: 1000; max-width: 290px; line-height: 1.4;
+  }
+  .notif.show { opacity: 1; transform: translateY(0); }
+  .notif.err { border-color: var(--rust); }
+  .ornament { text-align: center; color: var(--amber); font-size: 0.9rem; opacity: 0.3; padding: 2px 0; letter-spacing: 0.5em; }
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Logo -->
+  <svg class="logo-svg" width="48" height="48" viewBox="0 0 56 56" fill="none">
+    <rect x="6" y="28" width="18" height="18" rx="2.5" fill="#c8820a" opacity="0.9"/>
+    <rect x="10" y="24" width="18" height="18" rx="2.5" fill="#8b3a0f" opacity="0.85"/>
+    <rect x="14" y="20" width="18" height="18" rx="2.5" fill="#2d4a2a" opacity="0.9"/>
+    <line x1="42" y1="8" x2="20" y2="42" stroke="#f5edd8" stroke-width="2" stroke-linecap="round"/>
+    <path d="M42 8 C46 4 50 6 48 10 L38 34 C36 28 36 20 42 8Z" fill="#d4a017" opacity="0.95"/>
+    <path d="M38 34 L20 42 L26 36Z" fill="#f5edd8" opacity="0.8"/>
+    <circle cx="20" cy="43" r="1.8" fill="#c8820a"/>
+    <line x1="17" y1="26" x2="28" y2="26" stroke="rgba(245,237,216,0.6)" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="17" y1="29" x2="27" y2="29" stroke="rgba(245,237,216,0.4)" stroke-width="1" stroke-linecap="round"/>
+  </svg>
+
+  <div class="brand">
+    <div class="brand-title">Writer's <span>Blocks</span></div>
+    <div class="brand-sub">Story Forge · LM Studio</div>
+  </div>
+
+  <div class="header-cluster">
+    <button class="btn-docx" onclick="exportDocx()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="12" y1="18" x2="12" y2="12"/>
+        <polyline points="9 15 12 18 15 15"/>
+      </svg>
+      Export DOCX
+    </button>
+
+    <div class="server-wrap">
+      <label>SERVER</label>
+      <input type="text" id="serverUrl" value="http://localhost:1234">
+    </div>
+
+    <button class="btn-test" id="testBtn" onclick="testConnection()">Test</button>
+
+    <div class="status-dot" id="statusDot"></div>
+    <span class="status-label" id="statusLabel">Disconnected</span>
+  </div>
+</header>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="section" id="s-persona">
+      <div class="section-header" onclick="tog('s-persona')">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span class="section-title">Narrator Persona</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body">
+        <label class="fl">LLM Role / Voice</label>
+        <textarea id="persona" rows="3" placeholder="e.g. You are a gothic Victorian novelist with a gift for atmospheric prose and psychological depth…"></textarea>
+      </div>
+    </div>
+
+    <div class="section" id="s-bg">
+      <div class="section-header" onclick="tog('s-bg')">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        <span class="section-title">Background</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body">
+        <label class="fl">Story Context & Lore</label>
+        <textarea id="background" rows="4" placeholder="Establish the world, its rules, history, tone, and any relevant context…"></textarea>
+      </div>
+    </div>
+
+    <div class="section" id="s-setting">
+      <div class="section-header" onclick="tog('s-setting')">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="section-title">Setting</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body">
+        <label class="fl">Time & Place</label>
+        <input type="text" id="settingTime" placeholder="e.g. Autumn, 1887 — London">
+        <label class="fl" style="margin-top:4px">Location Description</label>
+        <textarea id="settingPlace" rows="3" placeholder="Describe where the scene takes place — atmosphere, sensory details, mood…"></textarea>
+      </div>
+    </div>
+
+    <div class="section" id="s-chars">
+      <div class="section-header" onclick="tog('s-chars')">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span class="section-title">Characters</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="char-list" id="charList"></div>
+        <button class="btn-add" onclick="addChar()">＋ Add Character</button>
+      </div>
+    </div>
+
+    <div class="section" id="s-guide">
+      <div class="section-header" onclick="tog('s-guide')">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span class="section-title">Writing Guidelines</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body">
+        <label class="fl">Style Rules</label>
+        <textarea id="guidelines" rows="5" placeholder="• Show, don't tell&#10;• Use sensory detail&#10;• Avoid adverbs; prefer strong verbs&#10;• Vary sentence rhythm&#10;• Dialogue should reveal character…"></textarea>
+        <label class="fl" style="margin-top:4px">POV</label>
+        <select id="pov">
+          <option value="">Select point of view…</option>
+          <option>First person — intimate narrator</option>
+          <option>Third person limited</option>
+          <option>Third person omniscient</option>
+          <option>Second person</option>
+          <option>Unreliable narrator</option>
+        </select>
+        <label class="fl" style="margin-top:4px">Tense</label>
+        <select id="tense">
+          <option value="">Select tense…</option>
+          <option>Past tense</option>
+          <option>Present tense</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section collapsed" id="s-model">
+      <div class="section-header" onclick="tog('s-model')">
+        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        <span class="section-title">Model Settings</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="param-row">
+          <div>
+            <label class="fl">Temperature</label>
+            <input type="range" id="temp" min="0" max="2" step="0.05" value="0.85" oninput="document.getElementById('tv').textContent=this.value">
+            <div class="pv" id="tv">0.85</div>
+          </div>
+          <div>
+            <label class="fl">Max Tokens</label>
+            <input type="range" id="maxTok" min="256" max="4096" step="64" value="1024" oninput="document.getElementById('mv').textContent=this.value">
+            <div class="pv" id="mv">1024</div>
+          </div>
+        </div>
+        <div class="param-row">
+          <div>
+            <label class="fl">Top P</label>
+            <input type="range" id="topP" min="0" max="1" step="0.05" value="0.95" oninput="document.getElementById('pv2').textContent=this.value">
+            <div class="pv" id="pv2">0.95</div>
+          </div>
+          <div>
+            <label class="fl">Rep. Penalty</label>
+            <input type="range" id="repPen" min="1" max="2" step="0.05" value="1.1" oninput="document.getElementById('rv').textContent=this.value">
+            <div class="pv" id="rv">1.1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="story-area" id="storyArea">
+      <div class="story-placeholder" id="placeholder">
+        <svg viewBox="0 0 64 64" fill="none">
+          <rect x="8" y="12" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/>
+          <rect x="16" y="6" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/>
+          <rect x="24" y="18" width="18" height="2" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="24" y="23" width="15" height="2" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="24" y="28" width="17" height="2" rx="1" fill="currentColor" opacity="0.5"/>
+          <path d="M44 40L56 52" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="40" cy="36" r="8" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <p>Your story will appear here. Set the stage in the sidebar, then craft your prompt below.</p>
+        <div class="ornament">· · ❧ · ·</div>
+      </div>
+      <div class="story-content" id="storyContent" style="display:none"></div>
+    </div>
+
+    <div class="toolbar">
+      <button class="tool-btn" onclick="copyStory()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy
+      </button>
+      <button class="tool-btn" onclick="downloadTxt()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>TXT
+      </button>
+      <button class="tool-btn" onclick="clearAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Clear All
+      </button>
+      <span class="wc" id="wc">0 words</span>
+    </div>
+
+    <div class="prompt-section">
+      <div class="prompt-meta">
+        <button class="mode-btn active" onclick="setMode(this,'continue')">Continue</button>
+        <button class="mode-btn" onclick="setMode(this,'rewrite')">Rewrite</button>
+        <button class="mode-btn" onclick="setMode(this,'brainstorm')">Brainstorm</button>
+        <button class="mode-btn" onclick="setMode(this,'dialogue')">Dialogue</button>
+        <button class="mode-btn" onclick="setMode(this,'outline')">Outline</button>
+        <div class="model-wrap">
+          <label>MODEL</label>
+          <select id="modelSel"><option value="">— fetch models —</option></select>
+          <button class="tool-btn" onclick="fetchModels()" title="Refresh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="prompt-bar">
+        <textarea id="promptIn" placeholder="Describe what happens next… (Enter to generate, Shift+Enter for new line)" onkeydown="handleKey(event)"></textarea>
+        <div class="gen-group">
+          <button class="btn-gen" id="genBtn" onclick="generate()">✦ Generate</button>
+          <button class="btn-stop" id="stopBtn" onclick="stopGen()">
+            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="5" width="14" height="14" rx="1.5"/></svg>
+            Stop
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="notif" id="notif"></div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────
+let sections       = [];   // [{ id, text }, ...]
+let secId          = 0;
+let currentMode    = 'continue';
+let isGenerating   = false;
+let abortCtrl      = null;
+let charIdx        = 0;
+
+// ── SIDEBAR TOGGLE ─────────────────────────────────────────
+function tog(id) { document.getElementById(id).classList.toggle('collapsed'); }
+
+// ── MODE ───────────────────────────────────────────────────
+function setMode(btn, mode) {
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentMode = mode;
+}
+
+// ── CHARACTERS ─────────────────────────────────────────────
+function addChar() {
+  charIdx++;
+  const list = document.getElementById('charList');
+  const el = document.createElement('div');
+  el.className = 'char-card';
+  el.innerHTML = `
+    <button class="char-rm" onclick="this.parentElement.remove()">✕</button>
+    <input type="text" placeholder="Character name">
+    <textarea placeholder="Personality, role, appearance, voice, motivations…" rows="3"></textarea>`;
+  list.appendChild(el);
+}
+
+// ── FULL TEXT ──────────────────────────────────────────────
+function fullText() { return sections.map(s => s.text).join('\n\n'); }
+
+// ── RENDER SECTIONS ────────────────────────────────────────
+function render() {
+  const container = document.getElementById('storyContent');
+  container.innerHTML = '';
+
+  if (!sections.length) {
+    container.style.display = 'none';
+    document.getElementById('placeholder').style.display = 'flex';
+    updateWC();
+    return;
+  }
+
+  document.getElementById('placeholder').style.display = 'none';
+  container.style.display = 'block';
+
+  sections.forEach((sec) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'story-section';
+    wrap.dataset.sid = sec.id;
+
+    // Text
+    const textDiv = document.createElement('div');
+    textDiv.className = 'sec-text';
+    textDiv.innerHTML = fmtParas(sec.text);
+    wrap.appendChild(textDiv);
+
+    // Divider + Delete button
+    const div = document.createElement('div');
+    div.className = 'sec-divider';
+    div.innerHTML = `
+      <div class="div-line"></div>
+      <span class="div-gem">✦</span>
+      <button class="btn-del-sec" onclick="delSec(${sec.id})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+          <path d="M10 11v6"/><path d="M14 11v6"/>
+        </svg>
+        Delete section
+      </button>
+      <div class="div-line"></div>`;
+    wrap.appendChild(div);
+
+    container.appendChild(wrap);
+  });
+
+  updateWC();
+}
+
+function fmtParas(text) {
+  return text.split(/\n\n+/)
+    .filter(p => p.trim())
+    .map((p, i) => `<p style="${i===0?'text-indent:0':''}">${p.trim().replace(/\n/g,'<br>')}</p>`)
+    .join('');
+}
+
+// ── DELETE SECTION ─────────────────────────────────────────
+function delSec(id) {
+  sections = sections.filter(s => s.id !== id);
+  render();
+}
+
+// ── BUILD PROMPTS ──────────────────────────────────────────
+function buildSysPrompt() {
+  const parts = [];
+  const v = id => document.getElementById(id).value.trim();
+  const persona = v('persona'), bg = v('background');
+  const tTime = v('settingTime'), tPlace = v('settingPlace');
+  const guide = v('guidelines');
+  const pov = document.getElementById('pov').value;
+  const tense = document.getElementById('tense').value;
+
+  if (persona) parts.push(`## NARRATOR PERSONA\n${persona}`);
+  if (bg)      parts.push(`## STORY BACKGROUND\n${bg}`);
+  if (tTime || tPlace) {
+    let s = '## SETTING';
+    if (tTime)  s += `\nTime: ${tTime}`;
+    if (tPlace) s += `\nPlace: ${tPlace}`;
+    parts.push(s);
+  }
+
+  const chars = [];
+  document.querySelectorAll('.char-card').forEach(c => {
+    const name = c.querySelector('input').value.trim();
+    const desc = c.querySelector('textarea').value.trim();
+    if (name || desc) chars.push(`**${name||'Unnamed'}**: ${desc}`);
+  });
+  if (chars.length) parts.push(`## CHARACTERS\n${chars.join('\n\n')}`);
+
+  if (guide || pov || tense) {
+    let g = '## WRITING GUIDELINES';
+    if (pov)   g += `\nPoint of view: ${pov}`;
+    if (tense) g += `\nTense: ${tense}`;
+    if (guide) g += `\n\n${guide}`;
+    parts.push(g);
+  }
+
+  if (!parts.length) return 'You are a skilled creative fiction writer. Write compelling, immersive prose.';
+  return parts.join('\n\n') + '\n\nWrite with craft and consistency with the above. Output only prose — no commentary, no preamble.';
+}
+
+function buildUserPrompt() {
+  const p = document.getElementById('promptIn').value.trim();
+  const existing = fullText().trim();
+  const prefixes = {
+    continue:   'Continue the story',
+    rewrite:    'Rewrite the following passage',
+    brainstorm: 'Brainstorm ideas for',
+    dialogue:   'Write a dialogue scene where',
+    outline:    'Create a scene outline for'
+  };
+
+  if (currentMode === 'continue' && existing) {
+    return `STORY SO FAR:\n${existing.slice(-2500)}\n\n---\nCONTINUATION DIRECTION: ${p || 'Continue naturally from where the story left off.'}`;
+  }
+  let msg = `${prefixes[currentMode]}${p ? ': '+p : '.'}`;
+  if (existing && currentMode !== 'outline') msg += `\n\nSTORY CONTEXT:\n${existing.slice(-900)}`;
+  return msg;
+}
+
+// ── GENERATE ───────────────────────────────────────────────
+async function generate() {
+  if (isGenerating) return;
+
+  const server = document.getElementById('serverUrl').value.trim().replace(/\/$/, '');
+  const model  = document.getElementById('modelSel').value;
+  if (!model) { notify('Select a model first — click ↺ to fetch.', true); return; }
+
+  isGenerating = true;
+  abortCtrl = new AbortController();
+
+  const genBtn  = document.getElementById('genBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  genBtn.disabled = true;
+  genBtn.textContent = '⏳ Writing…';
+  stopBtn.classList.add('active');
+
+  // Reveal story area
+  document.getElementById('placeholder').style.display = 'none';
+  const container = document.getElementById('storyContent');
+  container.style.display = 'block';
+
+  // Build live streaming node
+  const cursor = document.createElement('span');
+  cursor.className = 'gen-cursor';
+
+  const streamWrap = document.createElement('div');
+  streamWrap.className = 'story-section';
+  const streamText = document.createElement('div');
+  streamText.className = 'sec-text';
+  const streamPara = document.createElement('p');
+  streamPara.style.textIndent = '0';
+  streamPara.appendChild(cursor);
+  streamText.appendChild(streamPara);
+  streamWrap.appendChild(streamText);
+  container.appendChild(streamWrap);
+
+  const storyArea = document.getElementById('storyArea');
+  storyArea.scrollTop = storyArea.scrollHeight;
+
+  let newText = '';
+
+  try {
+    const resp = await fetch(`${server}/v1/chat/completions`, {
+      method: 'POST',
+      signal: abortCtrl.signal,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: buildSysPrompt() },
+          { role: 'user',   content: buildUserPrompt() }
+        ],
+        temperature:    parseFloat(document.getElementById('temp').value),
+        max_tokens:     parseInt(document.getElementById('maxTok').value),
+        top_p:          parseFloat(document.getElementById('topP').value),
+        repeat_penalty: parseFloat(document.getElementById('repPen').value),
+        stream: true
+      })
+    });
+
+    if (!resp.ok) throw new Error(`Server returned ${resp.status}`);
+
+    const reader  = resp.body.getReader();
+    const decoder = new TextDecoder();
+
+    outer: while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const lines = decoder.decode(value, { stream: true }).split('\n').filter(l => l.startsWith('data: '));
+      for (const line of lines) {
+        const raw = line.slice(6).trim();
+        if (raw === '[DONE]') break outer;
+        try {
+          const delta = JSON.parse(raw)?.choices?.[0]?.delta?.content || '';
+          if (delta) {
+            newText += delta;
+            // Render mid-stream (split on double-newline for natural paragraphing)
+            const parts = newText.split(/\n\n/);
+            streamPara.innerHTML = parts.map((p,i) =>
+              i < parts.length-1
+                ? `<span style="display:block;margin-bottom:.8em">${p}</span>`
+                : p
+            ).join('');
+            streamPara.appendChild(cursor);
+            storyArea.scrollTop = storyArea.scrollHeight;
+          }
+        } catch (_) {}
+      }
+    }
+
+    setStatus(true);
+  } catch (err) {
+    if (err.name !== 'AbortError') {
+      notify('Error: ' + err.message, true);
+      setStatus(false);
+    }
+    // On stop: keep partial text
+  }
+
+  // Commit section (even if stopped)
+  streamWrap.remove();
+  if (newText.trim()) {
+    secId++;
+    sections.push({ id: secId, text: newText.trim() });
+  }
+  render();
+
+  isGenerating = false;
+  abortCtrl = null;
+  genBtn.disabled = false;
+  genBtn.textContent = '✦ Generate';
+  stopBtn.classList.remove('active');
+}
+
+// ── STOP ───────────────────────────────────────────────────
+function stopGen() {
+  if (abortCtrl) {
+    abortCtrl.abort();
+    notify('Stopped — partial text saved as a section.');
+  }
+}
+
+// ── TEST CONNECTION ────────────────────────────────────────
+async function testConnection() {
+  const server = document.getElementById('serverUrl').value.trim().replace(/\/$/, '');
+  const btn = document.getElementById('testBtn');
+  btn.textContent = 'Testing…';
+  btn.classList.add('testing');
+  setStatusTesting();
+
+  try {
+    const resp = await fetch(`${server}/v1/models`, { signal: AbortSignal.timeout(5000) });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    const n = data.data?.length || 0;
+    setStatus(true);
+    notify(`Connected ✓  ${n} model${n!==1?'s':''} available.`);
+    populateModels(data.data || []);
+  } catch (e) {
+    setStatus(false);
+    notify('Cannot reach LM Studio: ' + (e.message || 'timeout'), true);
+  } finally {
+    btn.textContent = 'Test';
+    btn.classList.remove('testing');
+  }
+}
+
+// ── FETCH MODELS ───────────────────────────────────────────
+async function fetchModels() {
+  const server = document.getElementById('serverUrl').value.trim().replace(/\/$/, '');
+  try {
+    const resp = await fetch(`${server}/v1/models`);
+    if (!resp.ok) throw new Error();
+    const data = await resp.json();
+    populateModels(data.data || []);
+    setStatus(true);
+    notify(`${data.data?.length||0} model(s) found.`);
+  } catch {
+    setStatus(false);
+    notify('Cannot reach LM Studio server.', true);
+  }
+}
+
+function populateModels(list) {
+  const sel = document.getElementById('modelSel');
+  sel.innerHTML = '';
+  if (!list.length) { sel.innerHTML = '<option value="">No models loaded</option>'; return; }
+  list.forEach(m => {
+    const o = document.createElement('option');
+    o.value = m.id; o.textContent = m.id;
+    sel.appendChild(o);
+  });
+}
+
+// ── STATUS ─────────────────────────────────────────────────
+function setStatus(ok) {
+  document.getElementById('statusDot').className = 'status-dot ' + (ok ? 'connected' : 'error');
+  document.getElementById('statusLabel').textContent = ok ? 'Connected' : 'Error';
+}
+function setStatusTesting() {
+  document.getElementById('statusDot').className = 'status-dot testing';
+  document.getElementById('statusLabel').textContent = 'Testing…';
+}
+
+// ── WORD COUNT ─────────────────────────────────────────────
+function updateWC() {
+  const t = fullText().trim();
+  const w = t ? t.split(/\s+/).length : 0;
+  document.getElementById('wc').textContent = w.toLocaleString() + ' words';
+}
+
+// ── COPY ───────────────────────────────────────────────────
+function copyStory() {
+  const t = fullText();
+  if (!t) return;
+  navigator.clipboard.writeText(t).then(() => notify('Copied to clipboard!'));
+}
+
+// ── DOWNLOAD TXT ───────────────────────────────────────────
+function downloadTxt() {
+  const t = fullText();
+  if (!t) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([t], { type: 'text/plain' }));
+  a.download = 'writers-blocks-story.txt';
+  a.click();
+}
+
+// ── EXPORT DOCX ────────────────────────────────────────────
+async function exportDocx() {
+  if (!sections.length) { notify('Nothing to export yet.', true); return; }
+
+  if (typeof docx === 'undefined') {
+    notify('DOCX library not available — check internet connection.', true);
+    return;
+  }
+
+  try {
+    const { Document, Packer, Paragraph, TextRun, AlignmentType } = docx;
+    const children = [];
+
+    sections.forEach((sec, si) => {
+      const paras = sec.text.split(/\n\n+/).filter(p => p.trim());
+      paras.forEach((pt, pi) => {
+        children.push(new Paragraph({
+          children: [ new TextRun({ text: pt.trim(), font: 'Garamond', size: 24 }) ],
+          indent: (pi === 0 && si === 0) ? {} : { firstLine: 720 },
+          spacing: { line: 360, lineRule: 'auto', after: 0 }
+        }));
+      });
+
+      // Ornamental break between sections (not after last)
+      if (si < sections.length - 1) {
+        children.push(new Paragraph({
+          children: [ new TextRun({ text: '* * *', size: 22 }) ],
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 280, after: 280 }
+        }));
+      }
+    });
+
+    const doc = new Document({
+      sections: [{
+        properties: {
+          page: {
+            size:   { width: 12240, height: 15840 },
+            margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 }
+          }
+        },
+        children
+      }]
+    });
+
+    const buf  = await Packer.toBuffer(doc);
+    const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = 'writers-blocks-story.docx'; a.click();
+    URL.revokeObjectURL(url);
+    notify('DOCX exported!');
+  } catch (e) {
+    notify('DOCX export failed: ' + e.message, true);
+    console.error(e);
+  }
+}
+
+// ── CLEAR ALL ──────────────────────────────────────────────
+function clearAll() {
+  sections = [];
+  render();
+}
+
+// ── NOTIFICATION ───────────────────────────────────────────
+function notify(msg, isErr=false) {
+  const n = document.getElementById('notif');
+  n.textContent = msg;
+  n.className = 'notif' + (isErr ? ' err' : '') + ' show';
+  clearTimeout(n._t);
+  n._t = setTimeout(() => n.classList.remove('show'), 3600);
+}
+
+// ── KEYBOARD ───────────────────────────────────────────────
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generate(); }
+}
+
+// Auto-connect
+window.addEventListener('load', () => setTimeout(fetchModels, 700));
+</script>
+</body>
+</html>

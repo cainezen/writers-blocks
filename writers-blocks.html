@@ -286,12 +286,52 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
 .page-nav-next { right: 4px; }
 
 /* ═══════════════════════════════════════════════
-   PAGE COUNTER (below page)
+   PAGE COUNTER + NAVIGATION LEGEND (below page)
 ═══════════════════════════════════════════════ */
+.page-footer {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6px; margin-top: 8px; min-height: 36px;
+}
 .page-counter {
   font-family: 'DM Mono', monospace; font-size: .6rem;
-  color: var(--muted); margin-top: 7px; letter-spacing: .1em;
-  transition: color .35s; text-align: center; min-height: 1em;
+  color: var(--muted); letter-spacing: .1em;
+  transition: color .35s; text-align: center;
+}
+
+/* Navigation legend */
+.page-legend {
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; transition: opacity .3s;
+}
+.page-legend.visible { opacity: 1; }
+
+.legend-group {
+  display: flex; align-items: center; gap: 5px;
+}
+.kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: .52rem;
+  color: var(--muted);
+  background: var(--input-bg);
+  border: 1px solid var(--parchment-dark);
+  border-bottom: 2px solid var(--parchment-dark);
+  border-radius: 3px;
+  padding: 1px 5px; min-width: 20px;
+  letter-spacing: 0;
+  box-shadow: 0 1px 0 var(--parchment-dark);
+  transition: background .35s, border-color .35s, color .35s;
+  user-select: none;
+}
+.legend-label {
+  font-family: 'DM Mono', monospace; font-size: .52rem;
+  color: var(--muted); opacity: .75; letter-spacing: .06em;
+  transition: color .35s;
+  white-space: nowrap;
+}
+.legend-sep {
+  width: 1px; height: 10px;
+  background: var(--parchment-dark);
+  opacity: .6; transition: background .35s;
 }
 
 /* ═══════════════════════════════════════════════
@@ -747,8 +787,36 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
         </div>
       </div>
 
-      <!-- Page counter label -->
-      <div class="page-counter" id="pageCounter"></div>
+      <!-- Page counter + navigation legend -->
+      <div class="page-footer">
+        <div class="page-counter" id="pageCounter"></div>
+
+        <div class="page-legend" id="pageLegend">
+          <!-- Click hints -->
+          <div class="legend-group">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);opacity:.6"><polyline points="15 18 9 12 15 6"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);opacity:.6"><polyline points="9 18 15 12 9 6"/></svg>
+            <span class="legend-label">click arrows</span>
+          </div>
+
+          <div class="legend-sep"></div>
+
+          <!-- Keyboard hints -->
+          <div class="legend-group">
+            <span class="kbd">←</span>
+            <span class="kbd">→</span>
+            <span class="legend-label">arrow keys</span>
+          </div>
+
+          <div class="legend-sep"></div>
+
+          <!-- Click page hint -->
+          <div class="legend-group">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);opacity:.6"><path d="M5 3l14 9-14 9V3z"/></svg>
+            <span class="legend-label">hover section to edit</span>
+          </div>
+        </div>
+      </div>
 
       <!-- Right arrow -->
       <button class="page-nav page-nav-next" id="navNext" onclick="goPage(1)" disabled>
@@ -1080,8 +1148,12 @@ function makeActionsBar(secId) {
 function showPage(idx) {
   pages.forEach((p, i) => { p.style.display = i === idx ? 'block' : 'none'; });
   currentPage = idx;
+  const multiPage = pages.length > 1;
   const counter = document.getElementById('pageCounter');
-  counter.textContent = pages.length > 1 ? `Page ${idx + 1} of ${pages.length}` : '';
+  counter.textContent = multiPage ? `Page ${idx + 1} of ${pages.length}` : '';
+  // Show legend whenever there are multiple pages
+  const legend = document.getElementById('pageLegend');
+  if (legend) legend.classList.toggle('visible', multiPage);
   updatePageNav();
   scalePages();
 }

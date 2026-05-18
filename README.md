@@ -6,9 +6,10 @@ Writer's Blocks gives you a beautiful, distraction-free workspace for AI-assiste
 
 ---
 
-## Screenshot
+### Screenshots
 
-> *A parchment or dark-mode writing environment with a collapsible sidebar, a book-page story canvas, and a full header toolbar.*
+**UI Overview — Writer's features for detailed generation.**
+![UI_Overview](screenshots/UI_Overview.png)
 
 ---
 

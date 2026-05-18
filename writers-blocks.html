@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Writer's Blocks</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
 <style>
   :root {
     --ink: #1a1209;
@@ -18,6 +17,8 @@
     --charcoal: #2c2416;
     --muted: #7a6a50;
     --stop-red: #a82828;
+    --indigo: #2e3d6e;
+    --indigo-light: #3a4f8c;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -34,73 +35,101 @@
 
   /* ── HEADER ── */
   header {
-    display: flex; align-items: center; gap: 14px;
-    padding: 12px 24px 11px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 22px 10px;
     border-bottom: 2px solid var(--amber);
     background: linear-gradient(180deg, rgba(200,130,10,0.08) 0%, transparent 100%);
     position: relative; flex-wrap: wrap;
   }
   header::after {
     content: ''; position: absolute;
-    bottom: -5px; left: 24px; right: 24px; height: 3px;
+    bottom: -5px; left: 22px; right: 22px; height: 3px;
     background: repeating-linear-gradient(90deg, var(--amber) 0, var(--amber) 8px, transparent 8px, transparent 14px);
-    opacity: 0.35;
+    opacity: 0.32;
   }
   .logo-svg { flex-shrink: 0; }
   .brand { display: flex; flex-direction: column; }
   .brand-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.85rem; font-weight: 900; letter-spacing: -0.01em;
+    font-size: 1.8rem; font-weight: 900; letter-spacing: -0.01em;
     color: var(--ink); line-height: 1;
   }
   .brand-title span { color: var(--amber); }
   .brand-sub {
-    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    font-family: 'DM Mono', monospace; font-size: 0.58rem;
     font-weight: 300; letter-spacing: 0.25em; color: var(--muted);
     text-transform: uppercase; margin-top: 3px;
   }
 
+  /* Header right cluster */
   .header-cluster {
-    display: flex; align-items: center; gap: 9px;
+    display: flex; align-items: center; gap: 8px;
     margin-left: auto; flex-wrap: wrap;
   }
 
-  /* DOCX button */
-  .btn-docx {
-    display: flex; align-items: center; gap: 5px;
-    font-family: 'DM Mono', monospace; font-size: 0.65rem;
-    letter-spacing: 0.09em; text-transform: uppercase;
-    background: var(--forest); border: none; border-radius: 5px;
-    color: #ceebc9; padding: 5px 12px; cursor: pointer;
-    box-shadow: 0 2px 8px rgba(45,74,42,0.28);
-    transition: background 0.2s, box-shadow 0.2s; white-space: nowrap;
+  /* Divider pip between button groups */
+  .hdr-sep {
+    width: 1px; height: 22px;
+    background: var(--parchment-dark);
+    flex-shrink: 0; margin: 0 2px;
   }
-  .btn-docx:hover { background: #3a5e36; box-shadow: 0 3px 12px rgba(45,74,42,0.38); }
-  .btn-docx svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  /* Generic header button base */
+  .hdr-btn {
+    display: flex; align-items: center; gap: 5px;
+    font-family: 'DM Mono', monospace; font-size: 0.63rem;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    border: none; border-radius: 5px; padding: 5px 11px;
+    cursor: pointer; white-space: nowrap;
+    transition: background 0.18s, box-shadow 0.18s, color 0.18s;
+  }
+  .hdr-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  /* RTF Export — forest green */
+  .btn-rtf {
+    background: var(--forest); color: #ceebc9;
+    box-shadow: 0 2px 8px rgba(45,74,42,0.25);
+  }
+  .btn-rtf:hover { background: #3a5e36; box-shadow: 0 3px 12px rgba(45,74,42,0.36); }
+
+  /* Context Export — indigo */
+  .btn-ctx-export {
+    background: var(--indigo); color: #c8d6ff;
+    box-shadow: 0 2px 8px rgba(46,61,110,0.25);
+  }
+  .btn-ctx-export:hover { background: var(--indigo-light); box-shadow: 0 3px 12px rgba(46,61,110,0.36); }
+
+  /* Context Import — amber outline */
+  .btn-ctx-import {
+    background: none; color: var(--amber);
+    border: 1.5px solid var(--amber);
+    box-shadow: none; padding: 4px 10px;
+  }
+  .btn-ctx-import:hover { background: rgba(200,130,10,0.09); }
 
   /* Server input */
   .server-wrap {
-    display: flex; align-items: center; gap: 7px;
+    display: flex; align-items: center; gap: 6px;
     background: rgba(255,255,255,0.5); border: 1px solid var(--parchment-dark);
     border-radius: 6px; padding: 4px 9px;
   }
-  .server-wrap label { font-family: 'DM Mono', monospace; font-size: 0.61rem; color: var(--muted); white-space: nowrap; }
+  .server-wrap label { font-family: 'DM Mono', monospace; font-size: 0.59rem; color: var(--muted); white-space: nowrap; }
   .server-wrap input {
     border: none; background: transparent; font-family: 'DM Mono', monospace;
-    font-size: 0.7rem; color: var(--ink); width: 168px; outline: none;
+    font-size: 0.68rem; color: var(--ink); width: 160px; outline: none;
   }
 
   /* TEST button */
   .btn-test {
-    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    font-family: 'DM Mono', monospace; font-size: 0.63rem;
     letter-spacing: 0.1em; text-transform: uppercase;
     background: none; border: 1.5px solid var(--muted);
-    border-radius: 5px; color: var(--muted); padding: 4px 11px;
+    border-radius: 5px; color: var(--muted); padding: 4px 10px;
     cursor: pointer; transition: all 0.2s; white-space: nowrap;
   }
   .btn-test:hover, .btn-test.testing { border-color: var(--amber); color: var(--amber); background: rgba(200,130,10,0.06); }
 
-  /* Status */
+  /* Status indicator */
   .status-dot {
     width: 9px; height: 9px; border-radius: 50%; background: #aaa;
     transition: background 0.4s; box-shadow: 0 0 0 3px transparent; flex-shrink: 0;
@@ -110,12 +139,12 @@
   .status-dot.testing   { background: var(--amber); box-shadow: 0 0 0 3px rgba(200,130,10,0.2); animation: pulse 0.8s ease-in-out infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
 
-  .status-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
+  .status-label { font-family: 'DM Mono', monospace; font-size: 0.63rem; color: var(--muted); white-space: nowrap; }
 
   /* ── LAYOUT ── */
   .app {
     display: grid; grid-template-columns: 308px 1fr;
-    height: calc(100vh - 68px); overflow: hidden;
+    height: calc(100vh - 66px); overflow: hidden;
   }
 
   /* ── SIDEBAR ── */
@@ -205,26 +234,22 @@
 
   .story-content { max-width: 700px; margin: 0 auto; }
 
-  /* Each LLM response is a "story-section" */
   .story-section { position: relative; }
-
   .sec-text p {
     font-size: 1.06rem; line-height: 1.86; color: var(--ink);
     margin-bottom: 1.05em; text-indent: 2em;
   }
   .sec-text p:first-child { text-indent: 0; }
 
-  /* Divider bar between sections */
+  /* Hover-reveal divider + delete */
   .sec-divider {
     display: flex; align-items: center; gap: 10px;
     margin: 16px 0 12px;
     opacity: 0; transition: opacity 0.22s;
   }
   .story-section:hover .sec-divider { opacity: 1; }
-
   .div-line { flex: 1; height: 1px; background: linear-gradient(90deg,transparent,var(--amber),transparent); opacity: 0.4; }
   .div-gem { font-size: 0.8rem; color: var(--amber); opacity: 0.45; letter-spacing: 0.3em; user-select: none; }
-
   .btn-del-sec {
     display: flex; align-items: center; gap: 4px;
     background: none; border: 1px solid transparent; border-radius: 4px;
@@ -245,7 +270,7 @@
 
   /* Toolbar */
   .toolbar {
-    display: flex; gap: 6px; padding: 6px 16px;
+    display: flex; gap: 5px; padding: 6px 16px;
     border-top: 1px solid var(--parchment-dark);
     background: rgba(245,237,216,0.72); align-items: center; flex-wrap: wrap;
   }
@@ -268,10 +293,7 @@
   }
   .prompt-bar { display: flex; gap: 8px; align-items: flex-end; }
   .prompt-bar textarea { flex: 1; min-height: 64px; max-height: 140px; resize: none; font-size: 0.98rem; }
-
-  /* Generate + Stop group */
   .gen-group { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; }
-
   .btn-gen {
     background: var(--amber); color: #fff; border: none; border-radius: 8px;
     padding: 0 18px; font-family: 'Playfair Display', serif; font-size: 0.94rem;
@@ -288,8 +310,8 @@
     background: none; border: 1.5px solid var(--stop-red); border-radius: 6px;
     color: var(--stop-red); font-family: 'DM Mono', monospace; font-size: 0.63rem;
     letter-spacing: 0.1em; text-transform: uppercase; padding: 0 12px; height: 28px;
-    cursor: pointer; white-space: nowrap; transition: background 0.16s, opacity 0.2s;
-    opacity: 0; pointer-events: none;
+    cursor: pointer; white-space: nowrap;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s, background 0.16s;
   }
   .btn-stop.active { opacity: 1; pointer-events: auto; }
   .btn-stop:hover { background: rgba(168,40,40,0.09); }
@@ -316,21 +338,26 @@
     position: fixed; bottom: 20px; right: 20px;
     background: var(--charcoal); color: var(--parchment);
     font-family: 'DM Mono', monospace; font-size: 0.68rem;
-    padding: 8px 15px; border-radius: 8px; border-left: 3px solid var(--amber);
+    padding: 9px 15px; border-radius: 8px; border-left: 3px solid var(--amber);
     opacity: 0; transform: translateY(10px); transition: opacity 0.3s, transform 0.3s;
-    pointer-events: none; z-index: 1000; max-width: 290px; line-height: 1.4;
+    pointer-events: none; z-index: 1000; max-width: 300px; line-height: 1.4;
   }
   .notif.show { opacity: 1; transform: translateY(0); }
   .notif.err { border-color: var(--rust); }
+
   .ornament { text-align: center; color: var(--amber); font-size: 0.9rem; opacity: 0.3; padding: 2px 0; letter-spacing: 0.5em; }
+
+  /* Hidden file input for import */
+  #importFileIn { display: none; }
 </style>
 </head>
 <body>
 
+<!-- ── HEADER ── -->
 <header>
   <!-- Logo -->
   <svg class="logo-svg" width="48" height="48" viewBox="0 0 56 56" fill="none">
-    <rect x="6" y="28" width="18" height="18" rx="2.5" fill="#c8820a" opacity="0.9"/>
+    <rect x="6"  y="28" width="18" height="18" rx="2.5" fill="#c8820a" opacity="0.9"/>
     <rect x="10" y="24" width="18" height="18" rx="2.5" fill="#8b3a0f" opacity="0.85"/>
     <rect x="14" y="20" width="18" height="18" rx="2.5" fill="#2d4a2a" opacity="0.9"/>
     <line x1="42" y1="8" x2="20" y2="42" stroke="#f5edd8" stroke-width="2" stroke-linecap="round"/>
@@ -338,7 +365,7 @@
     <path d="M38 34 L20 42 L26 36Z" fill="#f5edd8" opacity="0.8"/>
     <circle cx="20" cy="43" r="1.8" fill="#c8820a"/>
     <line x1="17" y1="26" x2="28" y2="26" stroke="rgba(245,237,216,0.6)" stroke-width="1.2" stroke-linecap="round"/>
-    <line x1="17" y1="29" x2="27" y2="29" stroke="rgba(245,237,216,0.4)" stroke-width="1" stroke-linecap="round"/>
+    <line x1="17" y1="29" x2="27" y2="29" stroke="rgba(245,237,216,0.4)" stroke-width="1"   stroke-linecap="round"/>
   </svg>
 
   <div class="brand">
@@ -347,32 +374,63 @@
   </div>
 
   <div class="header-cluster">
-    <button class="btn-docx" onclick="exportDocx()">
+
+    <!-- Story export -->
+    <button class="hdr-btn btn-rtf" onclick="exportRtf()" title="Export story as RTF (opens in Word, Pages, LibreOffice)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
         <polyline points="14 2 14 8 20 8"/>
         <line x1="12" y1="18" x2="12" y2="12"/>
         <polyline points="9 15 12 18 15 15"/>
       </svg>
-      Export DOCX
+      Export RTF
     </button>
 
+    <div class="hdr-sep"></div>
+
+    <!-- Context export -->
+    <button class="hdr-btn btn-ctx-export" onclick="exportContext()" title="Save all sidebar context fields to a JSON file">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Save Context
+    </button>
+
+    <!-- Context import -->
+    <button class="hdr-btn btn-ctx-import" onclick="document.getElementById('importFileIn').click()" title="Load context fields from a JSON file">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 5 17 10"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      Load Context
+    </button>
+    <!-- Hidden file input wired to importContext() -->
+    <input type="file" id="importFileIn" accept=".json,application/json" onchange="importContext(event)">
+
+    <div class="hdr-sep"></div>
+
+    <!-- Server + Test + Status -->
     <div class="server-wrap">
       <label>SERVER</label>
       <input type="text" id="serverUrl" value="http://localhost:1234">
     </div>
-
     <button class="btn-test" id="testBtn" onclick="testConnection()">Test</button>
-
     <div class="status-dot" id="statusDot"></div>
     <span class="status-label" id="statusLabel">Disconnected</span>
+
   </div>
 </header>
 
+<!-- ── APP ── -->
 <div class="app">
+
   <!-- SIDEBAR -->
   <aside class="sidebar">
 
+    <!-- PERSONA -->
     <div class="section" id="s-persona">
       <div class="section-header" onclick="tog('s-persona')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -381,10 +439,11 @@
       </div>
       <div class="section-body">
         <label class="fl">LLM Role / Voice</label>
-        <textarea id="persona" rows="3" placeholder="e.g. You are a gothic Victorian novelist with a gift for atmospheric prose and psychological depth…"></textarea>
+        <textarea id="persona" rows="3" placeholder="e.g. You are a gothic Victorian novelist with a gift for atmospheric prose and psychological depth. Write with restraint and let dread build slowly…"></textarea>
       </div>
     </div>
 
+    <!-- BACKGROUND -->
     <div class="section" id="s-bg">
       <div class="section-header" onclick="tog('s-bg')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
@@ -397,6 +456,7 @@
       </div>
     </div>
 
+    <!-- SETTING -->
     <div class="section" id="s-setting">
       <div class="section-header" onclick="tog('s-setting')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -411,6 +471,7 @@
       </div>
     </div>
 
+    <!-- CHARACTERS -->
     <div class="section" id="s-chars">
       <div class="section-header" onclick="tog('s-chars')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -423,6 +484,7 @@
       </div>
     </div>
 
+    <!-- WRITING GUIDELINES -->
     <div class="section" id="s-guide">
       <div class="section-header" onclick="tog('s-guide')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -431,7 +493,7 @@
       </div>
       <div class="section-body">
         <label class="fl">Style Rules</label>
-        <textarea id="guidelines" rows="5" placeholder="• Show, don't tell&#10;• Use sensory detail&#10;• Avoid adverbs; prefer strong verbs&#10;• Vary sentence rhythm&#10;• Dialogue should reveal character…"></textarea>
+        <textarea id="guidelines" rows="5" placeholder="• Show, don't tell&#10;• Use sensory detail — engage all five senses&#10;• Avoid adverbs; prefer strong verbs&#10;• Vary sentence rhythm&#10;• Dialogue should reveal character…"></textarea>
         <label class="fl" style="margin-top:4px">POV</label>
         <select id="pov">
           <option value="">Select point of view…</option>
@@ -450,6 +512,7 @@
       </div>
     </div>
 
+    <!-- MODEL SETTINGS -->
     <div class="section collapsed" id="s-model">
       <div class="section-header" onclick="tog('s-model')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
@@ -488,11 +551,12 @@
 
   <!-- MAIN -->
   <main class="main">
+
     <div class="story-area" id="storyArea">
       <div class="story-placeholder" id="placeholder">
         <svg viewBox="0 0 64 64" fill="none">
-          <rect x="8" y="12" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/>
-          <rect x="16" y="6" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/>
+          <rect x="8"  y="12" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/>
+          <rect x="16" y="6"  width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/>
           <rect x="24" y="18" width="18" height="2" rx="1" fill="currentColor" opacity="0.5"/>
           <rect x="24" y="23" width="15" height="2" rx="1" fill="currentColor" opacity="0.5"/>
           <rect x="24" y="28" width="17" height="2" rx="1" fill="currentColor" opacity="0.5"/>
@@ -505,6 +569,7 @@
       <div class="story-content" id="storyContent" style="display:none"></div>
     </div>
 
+    <!-- Story toolbar -->
     <div class="toolbar">
       <button class="tool-btn" onclick="copyStory()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy
@@ -518,6 +583,7 @@
       <span class="wc" id="wc">0 words</span>
     </div>
 
+    <!-- Prompt bar -->
     <div class="prompt-section">
       <div class="prompt-meta">
         <button class="mode-btn active" onclick="setMode(this,'continue')">Continue</button>
@@ -528,7 +594,7 @@
         <div class="model-wrap">
           <label>MODEL</label>
           <select id="modelSel"><option value="">— fetch models —</option></select>
-          <button class="tool-btn" onclick="fetchModels()" title="Refresh">
+          <button class="tool-btn" onclick="fetchModels()" title="Refresh model list">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
           </button>
         </div>
@@ -544,6 +610,7 @@
         </div>
       </div>
     </div>
+
   </main>
 </div>
 
@@ -551,12 +618,12 @@
 
 <script>
 // ── STATE ──────────────────────────────────────────────────
-let sections       = [];   // [{ id, text }, ...]
-let secId          = 0;
-let currentMode    = 'continue';
-let isGenerating   = false;
-let abortCtrl      = null;
-let charIdx        = 0;
+let sections    = [];   // [{ id, text }, ...]
+let secId       = 0;
+let currentMode = 'continue';
+let isGenerating = false;
+let abortCtrl   = null;
+let charIdx     = 0;
 
 // ── SIDEBAR TOGGLE ─────────────────────────────────────────
 function tog(id) { document.getElementById(id).classList.toggle('collapsed'); }
@@ -569,22 +636,26 @@ function setMode(btn, mode) {
 }
 
 // ── CHARACTERS ─────────────────────────────────────────────
-function addChar() {
+function addChar(name = '', desc = '') {
   charIdx++;
   const list = document.getElementById('charList');
   const el = document.createElement('div');
   el.className = 'char-card';
   el.innerHTML = `
-    <button class="char-rm" onclick="this.parentElement.remove()">✕</button>
-    <input type="text" placeholder="Character name">
-    <textarea placeholder="Personality, role, appearance, voice, motivations…" rows="3"></textarea>`;
+    <button class="char-rm" onclick="this.parentElement.remove()" title="Remove character">✕</button>
+    <input type="text" placeholder="Character name" value="${escHtml(name)}">
+    <textarea placeholder="Personality, role, appearance, voice, motivations…" rows="3">${escHtml(desc)}</textarea>`;
   list.appendChild(el);
 }
 
-// ── FULL TEXT ──────────────────────────────────────────────
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── FULL STORY TEXT ────────────────────────────────────────
 function fullText() { return sections.map(s => s.text).join('\n\n'); }
 
-// ── RENDER SECTIONS ────────────────────────────────────────
+// ── RENDER STORY SECTIONS ──────────────────────────────────
 function render() {
   const container = document.getElementById('storyContent');
   container.innerHTML = '';
@@ -599,21 +670,19 @@ function render() {
   document.getElementById('placeholder').style.display = 'none';
   container.style.display = 'block';
 
-  sections.forEach((sec) => {
+  sections.forEach(sec => {
     const wrap = document.createElement('div');
     wrap.className = 'story-section';
     wrap.dataset.sid = sec.id;
 
-    // Text
     const textDiv = document.createElement('div');
     textDiv.className = 'sec-text';
     textDiv.innerHTML = fmtParas(sec.text);
     wrap.appendChild(textDiv);
 
-    // Divider + Delete button
-    const div = document.createElement('div');
-    div.className = 'sec-divider';
-    div.innerHTML = `
+    const divider = document.createElement('div');
+    divider.className = 'sec-divider';
+    divider.innerHTML = `
       <div class="div-line"></div>
       <span class="div-gem">✦</span>
       <button class="btn-del-sec" onclick="delSec(${sec.id})">
@@ -625,8 +694,7 @@ function render() {
         Delete section
       </button>
       <div class="div-line"></div>`;
-    wrap.appendChild(div);
-
+    wrap.appendChild(divider);
     container.appendChild(wrap);
   });
 
@@ -640,7 +708,6 @@ function fmtParas(text) {
     .join('');
 }
 
-// ── DELETE SECTION ─────────────────────────────────────────
 function delSec(id) {
   sections = sections.filter(s => s.id !== id);
   render();
@@ -653,7 +720,7 @@ function buildSysPrompt() {
   const persona = v('persona'), bg = v('background');
   const tTime = v('settingTime'), tPlace = v('settingPlace');
   const guide = v('guidelines');
-  const pov = document.getElementById('pov').value;
+  const pov   = document.getElementById('pov').value;
   const tense = document.getElementById('tense').value;
 
   if (persona) parts.push(`## NARRATOR PERSONA\n${persona}`);
@@ -721,12 +788,10 @@ async function generate() {
   genBtn.textContent = '⏳ Writing…';
   stopBtn.classList.add('active');
 
-  // Reveal story area
   document.getElementById('placeholder').style.display = 'none';
   const container = document.getElementById('storyContent');
   container.style.display = 'block';
 
-  // Build live streaming node
   const cursor = document.createElement('span');
   cursor.className = 'gen-cursor';
 
@@ -773,7 +838,6 @@ async function generate() {
     outer: while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-
       const lines = decoder.decode(value, { stream: true }).split('\n').filter(l => l.startsWith('data: '));
       for (const line of lines) {
         const raw = line.slice(6).trim();
@@ -782,10 +846,9 @@ async function generate() {
           const delta = JSON.parse(raw)?.choices?.[0]?.delta?.content || '';
           if (delta) {
             newText += delta;
-            // Render mid-stream (split on double-newline for natural paragraphing)
             const parts = newText.split(/\n\n/);
-            streamPara.innerHTML = parts.map((p,i) =>
-              i < parts.length-1
+            streamPara.innerHTML = parts.map((p, i) =>
+              i < parts.length - 1
                 ? `<span style="display:block;margin-bottom:.8em">${p}</span>`
                 : p
             ).join('');
@@ -795,17 +858,14 @@ async function generate() {
         } catch (_) {}
       }
     }
-
     setStatus(true);
   } catch (err) {
     if (err.name !== 'AbortError') {
       notify('Error: ' + err.message, true);
       setStatus(false);
     }
-    // On stop: keep partial text
   }
 
-  // Commit section (even if stopped)
   streamWrap.remove();
   if (newText.trim()) {
     secId++;
@@ -835,14 +895,13 @@ async function testConnection() {
   btn.textContent = 'Testing…';
   btn.classList.add('testing');
   setStatusTesting();
-
   try {
     const resp = await fetch(`${server}/v1/models`, { signal: AbortSignal.timeout(5000) });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data = await resp.json();
     const n = data.data?.length || 0;
     setStatus(true);
-    notify(`Connected ✓  ${n} model${n!==1?'s':''} available.`);
+    notify(`Connected ✓  ${n} model${n !== 1 ? 's' : ''} available.`);
     populateModels(data.data || []);
   } catch (e) {
     setStatus(false);
@@ -862,7 +921,7 @@ async function fetchModels() {
     const data = await resp.json();
     populateModels(data.data || []);
     setStatus(true);
-    notify(`${data.data?.length||0} model(s) found.`);
+    notify(`${data.data?.length || 0} model(s) found.`);
   } catch {
     setStatus(false);
     notify('Cannot reach LM Studio server.', true);
@@ -908,68 +967,165 @@ function copyStory() {
 function downloadTxt() {
   const t = fullText();
   if (!t) return;
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([t], { type: 'text/plain' }));
-  a.download = 'writers-blocks-story.txt';
-  a.click();
+  dl(new Blob([t], { type: 'text/plain' }), 'writers-blocks-story.txt');
 }
 
-// ── EXPORT DOCX ────────────────────────────────────────────
-async function exportDocx() {
+// ── RTF EXPORT ─────────────────────────────────────────────
+// Pure-text RTF — no library needed. Opens in Word, LibreOffice, Pages, Wordpad.
+function exportRtf() {
   if (!sections.length) { notify('Nothing to export yet.', true); return; }
 
-  if (typeof docx === 'undefined') {
-    notify('DOCX library not available — check internet connection.', true);
-    return;
+  // RTF helper: escape non-ASCII as \uN? and handle control chars
+  function rtfEsc(str) {
+    let out = '';
+    for (const ch of str) {
+      const cp = ch.codePointAt(0);
+      if (cp === 0x0A) { out += '\\line '; }           // single newline → \line
+      else if (cp < 0x20) { /* skip other control chars */ }
+      else if (cp < 0x80) {
+        if (ch === '\\') out += '\\\\';
+        else if (ch === '{') out += '\\{';
+        else if (ch === '}') out += '\\}';
+        else out += ch;
+      } else {
+        // Unicode: RTF \uN uses signed 16-bit; for BMP chars this is just cp
+        const signed = cp > 32767 ? cp - 65536 : cp;
+        out += `\\u${signed}?`;
+      }
+    }
+    return out;
   }
 
-  try {
-    const { Document, Packer, Paragraph, TextRun, AlignmentType } = docx;
-    const children = [];
+  // Build RTF paragraphs
+  // Paragraph formatting: Times New Roman 12pt, first-line indent 720 twips (0.5in), double-spaced
+  const paraFmt = '\\pard\\sl480\\slmult1\\fi720 ';
+  const ornamentFmt = '\\pard\\sl480\\slmult1\\qc ';
 
-    sections.forEach((sec, si) => {
-      const paras = sec.text.split(/\n\n+/).filter(p => p.trim());
-      paras.forEach((pt, pi) => {
-        children.push(new Paragraph({
-          children: [ new TextRun({ text: pt.trim(), font: 'Garamond', size: 24 }) ],
-          indent: (pi === 0 && si === 0) ? {} : { firstLine: 720 },
-          spacing: { line: 360, lineRule: 'auto', after: 0 }
-        }));
+  let body = '';
+  sections.forEach((sec, si) => {
+    const paras = sec.text.split(/\n\n+/).filter(p => p.trim());
+    paras.forEach((p, pi) => {
+      // First paragraph of first section: no indent (chapter-opening style)
+      const fmt = (si === 0 && pi === 0) ? '\\pard\\sl480\\slmult1 ' : paraFmt;
+      body += fmt + rtfEsc(p.trim()) + '\\par\n';
+    });
+
+    // Section break ornament between sections
+    if (si < sections.length - 1) {
+      body += '\\par\n' + ornamentFmt + rtfEsc('* * *') + '\\par\n\\par\n';
+    }
+  });
+
+  const rtf = [
+    '{\\rtf1\\ansi\\deff0',
+    '{\\fonttbl{\\f0\\froman\\fcharset0 Times New Roman;}{\\f1\\fmodern\\fcharset0 Courier New;}}',
+    '{\\colortbl ;\\red26\\green18\\blue9;}',  // colour 1 = ink
+    '\\f0\\fs24\\cf1',                          // 12pt Times, ink colour
+    body,
+    '}'
+  ].join('\n');
+
+  dl(new Blob([rtf], { type: 'application/rtf' }), 'writers-blocks-story.rtf');
+  notify('RTF exported — open in Word, LibreOffice, or Pages.');
+}
+
+// ── EXPORT CONTEXT (JSON) ──────────────────────────────────
+function exportContext() {
+  // Collect all sidebar fields
+  const v = id => document.getElementById(id).value.trim();
+
+  const characters = [];
+  document.querySelectorAll('.char-card').forEach(card => {
+    characters.push({
+      name: card.querySelector('input').value.trim(),
+      description: card.querySelector('textarea').value.trim()
+    });
+  });
+
+  const ctx = {
+    _version: '1.0',
+    _app: "Writer's Blocks",
+    _exported: new Date().toISOString(),
+    persona:      v('persona'),
+    background:   v('background'),
+    settingTime:  v('settingTime'),
+    settingPlace: v('settingPlace'),
+    characters,
+    guidelines:   v('guidelines'),
+    pov:          document.getElementById('pov').value,
+    tense:        document.getElementById('tense').value
+  };
+
+  const json = JSON.stringify(ctx, null, 2);
+  dl(new Blob([json], { type: 'application/json' }), 'writers-blocks-context.json');
+  notify('Context saved to JSON.');
+}
+
+// ── IMPORT CONTEXT (JSON) ──────────────────────────────────
+function importContext(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // Reset the input so the same file can be re-imported if needed
+  event.target.value = '';
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const ctx = JSON.parse(e.target.result);
+
+      // Validate it's a Writer's Blocks context file
+      if (ctx._app !== "Writer's Blocks") {
+        notify('This doesn\'t look like a Writer\'s Blocks context file.', true);
+        return;
+      }
+
+      // Helper: set field value if present
+      const set = (id, val) => {
+        if (val !== undefined && val !== null) {
+          document.getElementById(id).value = val;
+        }
+      };
+
+      set('persona',      ctx.persona);
+      set('background',   ctx.background);
+      set('settingTime',  ctx.settingTime);
+      set('settingPlace', ctx.settingPlace);
+      set('guidelines',   ctx.guidelines);
+
+      // POV select
+      if (ctx.pov !== undefined) {
+        const povEl = document.getElementById('pov');
+        const opt = Array.from(povEl.options).find(o => o.value === ctx.pov);
+        if (opt) povEl.value = ctx.pov;
+      }
+
+      // Tense select
+      if (ctx.tense !== undefined) {
+        const tenseEl = document.getElementById('tense');
+        const opt = Array.from(tenseEl.options).find(o => o.value === ctx.tense);
+        if (opt) tenseEl.value = ctx.tense;
+      }
+
+      // Characters — clear existing, rebuild
+      const charList = document.getElementById('charList');
+      charList.innerHTML = '';
+      charIdx = 0;
+      if (Array.isArray(ctx.characters)) {
+        ctx.characters.forEach(c => addChar(c.name || '', c.description || ''));
+      }
+
+      // Expand all sidebar sections so the user can see what was loaded
+      ['s-persona','s-bg','s-setting','s-chars','s-guide'].forEach(id => {
+        document.getElementById(id).classList.remove('collapsed');
       });
 
-      // Ornamental break between sections (not after last)
-      if (si < sections.length - 1) {
-        children.push(new Paragraph({
-          children: [ new TextRun({ text: '* * *', size: 22 }) ],
-          alignment: AlignmentType.CENTER,
-          spacing: { before: 280, after: 280 }
-        }));
-      }
-    });
-
-    const doc = new Document({
-      sections: [{
-        properties: {
-          page: {
-            size:   { width: 12240, height: 15840 },
-            margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 }
-          }
-        },
-        children
-      }]
-    });
-
-    const buf  = await Packer.toBuffer(doc);
-    const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href = url; a.download = 'writers-blocks-story.docx'; a.click();
-    URL.revokeObjectURL(url);
-    notify('DOCX exported!');
-  } catch (e) {
-    notify('DOCX export failed: ' + e.message, true);
-    console.error(e);
-  }
+      notify(`Context loaded — ${ctx.characters?.length || 0} character(s) restored.`);
+    } catch (err) {
+      notify('Failed to parse JSON: ' + err.message, true);
+    }
+  };
+  reader.readAsText(file);
 }
 
 // ── CLEAR ALL ──────────────────────────────────────────────
@@ -978,13 +1134,21 @@ function clearAll() {
   render();
 }
 
+// ── DOWNLOAD HELPER ────────────────────────────────────────
+function dl(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a   = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
 // ── NOTIFICATION ───────────────────────────────────────────
-function notify(msg, isErr=false) {
+function notify(msg, isErr = false) {
   const n = document.getElementById('notif');
   n.textContent = msg;
   n.className = 'notif' + (isErr ? ' err' : '') + ' show';
   clearTimeout(n._t);
-  n._t = setTimeout(() => n.classList.remove('show'), 3600);
+  n._t = setTimeout(() => n.classList.remove('show'), 3800);
 }
 
 // ── KEYBOARD ───────────────────────────────────────────────
@@ -992,7 +1156,7 @@ function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generate(); }
 }
 
-// Auto-connect
+// Auto-connect on load
 window.addEventListener('load', () => setTimeout(fetchModels, 700));
 </script>
 </body>

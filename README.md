@@ -8,11 +8,6 @@ Writer's Blocks gives you a beautiful, distraction-free workspace for AI-assiste
 
 ### Screenshots
 
-**UI Overview — Writer's features for detailed generation.**
-![UI_Overview](screenshots/UI_Overview.png)
-**UI Overview Dark — Eye-Friendly version.**
-![UI_Overview_Dark](screenshots/UI_Overview_Dark.png)
-
 
 ---
 

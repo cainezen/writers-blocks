@@ -6,590 +6,420 @@
 <title>Writer's Blocks</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    THEME TOKENS
-═══════════════════════════════════════════════ */
+═══════════════════════════════════════════ */
 :root {
-  --ink:            #1a1209;
-  --page:           #faf5e8;
-  --bg:             #d8cbaa;
-  --bg2:            #cfc09a;
-  --parchment-dark: #c8b888;
-  --amber:          #c8820a;
-  --amber-light:    #e09c1a;
-  --rust:           #8b3a0f;
-  --forest:         #2d4a2a;
-  --charcoal:       #2c2416;
-  --muted:          #7a6a50;
-  --sidebar-bg:     rgba(255,255,255,0.32);
-  --header-bg:      rgba(200,130,10,0.07);
-  --input-bg:       rgba(255,255,255,0.68);
-  --input-bg-focus: rgba(255,255,255,0.94);
-  --char-bg:        rgba(255,255,255,0.6);
-  --toolbar-bg:     rgba(216,203,170,0.9);
-  --prompt-bg:      rgba(255,255,255,0.4);
-  --stop-red:       #a82828;
-  --indigo:         #2e3d6e;
-  --indigo-light:   #3a4f8c;
-  --notif-bg:       #2c2416;
-  --notif-fg:       #f5edd8;
-  --page-border:    #b8a878;
-  --page-shadow:    rgba(60,40,10,0.28);
-  --page-rule:      rgba(160,130,80,0.18);
-  --page-margin-line: rgba(180,70,50,0.14);
+  --ink:#1a1209; --page:#faf5e8; --bg:#e8ddc0; --parchment-dark:#c8b888;
+  --amber:#c8820a; --amber-light:#e09c1a; --rust:#8b3a0f;
+  --forest:#2d4a2a; --charcoal:#2c2416; --muted:#7a6a50;
+  --sidebar-bg:rgba(255,255,255,0.32); --header-bg:rgba(200,130,10,0.07);
+  --story-bg:rgba(255,255,255,0.22); --input-bg:rgba(255,255,255,0.68);
+  --input-bg-focus:rgba(255,255,255,0.94); --char-bg:rgba(255,255,255,0.6);
+  --toolbar-bg:rgba(220,208,178,0.92); --prompt-bg:rgba(255,255,255,0.4);
+  --stop-red:#a82828; --indigo:#2e3d6e; --indigo-light:#3a4f8c;
+  --notif-bg:#2c2416; --notif-fg:#f5edd8; --div-line:rgba(200,130,10,0.35);
+  --sticky1:#fff9c4; --sticky2:#fce4ec; --sticky3:#e8f5e9;
+  --sticky1-dark:#5a5000; --sticky2-dark:#5a1020; --sticky3-dark:#0a3a10;
+  --modal-bg:rgba(26,18,9,0.55);
+  --budget-ok:#4a8c4a; --budget-warn:#c8820a; --budget-full:#a82828;
 }
 [data-theme="dark"] {
-  --ink:            #ddd4b8;
-  --page:           #1c1810;
-  --bg:             #0e0c08;
-  --bg2:            #141210;
-  --parchment-dark: #2a2418;
-  --amber:          #d4940e;
-  --amber-light:    #e8a820;
-  --rust:           #c06040;
-  --forest:         #2a4228;
-  --charcoal:       #ddd4b8;
-  --muted:          #887860;
-  --sidebar-bg:     rgba(28,24,16,0.85);
-  --header-bg:      rgba(200,130,10,0.05);
-  --input-bg:       rgba(38,32,22,0.9);
-  --input-bg-focus: rgba(48,42,30,0.98);
-  --char-bg:        rgba(38,32,22,0.8);
-  --toolbar-bg:     rgba(16,14,10,0.95);
-  --prompt-bg:      rgba(16,14,10,0.6);
-  --stop-red:       #c03030;
-  --indigo:         #3a4f8c;
-  --indigo-light:   #4a60a8;
-  --notif-bg:       #ddd4b8;
-  --notif-fg:       #1a1209;
-  --page-border:    #302818;
-  --page-shadow:    rgba(0,0,0,0.7);
-  --page-rule:      rgba(200,180,120,0.05);
-  --page-margin-line: rgba(200,100,80,0.1);
+  --ink:#ddd4b8; --page:#1c1810; --bg:#0e0c08; --parchment-dark:#2a2418;
+  --amber:#d4940e; --amber-light:#e8a820; --rust:#c06040;
+  --forest:#2a4228; --charcoal:#ddd4b8; --muted:#887860;
+  --sidebar-bg:rgba(28,24,16,0.85); --header-bg:rgba(200,130,10,0.05);
+  --story-bg:rgba(10,8,4,0.45); --input-bg:rgba(38,32,22,0.9);
+  --input-bg-focus:rgba(48,42,30,0.98); --char-bg:rgba(38,32,22,0.8);
+  --toolbar-bg:rgba(16,14,10,0.95); --prompt-bg:rgba(16,14,10,0.6);
+  --stop-red:#c03030; --indigo:#3a4f8c; --indigo-light:#4a60a8;
+  --notif-bg:#ddd4b8; --notif-fg:#1a1209; --div-line:rgba(212,148,14,0.3);
+  --sticky1:#2e2a00; --sticky2:#2e0a14; --sticky3:#0a2010;
+  --sticky1-dark:#fff0a0; --sticky2-dark:#ffa0b8; --sticky3-dark:#80e898;
+  --modal-bg:rgba(0,0,0,0.72);
 }
 
-/* ═══════════════════════════════════════════════
-   RESET
-═══════════════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Crimson Pro', Georgia, serif;
-  background: var(--bg);
-  color: var(--ink);
-  min-height: 100vh;
-  transition: background .35s, color .35s;
-}
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg);color:var(--ink);min-height:100vh;transition:background .35s,color .35s;}
 
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    HEADER
-═══════════════════════════════════════════════ */
-header {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 18px 8px;
-  border-bottom: 2px solid var(--amber);
-  background: var(--header-bg);
-  position: relative; flex-wrap: wrap;
-  transition: background .35s;
-}
-header::after {
-  content: ''; position: absolute;
-  bottom: -5px; left: 18px; right: 18px; height: 3px;
-  background: repeating-linear-gradient(90deg,var(--amber) 0,var(--amber) 8px,transparent 8px,transparent 14px);
-  opacity: .28;
-}
-.logo-area { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-.brand-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.65rem; font-weight: 900; letter-spacing: -.015em;
-  color: var(--ink); line-height: 1; transition: color .35s;
-}
-.brand-title em { font-style: normal; color: var(--amber); }
+═══════════════════════════════════════════ */
+header{display:flex;align-items:center;gap:10px;padding:9px 18px 8px;border-bottom:2px solid var(--amber);background:var(--header-bg);position:relative;flex-wrap:wrap;transition:background .35s;}
+header::after{content:'';position:absolute;bottom:-5px;left:18px;right:18px;height:3px;background:repeating-linear-gradient(90deg,var(--amber) 0,var(--amber) 8px,transparent 8px,transparent 14px);opacity:.28;}
+.logo-area{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.brand-title{font-family:'Playfair Display',serif;font-size:1.65rem;font-weight:900;letter-spacing:-.015em;color:var(--ink);line-height:1;transition:color .35s;}
+.brand-title em{font-style:normal;color:var(--amber);}
+.header-cluster{display:flex;align-items:center;gap:6px;margin-left:auto;flex-wrap:wrap;}
+.hdr-sep{width:1px;height:19px;background:var(--parchment-dark);flex-shrink:0;margin:0 1px;transition:background .35s;}
+.hdr-btn{display:flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:.09em;text-transform:uppercase;border:none;border-radius:5px;padding:5px 9px;cursor:pointer;white-space:nowrap;transition:background .18s,box-shadow .18s,color .18s;}
+.hdr-btn svg{width:11px;height:11px;flex-shrink:0;}
+.btn-rtf{background:var(--forest);color:#ceebc9;box-shadow:0 2px 6px rgba(45,74,42,.28);}
+.btn-rtf:hover{background:#3a5e36;}
+.btn-ctx-export{background:var(--indigo);color:#c8d6ff;box-shadow:0 2px 6px rgba(46,61,110,.28);}
+.btn-ctx-export:hover{background:var(--indigo-light);}
+.btn-ctx-import{background:none;color:var(--amber);border:1.5px solid var(--amber);padding:4px 8px;}
+.btn-ctx-import:hover{background:rgba(200,130,10,.1);}
+.btn-theme{background:none;border:1.5px solid var(--parchment-dark);border-radius:5px;color:var(--muted);padding:4px 7px;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:.08em;text-transform:uppercase;transition:all .2s;white-space:nowrap;}
+.btn-theme:hover{border-color:var(--amber);color:var(--amber);background:rgba(200,130,10,.07);}
+.btn-theme svg{width:12px;height:12px;}
 
-.header-cluster { display: flex; align-items: center; gap: 6px; margin-left: auto; flex-wrap: wrap; }
-.hdr-sep { width: 1px; height: 19px; background: var(--parchment-dark); flex-shrink: 0; margin: 0 1px; transition: background .35s; }
+/* Brainstorm header button */
+.btn-brainstorm{background:none;color:var(--amber);border:1.5px solid var(--amber);padding:4px 9px;}
+.btn-brainstorm:hover{background:rgba(200,130,10,.1);}
 
-.hdr-btn {
-  display: flex; align-items: center; gap: 4px;
-  font-family: 'DM Mono', monospace; font-size: 0.6rem;
-  letter-spacing: .09em; text-transform: uppercase;
-  border: none; border-radius: 5px; padding: 5px 9px;
-  cursor: pointer; white-space: nowrap;
-  transition: background .18s, box-shadow .18s, color .18s;
-}
-.hdr-btn svg { width: 11px; height: 11px; flex-shrink: 0; }
+.server-wrap{display:flex;align-items:center;gap:5px;background:var(--input-bg);border:1px solid var(--parchment-dark);border-radius:6px;padding:3px 7px;transition:background .35s;}
+.server-wrap label{font-family:'DM Mono',monospace;font-size:.56rem;color:var(--muted);white-space:nowrap;}
+.server-wrap input{border:none;background:transparent;font-family:'DM Mono',monospace;font-size:.65rem;color:var(--ink);width:148px;outline:none;transition:color .35s;}
+.btn-test{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;background:none;border:1.5px solid var(--muted);border-radius:5px;color:var(--muted);padding:4px 8px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.btn-test:hover,.btn-test.testing{border-color:var(--amber);color:var(--amber);background:rgba(200,130,10,.07);}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#888;transition:background .4s;box-shadow:0 0 0 3px transparent;flex-shrink:0;}
+.status-dot.connected{background:#5a9e5a;box-shadow:0 0 0 3px rgba(90,158,90,.22);}
+.status-dot.error{background:#c03030;box-shadow:0 0 0 3px rgba(192,48,48,.22);}
+.status-dot.testing{background:var(--amber);box-shadow:0 0 0 3px rgba(200,130,10,.22);animation:pulse .8s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.status-label{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);white-space:nowrap;}
 
-.btn-rtf        { background: var(--forest); color: #ceebc9; box-shadow: 0 2px 6px rgba(45,74,42,.28); }
-.btn-rtf:hover  { background: #3a5e36; }
-.btn-ctx-export { background: var(--indigo); color: #c8d6ff; box-shadow: 0 2px 6px rgba(46,61,110,.28); }
-.btn-ctx-export:hover { background: var(--indigo-light); }
-.btn-ctx-import { background: none; color: var(--amber); border: 1.5px solid var(--amber); padding: 4px 8px; }
-.btn-ctx-import:hover { background: rgba(200,130,10,.1); }
-
-.btn-theme {
-  background: none; border: 1.5px solid var(--parchment-dark); border-radius: 5px;
-  color: var(--muted); padding: 4px 7px; cursor: pointer;
-  display: flex; align-items: center; gap: 4px;
-  font-family: 'DM Mono', monospace; font-size: 0.6rem;
-  letter-spacing: .08em; text-transform: uppercase;
-  transition: all .2s; white-space: nowrap;
-}
-.btn-theme:hover { border-color: var(--amber); color: var(--amber); background: rgba(200,130,10,.07); }
-.btn-theme svg { width: 12px; height: 12px; }
-
-.server-wrap {
-  display: flex; align-items: center; gap: 5px;
-  background: var(--input-bg); border: 1px solid var(--parchment-dark);
-  border-radius: 6px; padding: 3px 7px; transition: background .35s;
-}
-.server-wrap label { font-family: 'DM Mono', monospace; font-size: .56rem; color: var(--muted); white-space: nowrap; }
-.server-wrap input {
-  border: none; background: transparent; font-family: 'DM Mono', monospace;
-  font-size: .65rem; color: var(--ink); width: 148px; outline: none; transition: color .35s;
-}
-.btn-test {
-  font-family: 'DM Mono', monospace; font-size: .6rem;
-  letter-spacing: .1em; text-transform: uppercase;
-  background: none; border: 1.5px solid var(--muted);
-  border-radius: 5px; color: var(--muted); padding: 4px 8px;
-  cursor: pointer; transition: all .2s; white-space: nowrap;
-}
-.btn-test:hover, .btn-test.testing { border-color: var(--amber); color: var(--amber); background: rgba(200,130,10,.07); }
-.status-dot {
-  width: 8px; height: 8px; border-radius: 50%; background: #888;
-  transition: background .4s; box-shadow: 0 0 0 3px transparent; flex-shrink: 0;
-}
-.status-dot.connected { background: #5a9e5a; box-shadow: 0 0 0 3px rgba(90,158,90,.22); }
-.status-dot.error     { background: #c03030; box-shadow: 0 0 0 3px rgba(192,48,48,.22); }
-.status-dot.testing   { background: var(--amber); box-shadow: 0 0 0 3px rgba(200,130,10,.22); animation: pulse .8s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
-.status-label { font-family: 'DM Mono', monospace; font-size: .6rem; color: var(--muted); white-space: nowrap; }
-
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    APP LAYOUT
-═══════════════════════════════════════════════ */
-.app {
-  display: grid; grid-template-columns: 300px 1fr;
-  height: calc(100vh - 62px); overflow: hidden;
-}
+═══════════════════════════════════════════ */
+.app{display:grid;grid-template-columns:305px 1fr;height:calc(100vh - 62px);overflow:hidden;}
 
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    SIDEBAR
-═══════════════════════════════════════════════ */
-.sidebar {
-  border-right: 2px solid var(--parchment-dark);
-  display: flex; flex-direction: column; overflow-y: auto;
-  background: var(--sidebar-bg);
-  scrollbar-width: thin; scrollbar-color: var(--parchment-dark) transparent;
-  transition: background .35s, border-color .35s;
-}
-.section { border-bottom: 1px solid var(--parchment-dark); transition: border-color .35s; }
-.section-header {
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 13px; cursor: pointer; user-select: none;
-  background: rgba(200,130,10,.04); transition: background .2s;
-}
-.section-header:hover { background: rgba(200,130,10,.1); }
-.section-icon { width: 17px; height: 17px; color: var(--amber); flex-shrink: 0; }
-.section-title {
-  font-family: 'Playfair Display', serif; font-size: .78rem; font-weight: 700;
-  letter-spacing: .04em; text-transform: uppercase; color: var(--ink); flex: 1; transition: color .35s;
-}
-.section-chevron { width: 12px; height: 12px; color: var(--muted); transition: transform .25s; }
-.section.collapsed .section-chevron { transform: rotate(-90deg); }
-.section.collapsed .section-body { display: none; }
-.section-body { padding: 9px 13px 12px; display: flex; flex-direction: column; gap: 7px; }
+═══════════════════════════════════════════ */
+.sidebar{border-right:2px solid var(--parchment-dark);display:flex;flex-direction:column;overflow-y:auto;background:var(--sidebar-bg);scrollbar-width:thin;scrollbar-color:var(--parchment-dark) transparent;transition:background .35s,border-color .35s;}
+.section{border-bottom:1px solid var(--parchment-dark);transition:border-color .35s;}
+.section-header{display:flex;align-items:center;gap:8px;padding:9px 13px;cursor:pointer;user-select:none;background:rgba(200,130,10,.04);transition:background .2s;}
+.section-header:hover{background:rgba(200,130,10,.1);}
+.section-icon{width:17px;height:17px;color:var(--amber);flex-shrink:0;}
+.section-title{font-family:'Playfair Display',serif;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);flex:1;transition:color .35s;}
+.section-chevron{width:12px;height:12px;color:var(--muted);transition:transform .25s;}
+.section.collapsed .section-chevron{transform:rotate(-90deg);}
+.section.collapsed .section-body{display:none;}
+.section-body{padding:9px 13px 12px;display:flex;flex-direction:column;gap:7px;}
+label.fl{font-family:'DM Mono',monospace;font-size:.56rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px;transition:color .35s;}
+textarea,input[type="text"],select{width:100%;font-family:'Crimson Pro',serif;font-size:.9rem;color:var(--ink);background:var(--input-bg);border:1px solid var(--parchment-dark);border-radius:5px;padding:5px 8px;resize:vertical;outline:none;transition:border-color .2s,box-shadow .2s,background .35s,color .35s;}
+textarea:focus,input[type="text"]:focus,select:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(200,130,10,.11);background:var(--input-bg-focus);}
+textarea{min-height:60px;line-height:1.45;}
+.story-title-field{font-family:'Playfair Display',serif!important;font-size:1rem!important;font-weight:700!important;font-style:italic;}
+.char-list{display:flex;flex-direction:column;gap:6px;}
+.char-card{background:var(--char-bg);border:1px solid var(--parchment-dark);border-radius:7px;padding:7px 9px;position:relative;animation:sIn .22s ease;transition:background .35s,border-color .35s;}
+@keyframes sIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.char-card input{font-weight:600;margin-bottom:4px;background:transparent;border-color:transparent;padding-left:0;}
+.char-card input:focus{background:var(--input-bg);border-color:var(--amber);padding-left:8px;}
+.char-card textarea{min-height:44px;font-size:.83rem;}
+.char-rm{position:absolute;top:5px;right:7px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:.8rem;transition:color .2s;}
+.char-rm:hover{color:var(--rust);}
+.btn-add{display:flex;align-items:center;gap:4px;background:none;border:1.5px dashed var(--amber);border-radius:5px;color:var(--amber);font-family:'DM Mono',monospace;font-size:.63rem;padding:4px 9px;cursor:pointer;width:100%;justify-content:center;letter-spacing:.08em;transition:background .2s;}
+.btn-add:hover{background:rgba(200,130,10,.08);}
+.param-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+input[type="range"]{width:100%;accent-color:var(--amber);margin-top:2px;}
+.pv{font-family:'DM Mono',monospace;font-size:.67rem;color:var(--amber);text-align:right;}
 
-label.fl {
-  font-family: 'DM Mono', monospace; font-size: .56rem; font-weight: 500;
-  letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
-  display: block; margin-bottom: 2px; transition: color .35s;
-}
-textarea, input[type="text"], select {
-  width: 100%; font-family: 'Crimson Pro', serif; font-size: .9rem; color: var(--ink);
-  background: var(--input-bg); border: 1px solid var(--parchment-dark);
-  border-radius: 5px; padding: 5px 8px; resize: vertical; outline: none;
-  transition: border-color .2s, box-shadow .2s, background .35s, color .35s;
-}
-textarea:focus, input[type="text"]:focus, select:focus {
-  border-color: var(--amber); box-shadow: 0 0 0 3px rgba(200,130,10,.11);
-  background: var(--input-bg-focus);
-}
-textarea { min-height: 60px; line-height: 1.45; }
-
-/* Story title field */
-.story-title-field {
-  font-family: 'Playfair Display', serif !important;
-  font-size: 1rem !important; font-weight: 700 !important;
-  font-style: italic;
-}
-
-/* Characters */
-.char-list { display: flex; flex-direction: column; gap: 6px; }
-.char-card {
-  background: var(--char-bg); border: 1px solid var(--parchment-dark);
-  border-radius: 7px; padding: 7px 9px; position: relative;
-  animation: sIn .22s ease; transition: background .35s, border-color .35s;
-}
-@keyframes sIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:none} }
-.char-card input { font-weight: 600; margin-bottom: 4px; background: transparent; border-color: transparent; padding-left: 0; }
-.char-card input:focus { background: var(--input-bg); border-color: var(--amber); padding-left: 8px; }
-.char-card textarea { min-height: 44px; font-size: .83rem; }
-.char-rm { position: absolute; top: 5px; right: 7px; background: none; border: none; cursor: pointer; color: var(--muted); font-size: .8rem; transition: color .2s; }
-.char-rm:hover { color: var(--rust); }
-.btn-add {
-  display: flex; align-items: center; gap: 4px; background: none;
-  border: 1.5px dashed var(--amber); border-radius: 5px; color: var(--amber);
-  font-family: 'DM Mono', monospace; font-size: .63rem; padding: 4px 9px;
-  cursor: pointer; width: 100%; justify-content: center; letter-spacing: .08em;
-  transition: background .2s;
-}
-.btn-add:hover { background: rgba(200,130,10,.08); }
-
-/* Params */
-.param-row { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; }
-.pv { font-family: 'DM Mono', monospace; font-size: .67rem; color: var(--amber); text-align: right; }
-
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════════════
    MAIN COLUMN
-═══════════════════════════════════════════════ */
-.main { display: grid; grid-template-rows: 1fr auto auto; overflow: hidden; background: var(--bg); transition: background .35s; }
+═══════════════════════════════════════════ */
+.main{display:grid;grid-template-rows:1fr auto auto auto;overflow:hidden;background:var(--bg);transition:background .35s;}
 
-/* ═══════════════════════════════════════════════
-   STORY AREA — book stage
-═══════════════════════════════════════════════ */
-.story-area {
-  overflow: hidden; /* navigation replaces scrolling */
-  background: var(--bg2);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 20px 24px 12px;
-  position: relative;
-  transition: background .35s;
-}
+/* ═══════════════════════════════════════════
+   STORY AREA
+═══════════════════════════════════════════ */
+.story-area{overflow-y:auto;background:var(--story-bg);padding:32px 48px 40px;scrollbar-width:thin;scrollbar-color:var(--parchment-dark) transparent;transition:background .35s;}
+.story-output-title{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:6px;line-height:1.2;transition:color .35s;}
+.story-output-rule{width:56px;height:2px;background:var(--amber);opacity:.5;margin:0 auto 32px;border-radius:1px;}
+.story-content{max-width:680px;margin:0 auto;}
+.story-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:380px;gap:14px;color:var(--muted);text-align:center;}
+.story-placeholder svg{opacity:.15;width:56px;height:56px;}
+.story-placeholder p{font-style:italic;font-size:.98rem;max-width:270px;line-height:1.6;opacity:.65;}
+.ornament{text-align:center;color:var(--amber);font-size:.85rem;opacity:.28;padding:2px 0;letter-spacing:.5em;}
+.story-section{position:relative;}
+.sec-text p{font-size:1.1rem;line-height:1.85;color:var(--ink);margin-bottom:1.15em;text-indent:2.2em;transition:color .35s;}
+.sec-text p:first-child{text-indent:0;}
 
-/* ═══════════════════════════════════════════════
-   PAGE NAVIGATION ARROWS
-═══════════════════════════════════════════════ */
-.page-nav {
-  position: absolute;
-  top: 50%; transform: translateY(-50%);
-  z-index: 10;
-  background: none; border: none; cursor: pointer;
-  color: var(--muted); padding: 8px;
-  transition: color .2s, opacity .2s;
-  opacity: .45;
-}
-.page-nav:hover { color: var(--amber); opacity: 1; }
-.page-nav:disabled { opacity: .12; cursor: default; pointer-events: none; }
-.page-nav svg { width: 28px; height: 28px; }
-.page-nav-prev { left: 4px; }
-.page-nav-next { right: 4px; }
+/* ── Section action bar ── */
+.sec-divider{display:flex;align-items:center;gap:8px;margin:14px 0 10px;opacity:0;transition:opacity .2s;}
+.story-section:hover .sec-divider{opacity:1;}
+.div-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--amber),transparent);opacity:.35;}
+.div-gem{font-size:.72rem;color:var(--amber);opacity:.4;letter-spacing:.28em;user-select:none;}
+.sec-actions{display:flex;align-items:center;gap:3px;}
+.btn-sec-action{display:flex;align-items:center;gap:3px;background:none;border:1px solid transparent;border-radius:3px;font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;cursor:pointer;white-space:nowrap;transition:all .15s;color:var(--muted);}
+.btn-sec-action svg{width:9px;height:9px;}
+.btn-sec-action:hover{border-color:var(--amber);color:var(--amber);background:rgba(200,130,10,.07);}
+.btn-sec-action.edit-btn:hover{border-color:var(--indigo);color:var(--indigo);background:rgba(46,61,110,.07);}
+.btn-sec-action.del:hover{color:var(--rust);border-color:var(--rust);background:rgba(139,58,15,.07);}
+.sec-actions-edit{display:flex;align-items:center;gap:3px;}
+.btn-sec-save{display:flex;align-items:center;gap:3px;background:var(--forest);border:none;border-radius:3px;color:#ceebc9;font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;cursor:pointer;white-space:nowrap;transition:background .15s;}
+.btn-sec-save:hover{background:#3a5e36;}
+.btn-sec-save svg{width:9px;height:9px;}
+.btn-sec-cancel{display:flex;align-items:center;gap:3px;background:none;border:1px solid var(--parchment-dark);border-radius:3px;color:var(--muted);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;cursor:pointer;white-space:nowrap;transition:all .15s;}
+.btn-sec-cancel:hover{border-color:var(--rust);color:var(--rust);background:rgba(139,58,15,.07);}
+.btn-sec-cancel svg{width:9px;height:9px;}
+.sec-edit-area{width:100%;font-family:'Crimson Pro',Georgia,serif;font-size:1.1rem;line-height:1.85;color:var(--ink);background:rgba(255,255,255,0.55);border:1.5px solid var(--amber);border-radius:4px;padding:12px 14px;resize:vertical;outline:none;box-shadow:0 0 0 3px rgba(200,130,10,.1);transition:background .35s,color .35s,border-color .2s;min-height:120px;position:relative;z-index:2;}
+[data-theme="dark"] .sec-edit-area{background:rgba(40,34,22,.7);box-shadow:0 0 0 3px rgba(200,130,10,.12);}
+.sec-edit-area:focus{border-color:var(--amber-light);box-shadow:0 0 0 4px rgba(200,130,10,.16);}
+.gen-cursor{display:inline-block;width:2px;height:1.1em;background:var(--amber);vertical-align:text-bottom;animation:blink .8s step-end infinite;}
+@keyframes blink{50%{opacity:0}}
 
-/* ═══════════════════════════════════════════════
-   PAGE COUNTER + NAVIGATION LEGEND (below page)
-═══════════════════════════════════════════════ */
-.page-footer {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 6px; margin-top: 8px; min-height: 36px;
-}
-.page-counter {
-  font-family: 'DM Mono', monospace; font-size: .6rem;
-  color: var(--muted); letter-spacing: .1em;
-  transition: color .35s; text-align: center;
-}
-
-/* Navigation legend */
-.page-legend {
-  display: flex; align-items: center; gap: 10px;
-  opacity: 0; transition: opacity .3s;
-}
-.page-legend.visible { opacity: 1; }
-
-.legend-group {
-  display: flex; align-items: center; gap: 5px;
-}
-.kbd {
-  display: inline-flex; align-items: center; justify-content: center;
-  font-family: 'DM Mono', monospace; font-size: .52rem;
-  color: var(--muted);
-  background: var(--input-bg);
-  border: 1px solid var(--parchment-dark);
-  border-bottom: 2px solid var(--parchment-dark);
-  border-radius: 3px;
-  padding: 1px 5px; min-width: 20px;
-  letter-spacing: 0;
-  box-shadow: 0 1px 0 var(--parchment-dark);
-  transition: background .35s, border-color .35s, color .35s;
-  user-select: none;
-}
-.legend-label {
-  font-family: 'DM Mono', monospace; font-size: .52rem;
-  color: var(--muted); opacity: .75; letter-spacing: .06em;
-  transition: color .35s;
-  white-space: nowrap;
-}
-.legend-sep {
-  width: 1px; height: 10px;
-  background: var(--parchment-dark);
-  opacity: .6; transition: background .35s;
-}
-
-/* ═══════════════════════════════════════════════
-   THE BOOK PAGE
-   8.5 × 11" at 96 dpi = 816 × 1056px
-   1" margins each side  → text area = 624 × 864px
-   Displayed at a scaled-down size that fits the viewport,
-   but internal layout honours the exact proportions.
-═══════════════════════════════════════════════ */
-.page-stage {
-  display: flex; flex-direction: column; align-items: center;
-  flex: 1; width: 100%; overflow: hidden;
-}
-
-/*
-  We render the page at its "true" 624px wide text column
-  then scale it down with CSS transform so it fits the viewport.
-  The JS sets --page-scale on .page-stage.
-*/
-.book-page {
-  /* Exact 8.5×11 proportions at 96dpi with 1" margins */
-  width: 624px;       /* 6.5" text width at 96dpi */
-  height: 864px;      /* 9" text height at 96dpi */
-  background: var(--page);
-  border: 1px solid var(--page-border);
-  border-radius: 1px;
-  padding: 0;         /* content is managed by inner wrapper */
-  position: relative;
-  box-shadow:
-    inset 12px 0 16px -12px rgba(0,0,0,.1),
-    4px 4px 0 0 var(--page-border),
-    6px 6px 20px var(--page-shadow);
-  transition: background .35s, border-color .35s, box-shadow .35s;
-  transform-origin: top center;
-  /* scale set by JS via style */
+/* ═══════════════════════════════════════════
+   CONTEXT BUDGET PANEL
+═══════════════════════════════════════════ */
+.budget-bar {
+  border-top: 1px solid var(--parchment-dark);
+  background: var(--toolbar-bg);
+  transition: background .35s, border-color .35s;
   overflow: hidden;
+}
+.budget-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 14px; cursor: pointer; user-select: none;
+}
+.budget-header:hover { background: rgba(200,130,10,.05); }
+.budget-title {
+  font-family: 'DM Mono', monospace; font-size: .58rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+  flex: 1;
+}
+.budget-summary {
+  font-family: 'DM Mono', monospace; font-size: .6rem;
+  font-weight: 500; letter-spacing: .04em;
+}
+.budget-summary.ok   { color: var(--budget-ok,#4a8c4a); }
+.budget-summary.warn { color: var(--budget-warn,#c8820a); }
+.budget-summary.full { color: var(--budget-full,#a82828); }
+.budget-chevron { width: 11px; height: 11px; color: var(--muted); transition: transform .22s; flex-shrink: 0; }
+.budget-bar.open .budget-chevron { transform: rotate(180deg); }
+.budget-body {
+  display: none;
+  padding: 0 14px 10px;
+}
+.budget-bar.open .budget-body { display: block; }
+
+/* Progress track */
+.budget-track {
+  height: 6px; background: var(--parchment-dark);
+  border-radius: 3px; margin-bottom: 8px; overflow: hidden;
+}
+.budget-fill {
+  height: 100%; border-radius: 3px;
+  transition: width .4s ease, background .35s;
+}
+.budget-fill.ok   { background: var(--budget-ok,#4a8c4a); }
+.budget-fill.warn { background: var(--budget-warn,#c8820a); }
+.budget-fill.full { background: var(--budget-full,#a82828); }
+
+/* Row breakdown */
+.budget-rows { display: flex; flex-direction: column; gap: 3px; }
+.budget-row {
+  display: flex; align-items: center; gap: 6px;
+}
+.budget-row-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+}
+.budget-row-label {
+  font-family: 'DM Mono', monospace; font-size: .54rem;
+  color: var(--muted); flex: 1; letter-spacing: .04em;
+}
+.budget-row-val {
+  font-family: 'DM Mono', monospace; font-size: .54rem;
+  color: var(--ink); text-align: right; transition: color .35s;
+}
+.budget-limit-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 6px; padding-top: 6px;
+  border-top: 1px dashed var(--parchment-dark);
+}
+.budget-limit-label {
+  font-family: 'DM Mono', monospace; font-size: .54rem; color: var(--muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.budget-limit-label select {
+  width: auto; font-family: 'DM Mono', monospace; font-size: .54rem;
+  padding: 1px 4px; border-radius: 3px;
+}
+.budget-limit-total {
+  font-family: 'DM Mono', monospace; font-size: .58rem;
+  font-weight: 600; color: var(--ink);
+}
+
+/* ═══════════════════════════════════════════
+   TOOLBAR
+═══════════════════════════════════════════ */
+.toolbar{display:flex;gap:5px;padding:5px 14px;border-top:1px solid var(--parchment-dark);background:var(--toolbar-bg);align-items:center;flex-wrap:wrap;transition:background .35s,border-color .35s;}
+.tool-btn{background:none;border:none;cursor:pointer;color:var(--muted);padding:3px 5px;border-radius:3px;display:flex;align-items:center;gap:3px;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.06em;white-space:nowrap;transition:color .2s,background .2s;}
+.tool-btn:hover{color:var(--amber);background:rgba(200,130,10,.09);}
+.tool-btn svg{width:12px;height:12px;}
+.wc{margin-left:auto;font-family:'DM Mono',monospace;font-size:.57rem;color:var(--muted);}
+
+/* ═══════════════════════════════════════════
+   PROMPT SECTION
+═══════════════════════════════════════════ */
+.prompt-section{border-top:2px solid var(--parchment-dark);padding:9px 14px 11px;display:flex;flex-direction:column;gap:7px;background:var(--prompt-bg);transition:background .35s,border-color .35s;}
+.prompt-bar{display:flex;gap:7px;align-items:flex-end;}
+.prompt-bar textarea{flex:1;min-height:58px;max-height:120px;resize:none;font-size:.96rem;}
+.gen-group{display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
+.btn-gen{background:var(--amber);color:#fff;border:none;border-radius:7px;padding:0 15px;font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;cursor:pointer;letter-spacing:.02em;box-shadow:0 3px 9px rgba(200,130,10,.32);white-space:nowrap;height:38px;transition:background .18s,transform .1s,box-shadow .18s;}
+.btn-gen:hover{background:var(--amber-light);box-shadow:0 4px 14px rgba(200,130,10,.4);}
+.btn-gen:active{transform:scale(.97);}
+.btn-gen:disabled{background:var(--muted);box-shadow:none;cursor:not-allowed;}
+.btn-stop{display:flex;align-items:center;justify-content:center;gap:3px;background:none;border:1.5px solid var(--stop-red);border-radius:5px;color:var(--stop-red);font-family:'DM Mono',monospace;font-size:.59rem;letter-spacing:.1em;text-transform:uppercase;padding:0 10px;height:26px;cursor:pointer;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s,background .16s;}
+.btn-stop.active{opacity:1;pointer-events:auto;}
+.btn-stop:hover{background:rgba(168,40,40,.1);}
+.btn-stop svg{width:8px;height:8px;}
+.prompt-meta{display:flex;gap:5px;align-items:center;flex-wrap:wrap;}
+.mode-btn{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--parchment-dark);border-radius:3px;background:none;color:var(--muted);padding:3px 7px;cursor:pointer;transition:all .15s;}
+.mode-btn.active,.mode-btn:hover{border-color:var(--amber);color:var(--amber);background:rgba(200,130,10,.07);}
+.model-wrap{margin-left:auto;display:flex;align-items:center;gap:5px;}
+.model-wrap label{font-family:'DM Mono',monospace;font-size:.56rem;color:var(--muted);letter-spacing:.1em;}
+.model-wrap select{width:auto;min-width:138px;font-size:.7rem;padding:3px 5px;}
+
+/* ═══════════════════════════════════════════
+   BRAINSTORM MODAL
+═══════════════════════════════════════════ */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: var(--modal-bg);
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s;
+  padding: 20px;
+}
+.modal-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.modal {
+  background: var(--page);
+  border: 1px solid var(--parchment-dark);
+  border-radius: 10px;
+  width: 100%; max-width: 820px;
+  max-height: 88vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 12px 48px rgba(0,0,0,.35);
+  transition: background .35s;
+  overflow: hidden;
+}
+.modal-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid var(--parchment-dark);
   flex-shrink: 0;
 }
-
-/* Ruled lines behind text */
-.book-page::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  /* line-height 24px = 1.5 × 16px body font */
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 23px,
-    var(--page-rule) 23px,
-    var(--page-rule) 24px
-  );
-  background-position: 0 48px; /* offset to align with first text line */
-  pointer-events: none;
+.modal-header h2 {
+  font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
+  color: var(--ink); flex: 1;
 }
-
-/* Left margin rule */
-.book-page::after {
-  content: '';
-  position: absolute;
-  top: 36px; bottom: 36px; left: 46px;
-  width: 1px;
-  background: var(--page-margin-line);
-}
-
-/* Page title area (first page only) */
-.page-title-block {
-  text-align: center;
-  padding: 48px 64px 24px;
-  border-bottom: 1px solid var(--page-rule);
-  margin-bottom: 12px;
-}
-.page-title-block h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.45rem; font-weight: 900;
-  color: var(--ink); line-height: 1.2;
-  transition: color .35s;
-}
-.page-title-block .title-rule {
-  margin: 8px auto 0;
-  width: 60px; height: 2px;
-  background: var(--amber); opacity: .5; border-radius: 1px;
-}
-
-/* Page inner content area */
-.page-body {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 36px; /* leave room for page number */
-  padding: 48px 64px 0;
-  overflow: hidden;
-}
-
-/* Page number footer */
-.page-number {
-  position: absolute;
-  bottom: 14px; left: 0; right: 0;
-  text-align: center;
-  font-family: 'Crimson Pro', serif;
-  font-size: .8rem; color: var(--muted);
-  letter-spacing: .15em;
-  transition: color .35s;
-}
-
-/* ═══════════════════════════════════════════════
-   STORY TEXT INSIDE PAGES
-═══════════════════════════════════════════════ */
-.page-body p {
-  font-size: 1rem;         /* 16px / 96dpi = exactly 12pt */
-  line-height: 1.5;        /* 24px — standard double-space feel, fits ruled lines */
-  color: var(--ink);
-  margin: 0;
-  text-indent: 2.5em;
-  transition: color .35s;
-}
-.page-body p.no-indent { text-indent: 0; }
-.page-body p.section-break {
-  text-align: center; text-indent: 0;
-  color: var(--muted); letter-spacing: .5em;
-  margin: 12px 0;
-}
-
-/* Section action bar (hover reveal, inside page body) */
-.sec-divider {
-  display: flex; align-items: center; gap: 7px;
-  margin: 10px 0 8px;
-  opacity: 0; transition: opacity .22s;
-}
-.sec-divider:hover, .story-section:hover .sec-divider { opacity: 1; }
-.div-line { flex: 1; height: 1px; background: linear-gradient(90deg,transparent,var(--amber),transparent); opacity: .35; }
-.div-gem  { font-size: .7rem; color: var(--amber); opacity: .4; letter-spacing: .28em; user-select: none; }
-.sec-actions { display: flex; align-items: center; gap: 3px; }
-.btn-sec-action {
-  display: flex; align-items: center; gap: 3px;
-  background: none; border: 1px solid transparent; border-radius: 3px;
-  font-family: 'DM Mono', monospace; font-size: .52rem;
-  letter-spacing: .06em; text-transform: uppercase; padding: 1px 5px;
-  cursor: pointer; white-space: nowrap; transition: all .15s; color: var(--muted);
-}
-.btn-sec-action svg { width: 8px; height: 8px; }
-.btn-sec-action:hover     { border-color: var(--amber); color: var(--amber); background: rgba(200,130,10,.07); }
-.btn-sec-action.del:hover { color: var(--rust); border-color: var(--rust); background: rgba(139,58,15,.07); }
-
-/* Hidden offscreen measurement container */
-#measureBox {
-  position: absolute; visibility: hidden; pointer-events: none;
-  top: -9999px; left: 0;
-  width: 496px; /* 624 - 2×64px side padding */
-  font-family: 'Crimson Pro', Georgia, serif;
-  font-size: 1rem; line-height: 1.5; color: var(--ink);
-}
-#measureBox p { margin: 0; text-indent: 2.5em; }
-#measureBox p.no-indent { text-indent: 0; }
-#measureBox p.section-break { text-align: center; text-indent: 0; }
-
-/* Streaming cursor */
-.gen-cursor {
-  display: inline-block; width: 2px; height: 1em;
-  background: var(--amber); vertical-align: text-bottom;
-  animation: blink .8s step-end infinite;
-}
-@keyframes blink { 50%{opacity:0} }
-
-/* Placeholder */
-.story-placeholder {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  height: 100%; gap: 12px; color: var(--muted); text-align: center; padding: 40px;
-}
-.story-placeholder svg { opacity: .14; width: 54px; height: 54px; }
-.story-placeholder p { font-style: italic; font-size: .98rem; max-width: 260px; line-height: 1.6; opacity: .6; }
-.ornament { text-align: center; color: var(--amber); font-size: .85rem; opacity: .28; padding: 2px 0; letter-spacing: .5em; }
-
-/* ═══════════════════════════════════════════════
-   TOOLBAR
-═══════════════════════════════════════════════ */
-.toolbar {
-  display: flex; gap: 5px; padding: 5px 14px;
-  border-top: 1px solid var(--parchment-dark);
-  background: var(--toolbar-bg); align-items: center; flex-wrap: wrap;
-  transition: background .35s, border-color .35s;
-}
-.tool-btn {
+.modal-close {
   background: none; border: none; cursor: pointer; color: var(--muted);
-  padding: 3px 5px; border-radius: 3px;
-  display: flex; align-items: center; gap: 3px;
+  font-size: 1.1rem; line-height: 1; padding: 2px 6px;
+  border-radius: 4px; transition: color .2s, background .2s;
+}
+.modal-close:hover { color: var(--rust); background: rgba(139,58,15,.07); }
+
+.modal-body { padding: 16px 18px; overflow-y: auto; flex: 1; }
+
+/* Premise input area */
+.premise-area { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.premise-area label.fl { margin-bottom: 0; }
+.premise-area textarea { min-height: 72px; font-size: 1rem; }
+
+.btn-gen-ideas {
+  align-self: flex-start;
+  display: flex; align-items: center; gap: 6px;
+  background: var(--amber); color: #fff; border: none; border-radius: 6px;
+  padding: 7px 16px; font-family: 'DM Mono', monospace; font-size: .68rem;
+  letter-spacing: .08em; text-transform: uppercase; cursor: pointer; font-weight: 500;
+  box-shadow: 0 2px 8px rgba(200,130,10,.3);
+  transition: background .18s, box-shadow .18s;
+}
+.btn-gen-ideas:hover { background: var(--amber-light); box-shadow: 0 3px 12px rgba(200,130,10,.4); }
+.btn-gen-ideas:disabled { background: var(--muted); box-shadow: none; cursor: not-allowed; }
+.btn-gen-ideas svg { width: 13px; height: 13px; }
+
+/* Sticky notes grid */
+.sticky-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  margin-top: 4px;
+}
+@media (max-width: 640px) { .sticky-grid { grid-template-columns: 1fr; } }
+
+.sticky-note {
+  border-radius: 6px; padding: 14px 14px 12px;
+  display: flex; flex-direction: column; gap: 8px;
+  position: relative;
+  box-shadow: 2px 3px 8px rgba(0,0,0,.12);
+  animation: noteIn .3s ease;
+  min-height: 180px;
+}
+@keyframes noteIn { from{opacity:0;transform:translateY(10px) rotate(-1deg)} to{opacity:1;transform:none} }
+
+.sticky-note:nth-child(1) { background: var(--sticky1); transform: rotate(-0.6deg); }
+.sticky-note:nth-child(2) { background: var(--sticky2); transform: rotate(0.4deg); }
+.sticky-note:nth-child(3) { background: var(--sticky3); transform: rotate(-0.3deg); }
+
+.sticky-num {
+  font-family: 'DM Mono', monospace; font-size: .55rem;
+  letter-spacing: .15em; text-transform: uppercase; opacity: .5;
+}
+.sticky-note:nth-child(1) .sticky-num { color: var(--sticky1-dark); }
+.sticky-note:nth-child(2) .sticky-num { color: var(--sticky2-dark); }
+.sticky-note:nth-child(3) .sticky-num { color: var(--sticky3-dark); }
+
+.sticky-title {
+  font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700;
+  color: var(--ink); line-height: 1.3;
+}
+.sticky-body {
+  font-family: 'Crimson Pro', serif; font-size: .88rem;
+  line-height: 1.55; color: var(--ink); flex: 1; opacity: .85;
+}
+
+.sticky-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+
+.btn-use-idea {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--amber); color: #fff; border: none; border-radius: 4px;
   font-family: 'DM Mono', monospace; font-size: .58rem;
-  letter-spacing: .06em; white-space: nowrap; transition: color .2s, background .2s;
+  letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px;
+  cursor: pointer; font-weight: 500; white-space: nowrap;
+  transition: background .18s; box-shadow: 0 1px 4px rgba(0,0,0,.15);
 }
-.tool-btn:hover { color: var(--amber); background: rgba(200,130,10,.09); }
-.tool-btn svg { width: 12px; height: 12px; }
-.wc { margin-left: auto; font-family: 'DM Mono', monospace; font-size: .57rem; color: var(--muted); }
+.btn-use-idea:hover { background: var(--amber-light); }
+.btn-use-idea:disabled { background: var(--muted); cursor: not-allowed; }
+.btn-use-idea svg { width: 10px; height: 10px; }
 
-/* ═══════════════════════════════════════════════
-   PROMPT SECTION
-═══════════════════════════════════════════════ */
-.prompt-section {
-  border-top: 2px solid var(--parchment-dark); padding: 9px 14px 11px;
-  display: flex; flex-direction: column; gap: 7px;
-  background: var(--prompt-bg);
-  transition: background .35s, border-color .35s;
+.btn-use-idea.autogen {
+  background: var(--forest); 
 }
-.prompt-bar { display: flex; gap: 7px; align-items: flex-end; }
-.prompt-bar textarea { flex: 1; min-height: 58px; max-height: 120px; resize: none; font-size: .96rem; }
-.gen-group  { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
-.btn-gen {
-  background: var(--amber); color: #fff; border: none; border-radius: 7px;
-  padding: 0 15px; font-family: 'Playfair Display', serif; font-size: .9rem;
-  font-weight: 700; cursor: pointer; letter-spacing: .02em;
-  box-shadow: 0 3px 9px rgba(200,130,10,.32); white-space: nowrap;
-  height: 38px; transition: background .18s, transform .1s, box-shadow .18s;
-}
-.btn-gen:hover   { background: var(--amber-light); box-shadow: 0 4px 14px rgba(200,130,10,.4); }
-.btn-gen:active  { transform: scale(.97); }
-.btn-gen:disabled{ background: var(--muted); box-shadow: none; cursor: not-allowed; }
-.btn-stop {
-  display: flex; align-items: center; justify-content: center; gap: 3px;
-  background: none; border: 1.5px solid var(--stop-red); border-radius: 5px;
-  color: var(--stop-red); font-family: 'DM Mono', monospace; font-size: .59rem;
-  letter-spacing: .1em; text-transform: uppercase; padding: 0 10px; height: 26px;
-  cursor: pointer; white-space: nowrap;
-  opacity: 0; pointer-events: none; transition: opacity .2s, background .16s;
-}
-.btn-stop.active { opacity: 1; pointer-events: auto; }
-.btn-stop:hover  { background: rgba(168,40,40,.1); }
-.btn-stop svg    { width: 8px; height: 8px; }
-.prompt-meta { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
-.mode-btn {
-  font-family: 'DM Mono', monospace; font-size: .58rem; letter-spacing: .08em;
-  text-transform: uppercase; border: 1px solid var(--parchment-dark); border-radius: 3px;
-  background: none; color: var(--muted); padding: 3px 7px; cursor: pointer; transition: all .15s;
-}
-.mode-btn.active, .mode-btn:hover { border-color: var(--amber); color: var(--amber); background: rgba(200,130,10,.07); }
-.model-wrap { margin-left: auto; display: flex; align-items: center; gap: 5px; }
-.model-wrap label { font-family: 'DM Mono', monospace; font-size: .56rem; color: var(--muted); letter-spacing: .1em; }
-.model-wrap select { width: auto; min-width: 138px; font-size: .7rem; padding: 3px 5px; }
+.btn-use-idea.autogen:hover { background: #3a5e36; }
 
-/* Scrollbars */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-thumb { background: var(--parchment-dark); border-radius: 3px; }
-
-/* Notification */
-.notif {
-  position: fixed; bottom: 18px; right: 18px;
-  background: var(--notif-bg); color: var(--notif-fg);
-  font-family: 'DM Mono', monospace; font-size: .65rem;
-  padding: 8px 14px; border-radius: 7px; border-left: 3px solid var(--amber);
-  opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .3s, background .35s;
-  pointer-events: none; z-index: 1000; max-width: 290px; line-height: 1.4;
+/* Auto-gen status inside sticky */
+.autogen-status {
+  font-family: 'DM Mono', monospace; font-size: .55rem; color: var(--muted);
+  font-style: italic; min-height: 1em;
 }
-.notif.show { opacity: 1; transform: translateY(0); }
-.notif.err  { border-color: var(--rust); }
-#importFileIn { display: none; }
+
+/* Brainstorm loading spinner */
+.spin-wrap { display: flex; align-items: center; gap: 8px; padding: 20px 0; color: var(--muted); font-family: 'DM Mono', monospace; font-size: .65rem; letter-spacing: .1em; }
+.spinner { width: 16px; height: 16px; border: 2px solid var(--parchment-dark); border-top-color: var(--amber); border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Scrollbars ── */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:var(--parchment-dark);border-radius:3px;}
+
+/* ── Notification ── */
+.notif{position:fixed;bottom:18px;right:18px;background:var(--notif-bg);color:var(--notif-fg);font-family:'DM Mono',monospace;font-size:.65rem;padding:8px 14px;border-radius:7px;border-left:3px solid var(--amber);opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s,background .35s;pointer-events:none;z-index:1000;max-width:290px;line-height:1.4;}
+.notif.show{opacity:1;transform:translateY(0);}
+.notif.err{border-color:var(--rust);}
+#importFileIn{display:none;}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════
-     HEADER
-══════════════════════════════ -->
+<!-- ══════════════ HEADER ══════════════ -->
 <header>
   <div class="logo-area">
     <svg width="44" height="44" viewBox="0 0 46 46" fill="none">
@@ -599,10 +429,8 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
       <line x1="9"  y1="14" x2="19" y2="14" stroke="rgba(245,237,216,.55)" stroke-width="1.2" stroke-linecap="round"/>
       <line x1="9"  y1="18" x2="19" y2="18" stroke="rgba(245,237,216,.4)"  stroke-width="1"   stroke-linecap="round"/>
       <line x1="9"  y1="22" x2="19" y2="22" stroke="rgba(245,237,216,.4)"  stroke-width="1"   stroke-linecap="round"/>
-      <line x1="9"  y1="26" x2="16" y2="26" stroke="rgba(245,237,216,.3)"  stroke-width="1"   stroke-linecap="round"/>
       <line x1="27" y1="14" x2="37" y2="14" stroke="rgba(245,237,216,.45)" stroke-width="1.2" stroke-linecap="round"/>
       <line x1="27" y1="18" x2="37" y2="18" stroke="rgba(245,237,216,.3)"  stroke-width="1"   stroke-linecap="round"/>
-      <line x1="27" y1="22" x2="35" y2="22" stroke="rgba(245,237,216,.3)"  stroke-width="1"   stroke-linecap="round"/>
       <path d="M37 4 C40 1 44 3 42 7 L32 30 C30.5 25 30 18 37 4Z" fill="#d4a017" opacity=".95"/>
       <path d="M32 30 L26 38 L30 32Z" fill="#f5edd8" opacity=".82"/>
       <circle cx="25.5" cy="39.5" r="1.6" fill="#c8820a"/>
@@ -612,17 +440,27 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
 
   <div class="header-cluster">
     <button class="btn-theme" id="themeBtn" onclick="toggleTheme()">
-      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-      </svg>
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <span id="themeLabel">Dark</span>
     </button>
+
     <div class="hdr-sep"></div>
+
+    <!-- Brainstorm button -->
+    <button class="hdr-btn btn-brainstorm" onclick="openBrainstorm()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+      Brainstorm
+    </button>
+
+    <div class="hdr-sep"></div>
+
     <button class="hdr-btn btn-rtf" onclick="exportRtf()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
       Export RTF
     </button>
+
     <div class="hdr-sep"></div>
+
     <button class="hdr-btn btn-ctx-export" onclick="exportContext()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Save Context
@@ -632,7 +470,9 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
       Load Context
     </button>
     <input type="file" id="importFileIn" accept=".json" onchange="importContext(event)">
+
     <div class="hdr-sep"></div>
+
     <div class="server-wrap">
       <label>SERVER</label>
       <input type="text" id="serverUrl" value="http://localhost:1234">
@@ -645,10 +485,9 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
 
 <div class="app">
 
-  <!-- ══ SIDEBAR ══ -->
+  <!-- ══════════════ SIDEBAR ══════════════ -->
   <aside class="sidebar">
 
-    <!-- STORY TITLE (top, above persona) -->
     <div class="section" id="s-title">
       <div class="section-header" onclick="tog('s-title')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
@@ -656,11 +495,10 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
         <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="section-body">
-        <input type="text" id="storyTitle" class="story-title-field" placeholder="Enter your story title…" oninput="onTitleChange()">
+        <input type="text" id="storyTitle" class="story-title-field" placeholder="Enter your story title…" oninput="renderTitle(); updateBudget();">
       </div>
     </div>
 
-    <!-- NARRATOR PERSONA -->
     <div class="section" id="s-persona">
       <div class="section-header" onclick="tog('s-persona')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -669,11 +507,10 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
       </div>
       <div class="section-body">
         <label class="fl">LLM Role / Voice</label>
-        <textarea id="persona" rows="3" placeholder="e.g. You are a gothic Victorian novelist with a gift for atmospheric prose and psychological depth…"></textarea>
+        <textarea id="persona" rows="3" placeholder="e.g. You are a gothic Victorian novelist…" oninput="updateBudget()"></textarea>
       </div>
     </div>
 
-    <!-- BACKGROUND -->
     <div class="section" id="s-bg">
       <div class="section-header" onclick="tog('s-bg')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
@@ -682,11 +519,10 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
       </div>
       <div class="section-body">
         <label class="fl">Story Context & Lore</label>
-        <textarea id="background" rows="4" placeholder="Establish the world, its rules, history, tone…"></textarea>
+        <textarea id="background" rows="4" placeholder="Establish the world, its rules, history, tone…" oninput="updateBudget()"></textarea>
       </div>
     </div>
 
-    <!-- SETTING -->
     <div class="section" id="s-setting">
       <div class="section-header" onclick="tog('s-setting')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -695,13 +531,12 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
       </div>
       <div class="section-body">
         <label class="fl">Time & Place</label>
-        <input type="text" id="settingTime" placeholder="e.g. Autumn, 1887 — London">
+        <input type="text" id="settingTime" placeholder="e.g. Autumn, 1887 — London" oninput="updateBudget()">
         <label class="fl" style="margin-top:4px">Location Description</label>
-        <textarea id="settingPlace" rows="3" placeholder="Describe where the scene takes place…"></textarea>
+        <textarea id="settingPlace" rows="3" placeholder="Describe where the scene takes place…" oninput="updateBudget()"></textarea>
       </div>
     </div>
 
-    <!-- CHARACTERS -->
     <div class="section" id="s-chars">
       <div class="section-header" onclick="tog('s-chars')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -714,7 +549,6 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
       </div>
     </div>
 
-    <!-- WRITING GUIDELINES -->
     <div class="section" id="s-guide">
       <div class="section-header" onclick="tog('s-guide')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -723,9 +557,9 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
       </div>
       <div class="section-body">
         <label class="fl">Style Rules</label>
-        <textarea id="guidelines" rows="5" placeholder="• Show, don't tell&#10;• Use sensory detail&#10;• Avoid adverbs; prefer strong verbs&#10;• Vary sentence rhythm&#10;• Dialogue should reveal character…"></textarea>
+        <textarea id="guidelines" rows="5" placeholder="• Show, don't tell&#10;• Use sensory detail&#10;• Avoid adverbs; prefer strong verbs&#10;• Vary sentence rhythm&#10;• Dialogue should reveal character…" oninput="updateBudget()"></textarea>
         <label class="fl" style="margin-top:4px">POV</label>
-        <select id="pov">
+        <select id="pov" onchange="updateBudget()">
           <option value="">Select point of view…</option>
           <option>First person — intimate narrator</option>
           <option>Third person limited</option>
@@ -734,7 +568,7 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
           <option>Unreliable narrator</option>
         </select>
         <label class="fl" style="margin-top:4px">Tense</label>
-        <select id="tense">
+        <select id="tense" onchange="updateBudget()">
           <option value="">Select tense…</option>
           <option>Past tense</option>
           <option>Present tense</option>
@@ -742,7 +576,6 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
       </div>
     </div>
 
-    <!-- MODEL SETTINGS -->
     <div class="section collapsed" id="s-model">
       <div class="section-header" onclick="tog('s-model')">
         <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
@@ -763,69 +596,51 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
 
   </aside>
 
-  <!-- ══ MAIN ══ -->
+  <!-- ══════════════ MAIN ══════════════ -->
   <main class="main">
 
-    <!-- STORY AREA -->
     <div class="story-area" id="storyArea">
-      <!-- Left arrow -->
-      <button class="page-nav page-nav-prev" id="navPrev" onclick="goPage(-1)" disabled>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-
-      <div class="page-stage" id="pageStage">
-        <!-- .book-page nodes injected by JS -->
-        <div class="book-page" id="firstPage">
-          <div class="page-body" id="mainPageBody">
-            <div class="story-placeholder" id="placeholder">
-              <svg viewBox="0 0 64 64" fill="none"><rect x="8" y="12" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/><rect x="16" y="6" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/><rect x="24" y="18" width="18" height="2" rx="1" fill="currentColor" opacity=".5"/><rect x="24" y="23" width="15" height="2" rx="1" fill="currentColor" opacity=".5"/><rect x="24" y="28" width="17" height="2" rx="1" fill="currentColor" opacity=".5"/><path d="M44 40L56 52" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="40" cy="36" r="8" stroke="currentColor" stroke-width="2"/></svg>
-              <p>Your story will appear here. Set the stage in the sidebar, then craft your prompt below.</p>
-              <div class="ornament">· · ❧ · ·</div>
-            </div>
-          </div>
-          <div class="page-number" id="pageNumFirst"></div>
+      <div class="story-content" id="storyContent">
+        <div id="titleBlock" style="display:none">
+          <div class="story-output-title" id="outputTitle"></div>
+          <div class="story-output-rule"></div>
         </div>
-      </div>
-
-      <!-- Page counter + navigation legend -->
-      <div class="page-footer">
-        <div class="page-counter" id="pageCounter"></div>
-
-        <div class="page-legend" id="pageLegend">
-          <!-- Click hints -->
-          <div class="legend-group">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);opacity:.6"><polyline points="15 18 9 12 15 6"/></svg>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);opacity:.6"><polyline points="9 18 15 12 9 6"/></svg>
-            <span class="legend-label">click arrows</span>
-          </div>
-
-          <div class="legend-sep"></div>
-
-          <!-- Keyboard hints -->
-          <div class="legend-group">
-            <span class="kbd">←</span>
-            <span class="kbd">→</span>
-            <span class="legend-label">arrow keys</span>
-          </div>
-
-          <div class="legend-sep"></div>
-
-          <!-- Click page hint -->
-          <div class="legend-group">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);opacity:.6"><path d="M5 3l14 9-14 9V3z"/></svg>
-            <span class="legend-label">hover section to edit</span>
-          </div>
+        <div class="story-placeholder" id="placeholder">
+          <svg viewBox="0 0 64 64" fill="none"><rect x="8" y="12" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/><rect x="16" y="6" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/><rect x="24" y="18" width="18" height="2" rx="1" fill="currentColor" opacity=".5"/><rect x="24" y="23" width="15" height="2" rx="1" fill="currentColor" opacity=".5"/><rect x="24" y="28" width="17" height="2" rx="1" fill="currentColor" opacity=".5"/><path d="M44 40L56 52" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="40" cy="36" r="8" stroke="currentColor" stroke-width="2"/></svg>
+          <p>Your story will appear here. Set the stage in the sidebar, then craft your prompt below.</p>
+          <div class="ornament">· · ❧ · ·</div>
         </div>
+        <div id="sectionsContainer"></div>
       </div>
-
-      <!-- Right arrow -->
-      <button class="page-nav page-nav-next" id="navNext" onclick="goPage(1)" disabled>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
     </div>
 
-    <!-- Off-screen measurement div -->
-    <div id="measureBox"></div>
+    <!-- CONTEXT BUDGET PANEL -->
+    <div class="budget-bar" id="budgetBar">
+      <div class="budget-header" onclick="toggleBudget()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted);flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <span class="budget-title">Context Window Budget</span>
+        <span class="budget-summary ok" id="budgetSummary">0 / 8,192 tokens</span>
+        <svg class="budget-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+      </div>
+      <div class="budget-body" id="budgetBody">
+        <div class="budget-track"><div class="budget-fill ok" id="budgetFill" style="width:0%"></div></div>
+        <div class="budget-rows" id="budgetRows"></div>
+        <div class="budget-limit-row">
+          <span class="budget-limit-label">
+            Context window:
+            <select id="contextLimit" onchange="updateBudget()">
+              <option value="4096">4K tokens</option>
+              <option value="8192" selected>8K tokens</option>
+              <option value="16384">16K tokens</option>
+              <option value="32768">32K tokens</option>
+              <option value="65536">64K tokens</option>
+              <option value="131072">128K tokens</option>
+            </select>
+          </span>
+          <span class="budget-limit-total" id="budgetTotal">0 tokens used</span>
+        </div>
+      </div>
+    </div>
 
     <!-- TOOLBAR -->
     <div class="toolbar">
@@ -840,9 +655,6 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
       <div class="prompt-meta">
         <button class="mode-btn active" onclick="setMode(this,'continue')">Continue</button>
         <button class="mode-btn" onclick="setMode(this,'rewrite')">Rewrite</button>
-        <button class="mode-btn" onclick="setMode(this,'brainstorm')">Brainstorm</button>
-        <button class="mode-btn" onclick="setMode(this,'dialogue')">Dialogue</button>
-        <button class="mode-btn" onclick="setMode(this,'outline')">Outline</button>
         <div class="model-wrap">
           <label>MODEL</label>
           <select id="modelSel"><option value="">— fetch models —</option></select>
@@ -852,7 +664,7 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
         </div>
       </div>
       <div class="prompt-bar">
-        <textarea id="promptIn" placeholder="Describe what happens next… (Enter to generate, Shift+Enter for new line)" onkeydown="handleKey(event)"></textarea>
+        <textarea id="promptIn" placeholder="Describe what happens next… (Enter to generate, Shift+Enter for new line)" onkeydown="handleKey(event)" oninput="updateBudget()"></textarea>
         <div class="gen-group">
           <button class="btn-gen" id="genBtn" onclick="generate()">✦ Generate</button>
           <button class="btn-stop" id="stopBtn" onclick="stopGen()">
@@ -864,641 +676,762 @@ input[type="range"] { width: 100%; accent-color: var(--amber); margin-top: 2px; 
   </main>
 </div>
 
+<!-- ══════════════ BRAINSTORM MODAL ══════════════ -->
+<div class="modal-backdrop" id="brainstormModal" onclick="handleModalClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--amber);flex-shrink:0"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+      <h2>Brainstorm</h2>
+      <button class="modal-close" onclick="closeBrainstorm()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="premise-area">
+        <label class="fl">Your Premise</label>
+        <textarea id="premiseInput" rows="3" placeholder="Describe your high-level story idea… e.g. 'A detective in a future city where memories can be bought and sold discovers her own past has been erased.'"></textarea>
+        <button class="btn-gen-ideas" id="genIdeasBtn" onclick="generateIdeas()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          Generate 3 Ideas
+        </button>
+      </div>
+
+      <div id="ideasArea"></div>
+    </div>
+  </div>
+</div>
+
 <div class="notif" id="notif"></div>
 
 <script>
-/* ════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════
    STATE
-════════════════════════════════════════════════════════════ */
-let sections     = [];   // [{ id, text }]
+══════════════════════════════════════════ */
+let sections     = [];
 let secId        = 0;
 let currentMode  = 'continue';
 let isGenerating = false;
 let abortCtrl    = null;
 let charIdx      = 0;
 let isDark       = false;
+let budgetOpen   = false;
 
-// Pagination state
-let pages        = [];   // array of DOM .book-page elements
-let currentPage  = 0;    // 0-based index
-
-// Page geometry constants (96dpi, 1" margins, 8.5×11")
-const PAGE_W     = 624;  // text width px  (6.5")
-const PAGE_H     = 864;  // text height px (9")
-const LINE_H     = 24;   // px (1rem × 1.5 line-height = 16×1.5)
-// Usable height on page 1 can include title block; tracked per-page via availH
-
-/* ════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════
    UTILITIES
-════════════════════════════════════════════════════════════ */
-function tog(id) { document.getElementById(id).classList.toggle('collapsed'); }
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function fullText() { return sections.map(s => s.text).join('\n\n'); }
+══════════════════════════════════════════ */
+function tog(id){ document.getElementById(id).classList.toggle('collapsed'); }
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fullText(){ return sections.map(s=>s.text).join('\n\n'); }
+function getTitle(){ return document.getElementById('storyTitle').value.trim(); }
+function slugify(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'story'; }
+function estTokens(str){ return Math.ceil((str||'').length/4); }
 
-/* ════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════
    THEME
-════════════════════════════════════════════════════════════ */
-function toggleTheme() {
-  isDark = !isDark;
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  const icon  = document.getElementById('themeIcon');
-  const label = document.getElementById('themeLabel');
-  if (isDark) {
-    icon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-    label.textContent = 'Light';
+══════════════════════════════════════════ */
+function toggleTheme(){
+  isDark=!isDark;
+  document.documentElement.setAttribute('data-theme',isDark?'dark':'light');
+  const icon=document.getElementById('themeIcon');
+  const lbl=document.getElementById('themeLabel');
+  if(isDark){
+    icon.innerHTML='<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+    lbl.textContent='Light';
   } else {
-    icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
-    label.textContent = 'Dark';
+    icon.innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    lbl.textContent='Dark';
   }
 }
 
-/* ════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════
+   CONTEXT BUDGET
+══════════════════════════════════════════ */
+const ROW_COLORS = ['#c8820a','#2e3d6e','#2d4a2a','#8b3a0f','#5a7a8a','#7a6a50','#4a8c4a'];
+
+function toggleBudget(){
+  budgetOpen=!budgetOpen;
+  document.getElementById('budgetBar').classList.toggle('open',budgetOpen);
+}
+
+function buildSysPromptText(){
+  const v=id=>document.getElementById(id).value.trim();
+  const parts=[];
+  const title=getTitle();
+  const persona=v('persona'),bg=v('background');
+  const tTime=v('settingTime'),tPlace=v('settingPlace');
+  const guide=v('guidelines');
+  const pov=document.getElementById('pov').value;
+  const tense=document.getElementById('tense').value;
+  if(title) parts.push(`## STORY TITLE\n${title}`);
+  if(persona) parts.push(`## NARRATOR PERSONA\n${persona}`);
+  if(bg) parts.push(`## STORY BACKGROUND\n${bg}`);
+  if(tTime||tPlace){let s='## SETTING';if(tTime)s+=`\nTime: ${tTime}`;if(tPlace)s+=`\nPlace: ${tPlace}`;parts.push(s);}
+  const chars=[];
+  document.querySelectorAll('.char-card').forEach(c=>{
+    const n=c.querySelector('input').value.trim();
+    const d=c.querySelector('textarea').value.trim();
+    if(n||d)chars.push(`**${n||'Unnamed'}**: ${d}`);
+  });
+  if(chars.length) parts.push(`## CHARACTERS\n${chars.join('\n\n')}`);
+  if(guide||pov||tense){let g='## WRITING GUIDELINES';if(pov)g+=`\nPoint of view: ${pov}`;if(tense)g+=`\nTense: ${tense}`;if(guide)g+=`\n\n${guide}`;parts.push(g);}
+  return parts.join('\n\n');
+}
+
+function updateBudget(){
+  const limit=parseInt(document.getElementById('contextLimit').value)||8192;
+  const v=id=>document.getElementById(id).value.trim();
+
+  const rows=[
+    {label:'Narrator Persona',    val:estTokens(v('persona')),             color:'#c8820a'},
+    {label:'Background',          val:estTokens(v('background')),           color:'#2e3d6e'},
+    {label:'Setting',             val:estTokens(v('settingTime')+' '+v('settingPlace')), color:'#2d4a2a'},
+    {label:'Characters',          val:estTokens(getCharText()),             color:'#8b3a0f'},
+    {label:'Writing Guidelines',  val:estTokens(v('guidelines')+' '+document.getElementById('pov').value+' '+document.getElementById('tense').value), color:'#5a7a8a'},
+    {label:'Story Context (sent)',val:estTokens(fullText().slice(-2500)),   color:'#7a6a50'},
+    {label:'Your Prompt',         val:estTokens(document.getElementById('promptIn').value), color:'#4a8c4a'},
+  ];
+
+  const total=rows.reduce((s,r)=>s+r.val,0);
+  const pct=Math.min(total/limit*100,100);
+  const cls=pct<70?'ok':pct<90?'warn':'full';
+
+  // Summary line
+  document.getElementById('budgetSummary').textContent=`${total.toLocaleString()} / ${limit.toLocaleString()} tokens`;
+  document.getElementById('budgetSummary').className=`budget-summary ${cls}`;
+
+  // Fill bar
+  const fill=document.getElementById('budgetFill');
+  fill.style.width=pct+'%';
+  fill.className=`budget-fill ${cls}`;
+
+  // Rows
+  const rowsEl=document.getElementById('budgetRows');
+  rowsEl.innerHTML='';
+  rows.forEach(r=>{
+    if(r.val===0)return;
+    const rowPct=Math.round(r.val/limit*100);
+    rowsEl.innerHTML+=`
+      <div class="budget-row">
+        <div class="budget-row-dot" style="background:${r.color}"></div>
+        <span class="budget-row-label">${r.label}</span>
+        <span class="budget-row-val">~${r.val.toLocaleString()} tok (${rowPct}%)</span>
+      </div>`;
+  });
+
+  document.getElementById('budgetTotal').textContent=`${total.toLocaleString()} tokens used`;
+}
+
+function getCharText(){
+  let out='';
+  document.querySelectorAll('.char-card').forEach(c=>{
+    out+=c.querySelector('input').value+' '+c.querySelector('textarea').value+' ';
+  });
+  return out;
+}
+
+/* ══════════════════════════════════════════
    TITLE
-════════════════════════════════════════════════════════════ */
-function onTitleChange() { repaginate(); }
-
-function getTitle() { return document.getElementById('storyTitle').value.trim(); }
-
-function slugify(str) {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40) || 'story';
+══════════════════════════════════════════ */
+function renderTitle(){
+  const t=getTitle();
+  const block=document.getElementById('titleBlock');
+  document.getElementById('outputTitle').textContent=t;
+  block.style.display=t?'block':'none';
 }
 
-/* ════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════
    MODE
-════════════════════════════════════════════════════════════ */
-function setMode(btn, mode) {
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+══════════════════════════════════════════ */
+function setMode(btn,mode){
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  currentMode = mode;
+  currentMode=mode;
+  document.getElementById('promptIn').placeholder=
+    mode==='rewrite'
+      ?'Describe what to rewrite… (Enter to generate)'
+      :'Describe what happens next… (Enter to generate, Shift+Enter for new line)';
 }
 
-/* ════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════
    CHARACTERS
-════════════════════════════════════════════════════════════ */
-function addChar(name='', desc='') {
+══════════════════════════════════════════ */
+function addChar(name='',desc=''){
   charIdx++;
-  const list = document.getElementById('charList');
-  const el = document.createElement('div');
-  el.className = 'char-card';
-  el.innerHTML = `<button class="char-rm" onclick="this.parentElement.remove()">✕</button>
-    <input type="text" placeholder="Character name" value="${escHtml(name)}">
-    <textarea placeholder="Personality, role, appearance, voice, motivations…" rows="3">${escHtml(desc)}</textarea>`;
+  const list=document.getElementById('charList');
+  const el=document.createElement('div');
+  el.className='char-card';
+  el.innerHTML=`<button class="char-rm" onclick="this.parentElement.remove();updateBudget()">✕</button>
+    <input type="text" placeholder="Character name" value="${escHtml(name)}" oninput="updateBudget()">
+    <textarea placeholder="Personality, role, appearance, voice, motivations…" rows="3" oninput="updateBudget()">${escHtml(desc)}</textarea>`;
   list.appendChild(el);
+  updateBudget();
 }
 
-/* ════════════════════════════════════════════════════════════
-   PAGINATION ENGINE
-   Strategy: measure paragraph heights in an off-screen clone,
-   then fill page bodies sequentially.
-════════════════════════════════════════════════════════════ */
-
-function repaginate() {
-  const stage = document.getElementById('pageStage');
-  stage.innerHTML = ''; // clear all pages
-  pages = [];
-  currentPage = 0;
-
-  // Build flat list of renderable items from all sections
-  // Each item: { type: 'para'|'break'|'title', text, secId }
-  const items = [];
-  const title = getTitle();
-
-  sections.forEach((sec, si) => {
-    const paras = sec.text.split(/\n\n+/).filter(p => p.trim());
-    paras.forEach((p, pi) => {
-      items.push({ type: 'para', text: p.trim(), secId: sec.id, firstOfSection: pi === 0, lastOfSection: pi === paras.length - 1 });
-    });
-    if (si < sections.length - 1) {
-      items.push({ type: 'break', secId: sec.id });
-    }
-    // Action bar after each section
-    items.push({ type: 'actions', secId: sec.id });
+/* ══════════════════════════════════════════
+   RENDER SECTIONS
+══════════════════════════════════════════ */
+function render(){
+  const container=document.getElementById('sectionsContainer');
+  const ph=document.getElementById('placeholder');
+  container.innerHTML='';
+  if(!sections.length){ph.style.display='flex';updateWC();return;}
+  ph.style.display='none';
+  sections.forEach(sec=>{
+    const wrap=document.createElement('div');
+    wrap.className='story-section';
+    const textDiv=document.createElement('div');
+    textDiv.className='sec-text';
+    textDiv.innerHTML=fmtParas(sec.text);
+    wrap.appendChild(textDiv);
+    wrap.appendChild(makeActionsBar(sec.id));
+    container.appendChild(wrap);
   });
-
-  if (!items.length) {
-    // Restore placeholder
-    const fp = makePage(1, true, title);
-    const body = fp.querySelector('.page-body');
-    body.innerHTML = `<div class="story-placeholder" id="placeholder">
-      <svg viewBox="0 0 64 64" fill="none"><rect x="8" y="12" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/><rect x="16" y="6" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/><rect x="24" y="18" width="18" height="2" rx="1" fill="currentColor" opacity=".5"/><rect x="24" y="23" width="15" height="2" rx="1" fill="currentColor" opacity=".5"/><rect x="24" y="28" width="17" height="2" rx="1" fill="currentColor" opacity=".5"/><path d="M44 40L56 52" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="40" cy="36" r="8" stroke="currentColor" stroke-width="2"/></svg>
-      <p>Your story will appear here. Set the stage in the sidebar, then craft your prompt below.</p>
-      <div class="ornament">· · ❧ · ·</div></div>`;
-    stage.appendChild(fp);
-    pages.push(fp);
-    updatePageNav();
-    updateWC();
-    return;
-  }
-
-  // Measure items in hidden box
-  const mb = document.getElementById('measureBox');
-  mb.style.width = PAGE_W - 128 + 'px'; // 64px padding each side
-
-  // Title block height (first page only)
-  const titleH = title ? 112 : 0; // approx: padding + h1 + rule
-
-  // Available text height per page
-  // First page: PAGE_H - titleH - top_padding(48) - bottom(36+number)
-  // Other pages: PAGE_H - top_padding(48) - bottom(36)
-  const BOTTOM_RESERVED = 36 + 14; // page-number area
-  const TOP_PAD = 48;
-  const firstPageAvail = PAGE_H - titleH - TOP_PAD - BOTTOM_RESERVED;
-  const otherPageAvail = PAGE_H - TOP_PAD - BOTTOM_RESERVED;
-
-  // Build pages
-  let pageIndex = 0;
-  let usedH = 0;
-  let availH = firstPageAvail;
-  let currentPageEl = null;
-  let currentBody = null;
-
-  function newPage(isFirst) {
-    pageIndex++;
-    const p = makePage(pageIndex, isFirst, isFirst ? title : null);
-    currentPageEl = p;
-    currentBody = p.querySelector('.page-body');
-    stage.appendChild(p);
-    pages.push(p);
-    usedH = 0;
-    availH = isFirst ? firstPageAvail : otherPageAvail;
-    return p;
-  }
-
-  newPage(true);
-
-  // Track which section actions we've already placed (don't double-render)
-  const actionsPlaced = new Set();
-
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-
-    if (item.type === 'actions') {
-      if (actionsPlaced.has(item.secId)) continue;
-      actionsPlaced.add(item.secId);
-      const bar = makeActionsBar(item.secId);
-      const barH = 30;
-      if (usedH + barH > availH) {
-        newPage(false);
-      }
-      currentBody.appendChild(bar);
-      usedH += barH;
-      continue;
-    }
-
-    if (item.type === 'break') {
-      const brH = LINE_H + 24; // break line + margins
-      if (usedH + brH > availH) {
-        newPage(false);
-      }
-      const br = document.createElement('p');
-      br.className = 'section-break';
-      br.textContent = '* * *';
-      currentBody.appendChild(br);
-      usedH += brH;
-      continue;
-    }
-
-    // type === 'para'
-    // Measure height of this paragraph
-    mb.innerHTML = `<p class="${item.firstOfSection && item.text === sections.find(s=>s.id===item.secId)?.text.split(/\n\n+/)[0] ? 'no-indent' : ''}">${escHtml(item.text)}</p>`;
-    const measuredH = mb.firstChild ? mb.firstChild.getBoundingClientRect().height || LINE_H : LINE_H;
-    const paraH = Math.ceil(measuredH);
-
-    if (usedH + paraH > availH && usedH > 0) {
-      newPage(false);
-    }
-
-    const p = document.createElement('p');
-    const isVeryFirst = (pages.length === 1 && item.firstOfSection && sections[0]?.id === item.secId);
-    p.className = isVeryFirst ? 'no-indent' : '';
-    p.textContent = item.text;
-    currentBody.appendChild(p);
-    usedH += paraH;
-  }
-
-  mb.innerHTML = '';
-
-  // Clamp currentPage
-  currentPage = Math.min(currentPage, pages.length - 1);
-  showPage(currentPage);
-  updatePageNav();
   updateWC();
-  scalePages();
 }
 
-function makePage(num, isFirst, title) {
-  const div = document.createElement('div');
-  div.className = 'book-page';
-
-  // Title block on first page
-  if (isFirst && title) {
-    const tb = document.createElement('div');
-    tb.className = 'page-title-block';
-    tb.innerHTML = `<h1>${escHtml(title)}</h1><div class="title-rule"></div>`;
-    div.appendChild(tb);
-  }
-
-  const body = document.createElement('div');
-  body.className = 'page-body';
-  // If title block exists, push body down dynamically
-  if (isFirst && title) body.style.top = '112px';
-  div.appendChild(body);
-
-  const pn = document.createElement('div');
-  pn.className = 'page-number';
-  pn.textContent = num;
-  div.appendChild(pn);
-
-  return div;
+function fmtParas(text){
+  return text.split(/\n\n+/).filter(p=>p.trim())
+    .map((p,i)=>`<p${i===0?' style="text-indent:0"':''}>${p.trim().replace(/\n/g,'<br>')}</p>`)
+    .join('');
 }
 
-function makeActionsBar(secId) {
-  const wrap = document.createElement('div');
-  wrap.className = 'story-section';
-  const div = document.createElement('div');
-  div.className = 'sec-divider';
-  div.style.opacity = '0';
-  div.innerHTML = `
-    <div class="div-line"></div>
-    <span class="div-gem">✦</span>
-    <div class="sec-actions">
-      <button class="btn-sec-action" onclick="copySec(${secId})">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy
-      </button>
-      <button class="btn-sec-action" onclick="downloadSecTxt(${secId})">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>TXT
-      </button>
-      <button class="btn-sec-action del" onclick="delSec(${secId})">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete
-      </button>
-    </div>
-    <div class="div-line"></div>`;
-  // Show on hover via JS (can't rely on parent .story-section hover across pages)
-  div.addEventListener('mouseenter', () => div.style.opacity = '1');
-  div.addEventListener('mouseleave', () => div.style.opacity = '0');
-  wrap.appendChild(div);
-  return wrap;
+/* ══════════════════════════════════════════
+   SECTION ACTION BAR
+══════════════════════════════════════════ */
+function makeActionsBar(id){
+  const outer=document.createElement('div');
+  const div=document.createElement('div');
+  div.className='sec-divider';
+  div.dataset.divSecId=id;
+
+  const normal=document.createElement('div');
+  normal.className='sec-actions';
+  normal.dataset.mode='normal';
+  normal.innerHTML=`
+    <button class="btn-sec-action" onclick="copySec(${id})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy
+    </button>
+    <button class="btn-sec-action" onclick="downloadSecTxt(${id})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>TXT
+    </button>
+    <button class="btn-sec-action edit-btn" onclick="editSec(${id})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit
+    </button>
+    <button class="btn-sec-action del" onclick="delSec(${id})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete
+    </button>`;
+
+  const editAct=document.createElement('div');
+  editAct.className='sec-actions-edit';
+  editAct.dataset.mode='edit';
+  editAct.style.display='none';
+  editAct.innerHTML=`
+    <button class="btn-sec-save" onclick="saveSecEdit(${id})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save
+    </button>
+    <button class="btn-sec-cancel" onclick="cancelSecEdit(${id})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Cancel
+    </button>`;
+
+  const l1=document.createElement('div');l1.className='div-line';
+  const gem=document.createElement('span');gem.className='div-gem';gem.textContent='✦';
+  const l2=document.createElement('div');l2.className='div-line';
+  div.appendChild(l1);div.appendChild(gem);div.appendChild(normal);div.appendChild(editAct);div.appendChild(l2);
+  outer.appendChild(div);
+  return outer;
 }
 
-/* ════════════════════════════════════════════════════════════
-   PAGE DISPLAY & SCALING
-════════════════════════════════════════════════════════════ */
-function showPage(idx) {
-  pages.forEach((p, i) => { p.style.display = i === idx ? 'block' : 'none'; });
-  currentPage = idx;
-  const multiPage = pages.length > 1;
-  const counter = document.getElementById('pageCounter');
-  counter.textContent = multiPage ? `Page ${idx + 1} of ${pages.length}` : '';
-  // Show legend whenever there are multiple pages
-  const legend = document.getElementById('pageLegend');
-  if (legend) legend.classList.toggle('visible', multiPage);
-  updatePageNav();
-  scalePages();
-}
-
-function goPage(delta) {
-  const next = currentPage + delta;
-  if (next < 0 || next >= pages.length) return;
-  showPage(next);
-}
-
-function updatePageNav() {
-  document.getElementById('navPrev').disabled = currentPage <= 0 || pages.length <= 1;
-  document.getElementById('navNext').disabled = currentPage >= pages.length - 1 || pages.length <= 1;
-}
-
-function scalePages() {
-  const stage = document.getElementById('pageStage');
-  // Available height: story area minus counter label (~26px) minus nav arrows
-  const areaH = stage.offsetHeight || 600;
-  const areaW = stage.offsetWidth  || 700;
-
-  const maxW = areaW - 80; // leave room for arrows
-  const scaleByW = maxW / PAGE_W;
-  const scaleByH = (areaH - 30) / PAGE_H; // 30 = counter area
-  const scale = Math.min(scaleByW, scaleByH, 1); // never scale up beyond 1
-
-  pages.forEach(p => {
-    p.style.transform = `scale(${scale})`;
-    p.style.transformOrigin = 'top center';
-    p.style.marginBottom = `${-(PAGE_H * (1 - scale))}px`; // collapse dead space
-  });
-}
-
-/* ════════════════════════════════════════════════════════════
-   KEYBOARD NAVIGATION (arrow keys for pages)
-════════════════════════════════════════════════════════════ */
-document.addEventListener('keydown', e => {
-  // Only intercept arrow keys when prompt textarea is NOT focused
-  if (document.activeElement && document.activeElement.id === 'promptIn') return;
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown')  goPage(1);
-  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')    goPage(-1);
-});
-
-/* ════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════
    SECTION ACTIONS
-════════════════════════════════════════════════════════════ */
-function getSec(id) { return sections.find(s => s.id === id); }
+══════════════════════════════════════════ */
+function getSec(id){return sections.find(s=>s.id===id);}
+function copySec(id){const s=getSec(id);if(!s)return;navigator.clipboard.writeText(s.text).then(()=>notify('Section copied!'));}
+function downloadSecTxt(id){const s=getSec(id);if(!s)return;dl(new Blob([s.text],{type:'text/plain'}),`${slugify(getTitle()||'section')}-${id}.txt`);}
+function delSec(id){sections=sections.filter(s=>s.id!==id);render();updateBudget();}
 
-function copySec(id) {
-  const sec = getSec(id);
-  if (!sec) return;
-  navigator.clipboard.writeText(sec.text).then(() => notify('Section copied!'));
-}
-
-function downloadSecTxt(id) {
-  const sec = getSec(id);
-  if (!sec) return;
-  const slug = slugify(getTitle());
-  dl(new Blob([sec.text], { type: 'text/plain' }), `${slug}-section-${id}.txt`);
-}
-
-function delSec(id) {
-  sections = sections.filter(s => s.id !== id);
-  repaginate();
-}
-
-/* ════════════════════════════════════════════════════════════
-   PROMPTS
-════════════════════════════════════════════════════════════ */
-function buildSysPrompt() {
-  const parts = [];
-  const v = id => document.getElementById(id).value.trim();
-  const persona = v('persona'), bg = v('background');
-  const tTime = v('settingTime'), tPlace = v('settingPlace');
-  const guide = v('guidelines');
-  const pov   = document.getElementById('pov').value;
-  const tense = document.getElementById('tense').value;
-  const title = getTitle();
-
-  if (title)  parts.push(`## STORY TITLE\n${title}`);
-  if (persona) parts.push(`## NARRATOR PERSONA\n${persona}`);
-  if (bg)      parts.push(`## STORY BACKGROUND\n${bg}`);
-  if (tTime || tPlace) {
-    let s = '## SETTING';
-    if (tTime)  s += `\nTime: ${tTime}`;
-    if (tPlace) s += `\nPlace: ${tPlace}`;
-    parts.push(s);
-  }
-  const chars = [];
-  document.querySelectorAll('.char-card').forEach(c => {
-    const name = c.querySelector('input').value.trim();
-    const desc = c.querySelector('textarea').value.trim();
-    if (name || desc) chars.push(`**${name||'Unnamed'}**: ${desc}`);
+function editSec(id){
+  const sec=getSec(id);if(!sec)return;
+  const divBar=document.querySelector(`[data-div-sec-id="${id}"]`);if(!divBar)return;
+  const ss=divBar.closest('.story-section');if(!ss)return;
+  divBar.style.opacity='1';divBar.dataset.editing='true';
+  divBar.querySelector('[data-mode="normal"]').style.display='none';
+  divBar.querySelector('[data-mode="edit"]').style.display='flex';
+  const textDiv=ss.querySelector('.sec-text');if(!textDiv)return;
+  textDiv.style.display='none';
+  const ta=document.createElement('textarea');
+  ta.className='sec-edit-area';ta.value=sec.text;ta.dataset.editSecId=id;ta.style.height='auto';
+  ss.insertBefore(ta,divBar.parentNode);
+  requestAnimationFrame(()=>{ta.style.height=Math.min(ta.scrollHeight+4,600)+'px';ta.focus();});
+  ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight+4,600)+'px';});
+  ta.addEventListener('keydown',e=>{
+    if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();saveSecEdit(id);}
+    if(e.key==='Escape')cancelSecEdit(id);
   });
-  if (chars.length) parts.push(`## CHARACTERS\n${chars.join('\n\n')}`);
-  if (guide || pov || tense) {
-    let g = '## WRITING GUIDELINES';
-    if (pov)   g += `\nPoint of view: ${pov}`;
-    if (tense) g += `\nTense: ${tense}`;
-    if (guide) g += `\n\n${guide}`;
-    parts.push(g);
-  }
-  if (!parts.length) return 'You are a skilled creative fiction writer. Write compelling, immersive prose.';
-  return parts.join('\n\n') + '\n\nWrite with craft and consistency. Output only prose — no commentary, no preamble.';
+}
+function saveSecEdit(id){
+  const ta=document.querySelector(`textarea[data-edit-sec-id="${id}"]`);
+  if(ta){const t=ta.value.trim();if(t){const s=getSec(id);if(s)s.text=t;}}
+  render();updateBudget();notify('Section saved.');
+}
+function cancelSecEdit(id){render();}
+
+/* ══════════════════════════════════════════
+   BRAINSTORM MODAL
+══════════════════════════════════════════ */
+function openBrainstorm(){
+  document.getElementById('brainstormModal').classList.add('open');
+}
+function closeBrainstorm(){
+  document.getElementById('brainstormModal').classList.remove('open');
+}
+function handleModalClick(e){
+  if(e.target===document.getElementById('brainstormModal'))closeBrainstorm();
 }
 
-function buildUserPrompt() {
-  const p = document.getElementById('promptIn').value.trim();
-  const existing = fullText().trim();
-  const pre = { continue:'Continue the story', rewrite:'Rewrite the following passage',
-    brainstorm:'Brainstorm ideas for', dialogue:'Write a dialogue scene where', outline:'Create a scene outline for' };
-  if (currentMode === 'continue' && existing)
-    return `STORY SO FAR:\n${existing.slice(-2500)}\n\n---\nCONTINUATION DIRECTION: ${p||'Continue naturally.'}`;
-  let msg = `${pre[currentMode]}${p ? ': '+p : '.'}`;
-  if (existing && currentMode !== 'outline') msg += `\n\nSTORY CONTEXT:\n${existing.slice(-900)}`;
-  return msg;
-}
+/* ── Robust JSON extraction ─────────────────────────────────
+   Tries multiple strategies to pull valid JSON out of whatever
+   the model returns, regardless of wrapping text or fences.
+─────────────────────────────────────────────────────────── */
+function extractJsonArray(raw) {
+  // 1. Strip all markdown fences (```json, ```, ~~~, etc.)
+  let s = raw.replace(/```[\w]*\n?/g, '').replace(/~~~[\w]*\n?/g, '').trim();
 
-/* ════════════════════════════════════════════════════════════
-   GENERATE
-════════════════════════════════════════════════════════════ */
-async function generate() {
-  if (isGenerating) return;
-  const server = document.getElementById('serverUrl').value.trim().replace(/\/$/, '');
-  const model  = document.getElementById('modelSel').value;
-  if (!model) { notify('Select a model first — click ↺ to fetch.', true); return; }
+  // 2. If the model prefixed the JSON with prose, find the first [ 
+  const firstBracket = s.indexOf('[');
+  if (firstBracket > 0) s = s.slice(firstBracket);
 
-  isGenerating = true;
-  abortCtrl    = new AbortController();
+  // 3. Find the last ] to close the array (handles trailing prose)
+  const lastBracket = s.lastIndexOf(']');
+  if (lastBracket !== -1 && lastBracket < s.length - 1) s = s.slice(0, lastBracket + 1);
 
-  const genBtn  = document.getElementById('genBtn');
-  const stopBtn = document.getElementById('stopBtn');
-  genBtn.disabled = true;
-  genBtn.textContent = '⏳ Writing…';
-  stopBtn.classList.add('active');
+  // 4. Try direct parse
+  try { const r = JSON.parse(s); if (Array.isArray(r)) return r; } catch(_) {}
 
-  // Show a streaming page (last page, or new blank one)
-  const stage = document.getElementById('pageStage');
-
-  // Make a temporary streaming page to display live output
-  const streamPage = makePage(pages.length + 1, false, null);
-  const streamBody = streamPage.querySelector('.page-body');
-  const cursor = document.createElement('span');
-  cursor.className = 'gen-cursor';
-  const streamPara = document.createElement('p');
-  streamPara.className = 'no-indent';
-  streamPara.appendChild(cursor);
-  streamBody.appendChild(streamPara);
-
-  // Hide current pages, show stream page
-  pages.forEach(p => p.style.display = 'none');
-  stage.appendChild(streamPage);
-  streamPage.style.display = 'block';
-  scalePages();
-
-  let newText = '';
-
+  // 5. Try to fix truncated JSON by closing unclosed structures
   try {
-    const resp = await fetch(`${server}/v1/chat/completions`, {
-      method: 'POST', signal: abortCtrl.signal,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    let fixed = s;
+    const opens = (fixed.match(/\{/g)||[]).length - (fixed.match(/\}/g)||[]).length;
+    for (let i=0; i<opens; i++) fixed += '}';
+    if (!fixed.trim().endsWith(']')) fixed += ']';
+    const r = JSON.parse(fixed);
+    if (Array.isArray(r)) return r;
+  } catch(_) {}
+
+  // 6. Extract individual objects and build array manually
+  const objects = [];
+  const objRegex = /\{[^{}]*(?:\{[^{}]*\}[^{}]*)?\}/g;
+  let m;
+  while ((m = objRegex.exec(s)) !== null) {
+    try { objects.push(JSON.parse(m[0])); } catch(_) {}
+  }
+  if (objects.length > 0) return objects;
+
+  throw new Error('Could not parse a JSON array from the model response. Try a different model or rephrase your premise.');
+}
+
+function extractJsonObject(raw) {
+  let s = raw.replace(/```[\w]*\n?/g, '').replace(/~~~[\w]*\n?/g, '').trim();
+
+  // Find first { 
+  const firstBrace = s.indexOf('{');
+  if (firstBrace > 0) s = s.slice(firstBrace);
+
+  // Find matching last }
+  const lastBrace = s.lastIndexOf('}');
+  if (lastBrace !== -1 && lastBrace < s.length - 1) s = s.slice(0, lastBrace + 1);
+
+  // Direct parse
+  try { const r = JSON.parse(s); if (r && typeof r === 'object' && !Array.isArray(r)) return r; } catch(_) {}
+
+  // Fix truncated: count unclosed braces
+  try {
+    let fixed = s;
+    const opens = (fixed.match(/\{/g)||[]).length - (fixed.match(/\}/g)||[]).length;
+    const arrOpens = (fixed.match(/\[/g)||[]).length - (fixed.match(/\]/g)||[]).length;
+    for (let i=0; i<arrOpens; i++) fixed += ']';
+    for (let i=0; i<opens; i++) fixed += '}';
+    const r = JSON.parse(fixed);
+    if (r && typeof r === 'object' && !Array.isArray(r)) return r;
+  } catch(_) {}
+
+  // Last resort: try the whole string
+  try { return JSON.parse(raw.trim()); } catch(_) {}
+
+  throw new Error('Could not parse a JSON object from the model response. Try a different model or rephrase your input.');
+}
+
+async function generateIdeas(){
+  const premise=document.getElementById('premiseInput').value.trim();
+  if(!premise){notify('Enter a premise first.',true);return;}
+  const server=document.getElementById('serverUrl').value.trim().replace(/\/$/,'');
+  const model=document.getElementById('modelSel').value;
+  if(!model){notify('Select a model first.',true);return;}
+
+  const btn=document.getElementById('genIdeasBtn');
+  btn.disabled=true;btn.textContent='Generating…';
+
+  const area=document.getElementById('ideasArea');
+  area.innerHTML='<div class="spin-wrap"><div class="spinner"></div>Generating 3 story ideas…</div>';
+
+  const sysPrompt=`You are a creative writing assistant. Output ONLY raw JSON with no explanation, no markdown, no code fences.`;
+
+  const userPrompt=`Given this premise: "${premise}"
+
+Return a JSON array of exactly 3 story concept objects. Each object has these keys:
+- "title": a punchy 5-8 word working title (string)
+- "logline": 1-2 sentences describing the core hook (string)  
+- "twist": 1 sentence describing a unique angle or complication (string)
+
+Start your response with [ and end with ]. Nothing before or after.`;
+
+  try{
+    const resp=await fetch(`${server}/v1/chat/completions`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
         model,
-        messages: [
-          { role: 'system', content: buildSysPrompt() },
-          { role: 'user',   content: buildUserPrompt() }
+        // Seed the assistant turn with [ to force JSON array output
+        messages:[
+          {role:'system', content:sysPrompt},
+          {role:'user',   content:userPrompt},
+          {role:'assistant', content:'['}
         ],
-        temperature:    parseFloat(document.getElementById('temp').value),
-        max_tokens:     parseInt(document.getElementById('maxTok').value),
-        top_p:          parseFloat(document.getElementById('topP').value),
-        repeat_penalty: parseFloat(document.getElementById('repPen').value),
-        stream: true
+        temperature:0.92, max_tokens:900, stream:false,
+        stop: null
       })
     });
-    if (!resp.ok) throw new Error(`Server returned ${resp.status}`);
+    if(!resp.ok)throw new Error(`Server returned ${resp.status}`);
+    const data=await resp.json();
+    // Prepend the seeded '[' back since the model continues from it
+    let raw = '[' + (data.choices?.[0]?.message?.content || '');
+    const ideas = extractJsonArray(raw);
+    if(!ideas.length) throw new Error('Model returned an empty ideas list.');
+    // Normalise keys — some models use different names
+    const normalised = ideas.slice(0,3).map(idea => ({
+      title:   idea.title   || idea.name    || idea.concept || 'Untitled',
+      logline: idea.logline || idea.hook    || idea.summary || idea.description || '',
+      twist:   idea.twist   || idea.conflict|| idea.angle   || idea.complication|| ''
+    }));
+    renderIdeas(normalised, premise);
+  } catch(err){
+    area.innerHTML=`
+      <div style="color:var(--rust);font-family:'DM Mono',monospace;font-size:.68rem;padding:12px 0;line-height:1.6;">
+        <strong>Could not generate ideas.</strong><br>${escHtml(err.message)}
+        <br><br>Tips: Make sure LM Studio is running and a model is loaded. Some smaller models struggle with JSON output — try a larger model or reword your premise.
+      </div>`;
+  } finally{
+    btn.disabled=false;
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="13" height="13"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>Generate 3 Ideas';
+  }
+}
 
-    const reader  = resp.body.getReader();
-    const decoder = new TextDecoder();
+function renderIdeas(ideas,premise){
+  const area=document.getElementById('ideasArea');
+  area.innerHTML='<div class="sticky-grid" id="stickyGrid"></div>';
+  const grid=document.getElementById('stickyGrid');
+  ideas.slice(0,3).forEach((idea,i)=>{
+    const note=document.createElement('div');
+    note.className='sticky-note';
+    note.dataset.idx=i;
+    note.innerHTML=`
+      <div class="sticky-num">Idea ${i+1}</div>
+      <div class="sticky-title">${escHtml(idea.title||'Untitled')}</div>
+      <div class="sticky-body">
+        <strong>Hook:</strong> ${escHtml(idea.logline||'')}
+        <br><br>
+        <strong>Twist:</strong> ${escHtml(idea.twist||'')}
+      </div>
+      <div class="sticky-actions">
+        <button class="btn-use-idea autogen" onclick="autoGenContext(${i})" data-idx="${i}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="10" height="10"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z"/></svg>
+          Auto-Gen Context
+        </button>
+      </div>
+      <div class="autogen-status" id="autogenStatus${i}"></div>`;
+    grid.appendChild(note);
+  });
+  // Store ideas for auto-gen
+  window._brainstormIdeas=ideas;
+  window._brainstormPremise=premise;
+}
 
-    outer: while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      const lines = decoder.decode(value, { stream: true }).split('\n').filter(l => l.startsWith('data: '));
-      for (const line of lines) {
-        const raw = line.slice(6).trim();
-        if (raw === '[DONE]') break outer;
-        try {
-          const delta = JSON.parse(raw)?.choices?.[0]?.delta?.content || '';
-          if (delta) {
-            newText += delta;
-            // Render streaming text simply into stream page
-            streamPara.innerHTML = newText.replace(/\n\n/g, '<br><br>');
+/* ══════════════════════════════════════════
+   CONTEXT AUTO-GEN
+══════════════════════════════════════════ */
+async function autoGenContext(idx){
+  const ideas=window._brainstormIdeas;
+  const premise=window._brainstormPremise||'';
+  if(!ideas||!ideas[idx]){notify('No idea found.',true);return;}
+
+  const idea=ideas[idx];
+  const server=document.getElementById('serverUrl').value.trim().replace(/\/$/,'');
+  const model=document.getElementById('modelSel').value;
+  if(!model){notify('Select a model first.',true);return;}
+
+  const btn=document.querySelector(`.sticky-note[data-idx="${idx}"] .btn-use-idea.autogen`);
+  const status=document.getElementById(`autogenStatus${idx}`);
+  if(btn)btn.disabled=true;
+  if(status)status.textContent='Generating context…';
+
+  const sysPrompt=`You are a creative writing assistant. Output ONLY raw JSON with no explanation, no markdown, no code fences.`;
+
+  const userPrompt=`Given this story concept:
+Title: ${idea.title}
+Hook: ${idea.logline}
+Twist: ${idea.twist}
+Original premise: ${premise}
+
+Return a single JSON object with these exact keys:
+- "title": the story title (string)
+- "background": 3-4 sentences of world-building covering history, rules, tone, and atmosphere (string)
+- "settingTime": time period and location, e.g. "Victorian London, 1887" (string)
+- "settingPlace": 2-3 sentences describing the primary setting in sensory detail (string)
+- "characters": array of 2-3 character objects, each with "name" (string) and "description" (2-3 sentences covering role, personality, appearance, motivation) (string)
+
+Start your response with { and end with }. Nothing before or after.`;
+
+  try{
+    const resp=await fetch(`${server}/v1/chat/completions`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model,
+        // Seed the assistant turn with { to force JSON object output
+        messages:[
+          {role:'system',    content:sysPrompt},
+          {role:'user',      content:userPrompt},
+          {role:'assistant', content:'{'}
+        ],
+        temperature:0.82, max_tokens:1400, stream:false,
+        stop: null
+      })
+    });
+    if(!resp.ok)throw new Error(`Server returned ${resp.status}`);
+    const data=await resp.json();
+    // Prepend the seeded '{' back
+    let raw = '{' + (data.choices?.[0]?.message?.content || '');
+    const ctx = extractJsonObject(raw);
+
+    // Populate sidebar — use fallback keys in case model chose different names
+    const title = ctx.title || ctx.storyTitle || ctx.name || '';
+    const bg    = ctx.background || ctx.worldBuilding || ctx.lore || ctx.context || '';
+    const stTime  = ctx.settingTime  || ctx.time   || ctx.timePeriod || ctx.era || '';
+    const stPlace = ctx.settingPlace || ctx.place  || ctx.location   || ctx.setting || '';
+
+    if(title)  { document.getElementById('storyTitle').value=title; renderTitle(); }
+    if(bg)       document.getElementById('background').value=bg;
+    if(stTime)   document.getElementById('settingTime').value=stTime;
+    if(stPlace)  document.getElementById('settingPlace').value=stPlace;
+
+    // Rebuild characters — handle various key names models might use
+    const chars = ctx.characters || ctx.mainCharacters || ctx.cast || [];
+    if(Array.isArray(chars) && chars.length){
+      document.getElementById('charList').innerHTML='';
+      charIdx=0;
+      chars.forEach(c=>{
+        const name = c.name || c.characterName || c.firstName || '';
+        const desc = c.description || c.background || c.bio || c.personality || '';
+        addChar(name, desc);
+      });
+    }
+
+    ['s-title','s-bg','s-setting','s-chars'].forEach(id=>document.getElementById(id).classList.remove('collapsed'));
+    updateBudget();
+
+    if(status)status.textContent='✓ Context populated in sidebar!';
+    if(btn){ btn.textContent='✓ Applied'; btn.style.background='var(--budget-ok,#4a8c4a)'; }
+    notify(`Context auto-generated for "${idea.title}"!`);
+
+  } catch(err){
+    if(status)status.textContent='Error: '+err.message;
+    if(btn) btn.disabled=false;
+    notify('Auto-gen failed: '+err.message, true);
+  }
+}
+
+/* ══════════════════════════════════════════
+   BUILD PROMPTS
+══════════════════════════════════════════ */
+function buildSysPrompt(){
+  const sys=buildSysPromptText();
+  return sys||'You are a skilled creative fiction writer. Write compelling, immersive prose.';
+}
+
+function buildUserPrompt(){
+  const p=document.getElementById('promptIn').value.trim();
+  const existing=fullText().trim();
+  if(currentMode==='rewrite'){
+    let msg=`Rewrite the following passage${p?': '+p:'.'}`;
+    if(existing)msg+=`\n\nSTORY CONTEXT:\n${existing.slice(-900)}`;
+    return msg;
+  }
+  if(existing)return`STORY SO FAR:\n${existing.slice(-2500)}\n\n---\nCONTINUATION DIRECTION: ${p||'Continue naturally.'}`;
+  return`Begin the story${p?': '+p:'.'}`;
+}
+
+/* ══════════════════════════════════════════
+   GENERATE
+══════════════════════════════════════════ */
+async function generate(){
+  if(isGenerating)return;
+  const server=document.getElementById('serverUrl').value.trim().replace(/\/$/,'');
+  const model=document.getElementById('modelSel').value;
+  if(!model){notify('Select a model first.',true);return;}
+
+  isGenerating=true;abortCtrl=new AbortController();
+  const genBtn=document.getElementById('genBtn');
+  const stopBtn=document.getElementById('stopBtn');
+  genBtn.disabled=true;genBtn.textContent='⏳ Writing…';
+  stopBtn.classList.add('active');
+  document.getElementById('placeholder').style.display='none';
+
+  const container=document.getElementById('sectionsContainer');
+  const streamWrap=document.createElement('div');
+  streamWrap.className='story-section streaming';
+  const streamText=document.createElement('div');
+  streamText.className='sec-text';
+  const cursor=document.createElement('span');
+  cursor.className='gen-cursor';
+  const streamPara=document.createElement('p');
+  streamPara.style.textIndent='0';
+  streamPara.appendChild(cursor);
+  streamText.appendChild(streamPara);
+  streamWrap.appendChild(streamText);
+  container.appendChild(streamWrap);
+  const area=document.getElementById('storyArea');
+  area.scrollTop=area.scrollHeight;
+
+  let newText='';
+  try{
+    const resp=await fetch(`${server}/v1/chat/completions`,{
+      method:'POST',signal:abortCtrl.signal,
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model,
+        messages:[{role:'system',content:buildSysPrompt()},{role:'user',content:buildUserPrompt()}],
+        temperature:parseFloat(document.getElementById('temp').value),
+        max_tokens:parseInt(document.getElementById('maxTok').value),
+        top_p:parseFloat(document.getElementById('topP').value),
+        repeat_penalty:parseFloat(document.getElementById('repPen').value),
+        stream:true
+      })
+    });
+    if(!resp.ok)throw new Error(`Server returned ${resp.status}`);
+    const reader=resp.body.getReader();
+    const decoder=new TextDecoder();
+    outer:while(true){
+      const{done,value}=await reader.read();if(done)break;
+      const lines=decoder.decode(value,{stream:true}).split('\n').filter(l=>l.startsWith('data: '));
+      for(const line of lines){
+        const raw=line.slice(6).trim();if(raw==='[DONE]')break outer;
+        try{
+          const delta=JSON.parse(raw)?.choices?.[0]?.delta?.content||'';
+          if(delta){
+            newText+=delta;
+            const parts=newText.split(/\n\n/);
+            streamPara.innerHTML=parts.map((p,i)=>i<parts.length-1?`<span style="display:block;margin-bottom:1.2em">${p}</span>`:p).join('');
             streamPara.appendChild(cursor);
+            area.scrollTop=area.scrollHeight;
           }
-        } catch (_) {}
+        }catch(_){}
       }
     }
     setStatus(true);
-  } catch (err) {
-    if (err.name !== 'AbortError') { notify('Error: ' + err.message, true); setStatus(false); }
+  }catch(err){
+    if(err.name!=='AbortError'){notify('Error: '+err.message,true);setStatus(false);}
   }
 
-  // Remove stream page, commit section, repaginate
-  streamPage.remove();
-  if (newText.trim()) {
-    secId++;
-    sections.push({ id: secId, text: newText.trim() });
-  }
-
-  repaginate();
-  // Navigate to last page to show new content
-  if (pages.length > 0) showPage(pages.length - 1);
-
-  isGenerating = false;
-  abortCtrl    = null;
-  genBtn.disabled  = false;
-  genBtn.textContent = '✦ Generate';
+  streamWrap.remove();
+  if(newText.trim()){secId++;sections.push({id:secId,text:newText.trim()});}
+  render();updateBudget();
+  requestAnimationFrame(()=>{area.scrollTop=area.scrollHeight;});
+  isGenerating=false;abortCtrl=null;
+  genBtn.disabled=false;genBtn.textContent='✦ Generate';
   stopBtn.classList.remove('active');
 }
 
-function stopGen() {
-  if (abortCtrl) { abortCtrl.abort(); notify('Stopped — partial text saved.'); }
-}
+function stopGen(){if(abortCtrl){abortCtrl.abort();notify('Stopped — partial text saved.');}}
 
-/* ════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════
    CONNECTION
-════════════════════════════════════════════════════════════ */
-async function testConnection() {
-  const server = document.getElementById('serverUrl').value.trim().replace(/\/$/, '');
-  const btn = document.getElementById('testBtn');
-  btn.textContent = 'Testing…'; btn.classList.add('testing'); setStatusTesting();
-  try {
-    const resp = await fetch(`${server}/v1/models`, { signal: AbortSignal.timeout(5000) });
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const data = await resp.json();
-    const n = data.data?.length || 0;
-    setStatus(true);
-    notify(`Connected ✓  ${n} model${n!==1?'s':''} available.`);
-    populateModels(data.data || []);
-  } catch (e) {
-    setStatus(false);
-    notify('Cannot reach LM Studio: ' + (e.message||'timeout'), true);
-  } finally { btn.textContent = 'Test'; btn.classList.remove('testing'); }
+══════════════════════════════════════════ */
+async function testConnection(){
+  const server=document.getElementById('serverUrl').value.trim().replace(/\/$/,'');
+  const btn=document.getElementById('testBtn');
+  btn.textContent='Testing…';btn.classList.add('testing');setStatusTesting();
+  try{
+    const resp=await fetch(`${server}/v1/models`,{signal:AbortSignal.timeout(5000)});
+    if(!resp.ok)throw new Error(`HTTP ${resp.status}`);
+    const data=await resp.json();
+    const n=data.data?.length||0;
+    setStatus(true);notify(`Connected ✓  ${n} model${n!==1?'s':''} available.`);
+    populateModels(data.data||[]);
+  }catch(e){setStatus(false);notify('Cannot reach LM Studio: '+(e.message||'timeout'),true);}
+  finally{btn.textContent='Test';btn.classList.remove('testing');}
 }
 
-async function fetchModels() {
-  const server = document.getElementById('serverUrl').value.trim().replace(/\/$/, '');
-  try {
-    const resp = await fetch(`${server}/v1/models`);
-    if (!resp.ok) throw new Error();
-    const data = await resp.json();
-    populateModels(data.data || []);
-    setStatus(true);
+async function fetchModels(){
+  const server=document.getElementById('serverUrl').value.trim().replace(/\/$/,'');
+  try{
+    const resp=await fetch(`${server}/v1/models`);if(!resp.ok)throw new Error();
+    const data=await resp.json();populateModels(data.data||[]);setStatus(true);
     notify(`${data.data?.length||0} model(s) found.`);
-  } catch { setStatus(false); notify('Cannot reach LM Studio server.', true); }
+  }catch{setStatus(false);notify('Cannot reach LM Studio server.',true);}
 }
 
-function populateModels(list) {
-  const sel = document.getElementById('modelSel');
-  sel.innerHTML = '';
-  if (!list.length) { sel.innerHTML = '<option value="">No models loaded</option>'; return; }
-  list.forEach(m => { const o = document.createElement('option'); o.value=m.id; o.textContent=m.id; sel.appendChild(o); });
+function populateModels(list){
+  const sel=document.getElementById('modelSel');sel.innerHTML='';
+  if(!list.length){sel.innerHTML='<option value="">No models loaded</option>';return;}
+  list.forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.id;sel.appendChild(o);});
 }
 
-function setStatus(ok) {
-  document.getElementById('statusDot').className    = 'status-dot '+(ok?'connected':'error');
-  document.getElementById('statusLabel').textContent = ok?'Connected':'Error';
+function setStatus(ok){
+  document.getElementById('statusDot').className='status-dot '+(ok?'connected':'error');
+  document.getElementById('statusLabel').textContent=ok?'Connected':'Error';
 }
-function setStatusTesting() {
-  document.getElementById('statusDot').className    = 'status-dot testing';
-  document.getElementById('statusLabel').textContent = 'Testing…';
-}
-
-/* ════════════════════════════════════════════════════════════
-   WORD COUNT
-════════════════════════════════════════════════════════════ */
-function updateWC() {
-  const t = fullText().trim();
-  document.getElementById('wc').textContent = (t?t.split(/\s+/).length:0).toLocaleString()+' words';
+function setStatusTesting(){
+  document.getElementById('statusDot').className='status-dot testing';
+  document.getElementById('statusLabel').textContent='Testing…';
 }
 
-/* ════════════════════════════════════════════════════════════
-   RTF EXPORT
-════════════════════════════════════════════════════════════ */
-function exportRtf() {
-  if (!sections.length) { notify('Nothing to export yet.', true); return; }
-  function rtfEsc(s) {
-    let o='';
-    for (const ch of s) {
-      const cp=ch.codePointAt(0);
-      if (cp===0x0A){o+='\\line ';}
-      else if(cp<0x20){}
-      else if(cp<0x80){if(ch==='\\')o+='\\\\';else if(ch==='{')o+='\\{';else if(ch==='}')o+='\\}';else o+=ch;}
-      else{const sg=cp>32767?cp-65536:cp;o+=`\\u${sg}?`;}
-    }
-    return o;
-  }
+/* ══════════════════════════════════════════
+   WORD COUNT & UTILS
+══════════════════════════════════════════ */
+function updateWC(){
+  const t=fullText().trim();
+  document.getElementById('wc').textContent=(t?t.split(/\s+/).length:0).toLocaleString()+' words';
+}
+
+function exportRtf(){
+  if(!sections.length){notify('Nothing to export yet.',true);return;}
+  function rtfEsc(s){let o='';for(const ch of s){const cp=ch.codePointAt(0);if(cp===0x0A){o+='\\line ';}else if(cp<0x20){}else if(cp<0x80){if(ch==='\\')o+='\\\\';else if(ch==='{')o+='\\{';else if(ch==='}')o+='\\}';else o+=ch;}else{const sg=cp>32767?cp-65536:cp;o+=`\\u${sg}?`;}}return o;}
   const pf='\\pard\\sl480\\slmult1\\fi720 ';
   const of='\\pard\\sl480\\slmult1\\qc ';
   const tf='\\pard\\sl480\\slmult1\\qc\\b\\fs32 ';
   let body='';
   const title=getTitle();
-  if(title) body+=tf+rtfEsc(title)+'\\par\n\\pard\\sl480\\slmult1\\qc '+rtfEsc('—————')+'\\par\n\\par\n';
+  if(title)body+=tf+rtfEsc(title)+'\\par\n\\pard\\sl480\\slmult1\\qc '+rtfEsc('—————')+'\\par\n\\par\n';
   sections.forEach((sec,si)=>{
     sec.text.split(/\n\n+/).filter(p=>p.trim()).forEach((p,pi)=>{
-      const fmt=(si===0&&pi===0)?'\\pard\\sl480\\slmult1 ':pf;
-      body+=fmt+rtfEsc(p.trim())+'\\par\n';
+      body+=((si===0&&pi===0)?'\\pard\\sl480\\slmult1 ':pf)+rtfEsc(p.trim())+'\\par\n';
     });
-    if(si<sections.length-1) body+='\\par\n'+of+rtfEsc('* * *')+'\\par\n\\par\n';
+    if(si<sections.length-1)body+='\\par\n'+of+rtfEsc('* * *')+'\\par\n\\par\n';
   });
-  const rtf=['{\\rtf1\\ansi\\deff0',
-    '{\\fonttbl{\\f0\\froman\\fcharset0 Times New Roman;}}',
-    '{\\colortbl ;\\red26\\green18\\blue9;}',
-    '\\f0\\fs24\\cf1',body,'}'].join('\n');
-  const slug=slugify(title||'story');
-  dl(new Blob([rtf],{type:'application/rtf'}),`${slug}.rtf`);
-  notify('RTF exported — open in Word, LibreOffice, or Pages.');
+  const rtf=['{\\rtf1\\ansi\\deff0','{\\fonttbl{\\f0\\froman\\fcharset0 Times New Roman;}}','{\\colortbl ;\\red26\\green18\\blue9;}','\\f0\\fs24\\cf1',body,'}'].join('\n');
+  dl(new Blob([rtf],{type:'application/rtf'}),`${slugify(title||'story')}.rtf`);
+  notify('RTF exported.');
 }
 
-/* ════════════════════════════════════════════════════════════
-   CONTEXT EXPORT / IMPORT
-════════════════════════════════════════════════════════════ */
-function exportContext() {
-  const v = id => document.getElementById(id).value.trim();
+function exportContext(){
+  const v=id=>document.getElementById(id).value.trim();
   const characters=[];
-  document.querySelectorAll('.char-card').forEach(card=>{
-    characters.push({name:card.querySelector('input').value.trim(),description:card.querySelector('textarea').value.trim()});
-  });
+  document.querySelectorAll('.char-card').forEach(c=>{characters.push({name:c.querySelector('input').value.trim(),description:c.querySelector('textarea').value.trim()});});
   const title=getTitle();
-  const ctx={
-    _version:'1.0',_app:"Writer's Blocks",_exported:new Date().toISOString(),
-    title,
-    persona:v('persona'),background:v('background'),
-    settingTime:v('settingTime'),settingPlace:v('settingPlace'),
-    characters,guidelines:v('guidelines'),
-    pov:document.getElementById('pov').value,
-    tense:document.getElementById('tense').value
-  };
-  const slug=slugify(title||'context');
-  dl(new Blob([JSON.stringify(ctx,null,2)],{type:'application/json'}),`${slug}-context.json`);
+  const ctx={_version:'1.0',_app:"Writer's Blocks",_exported:new Date().toISOString(),title,persona:v('persona'),background:v('background'),settingTime:v('settingTime'),settingPlace:v('settingPlace'),characters,guidelines:v('guidelines'),pov:document.getElementById('pov').value,tense:document.getElementById('tense').value};
+  dl(new Blob([JSON.stringify(ctx,null,2)],{type:'application/json'}),`${slugify(title||'context')}-context.json`);
   notify('Context saved.');
 }
 
-function importContext(event) {
-  const file=event.target.files[0]; if(!file) return;
+function importContext(event){
+  const file=event.target.files[0];if(!file)return;
   event.target.value='';
   const reader=new FileReader();
   reader.onload=e=>{
@@ -1506,7 +1439,7 @@ function importContext(event) {
       const ctx=JSON.parse(e.target.result);
       if(ctx._app!=="Writer's Blocks"){notify("Not a Writer's Blocks context file.",true);return;}
       const set=(id,val)=>{if(val!=null)document.getElementById(id).value=val;};
-      set('storyTitle',ctx.title);
+      set('storyTitle',ctx.title);renderTitle();
       set('persona',ctx.persona);set('background',ctx.background);
       set('settingTime',ctx.settingTime);set('settingPlace',ctx.settingPlace);
       set('guidelines',ctx.guidelines);
@@ -1515,57 +1448,33 @@ function importContext(event) {
       document.getElementById('charList').innerHTML='';charIdx=0;
       (ctx.characters||[]).forEach(c=>addChar(c.name||'',c.description||''));
       ['s-title','s-persona','s-bg','s-setting','s-chars','s-guide'].forEach(id=>document.getElementById(id).classList.remove('collapsed'));
-      repaginate();
-      notify(`Context loaded — ${ctx.characters?.length||0} character(s) restored.`);
+      updateBudget();notify(`Context loaded — ${ctx.characters?.length||0} character(s) restored.`);
     }catch(err){notify('Failed to parse JSON: '+err.message,true);}
   };
   reader.readAsText(file);
 }
 
-/* ════════════════════════════════════════════════════════════
-   CLEAR
-════════════════════════════════════════════════════════════ */
-function clearAll() { sections=[]; repaginate(); }
+function clearAll(){sections=[];render();updateBudget();}
 
-/* ════════════════════════════════════════════════════════════
-   DOWNLOAD HELPER
-════════════════════════════════════════════════════════════ */
-function dl(blob,filename) {
+function dl(blob,filename){
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;a.download=filename;a.click();
   setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
 
-/* ════════════════════════════════════════════════════════════
-   NOTIFICATION
-════════════════════════════════════════════════════════════ */
 function notify(msg,isErr=false){
   const n=document.getElementById('notif');
-  n.textContent=msg;
-  n.className='notif'+(isErr?' err':'')+' show';
-  clearTimeout(n._t);
-  n._t=setTimeout(()=>n.classList.remove('show'),3800);
+  n.textContent=msg;n.className='notif'+(isErr?' err':'')+' show';
+  clearTimeout(n._t);n._t=setTimeout(()=>n.classList.remove('show'),3800);
 }
 
-/* ════════════════════════════════════════════════════════════
-   KEYBOARD (prompt textarea)
-════════════════════════════════════════════════════════════ */
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();generate();}}
 
-/* ════════════════════════════════════════════════════════════
-   RESIZE HANDLER
-════════════════════════════════════════════════════════════ */
-window.addEventListener('resize', ()=>{ scalePages(); });
+// Esc closes modal
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBrainstorm();});
 
-/* ════════════════════════════════════════════════════════════
-   INIT
-════════════════════════════════════════════════════════════ */
-window.addEventListener('load', ()=>{
-  repaginate(); // draw initial placeholder page
-  scalePages();
-  setTimeout(fetchModels, 700);
-});
+window.addEventListener('load',()=>{renderTitle();updateBudget();setTimeout(fetchModels,700);});
 </script>
 </body>
 </html>

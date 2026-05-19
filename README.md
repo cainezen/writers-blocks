@@ -18,6 +18,15 @@ Writer's Blocks gives you a beautiful, distraction-free workspace for AI-assiste
 
 ## Features
 
+### Brainstorm
+Brainstorm — full description of the modal, premise input, and sticky note output with its three colors and rotation effect
+Context Auto-Gen — explains the one-click sidebar population workflow, including the note that it works even with models that don't reliably output JSON
+The Brainstorm Workflow — an ASCII flowchart showing the complete premise → sticky notes → auto-gen → sidebar → writing pipeline, which makes the feature immediately understandable to anyone visiting the repo
+JSON Reliability — documents the six-strategy extraction pipeline so technically inclined users understand why it works across different model types and sizes, and know to use a 7B+ instruction-tuned model for best results
+
+### Context Budget
+Context Window Budget — now a full feature description with the row breakdown, color coding, and the live-update behavior
+
 ### Story Setup (Sidebar)
 - **Narrator Persona** — Define the LLM's role, voice, and authorial style
 - **Background** — Establish world-building lore, rules, history, and tone
@@ -26,12 +35,9 @@ Writer's Blocks gives you a beautiful, distraction-free workspace for AI-assiste
 - **Writing Guidelines** — Set freeform style rules, point of view, and narrative tense
 - All sidebar panels are collapsible to keep the workspace tidy
 
-### The Book Page
-Text generates inside a styled book-page canvas — a parchment-toned card with a left margin rule, faint horizontal guide lines, and a layered drop shadow. The goal is to make the writing feel like it belongs on a page, not a screen.
-
 ### Generation
 - **Streaming output** — Text streams live as the model writes, with an animated cursor
-- **Five writing modes** — Continue · Rewrite · Brainstorm · Dialogue · Outline
+- **Two writing modes** — Continue · Rewrite
 - **Stop generation** — Interrupt mid-stream at any time; partial output is automatically saved as a section
 - **Model settings** — Tune Temperature, Max Tokens, Top-P, and Repetition Penalty via sliders
 

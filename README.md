@@ -126,8 +126,6 @@ No npm install. No Python environment. No API key. No internet connection requir
 | **Continue** | Appends a new section, passing the full story context to the model |
 | **Rewrite** | Asks the model to rework a passage based on your direction |
 | **Brainstorm** | Generates ideas — plot twists, character arcs, world details |
-| **Dialogue** | Writes a focused dialogue scene between characters |
-| **Outline** | Produces a structured scene or chapter outline |
 
 ---
 

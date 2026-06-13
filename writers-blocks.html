@@ -234,10 +234,58 @@ input[type="range"]{width:100%;accent-color:var(--amber);margin-top:2px;}
 .genre-option.selected{color:var(--amber);}
 
 /* ═══════════════════════════════════════════
+   STORY AREA WITH TOC
+═══════════════════════════════════════════ */
+/* The story area is now a two-column layout: TOC panel + canvas */
+.story-area{overflow:hidden;min-height:0;background:var(--story-bg);display:grid;grid-template-columns:auto 1fr;transition:background .35s;position:relative;}
+
+/* Scrollable canvas — the actual story text */
+.story-canvas{overflow-y:auto;padding:24px 32px 32px;scrollbar-width:thin;scrollbar-color:var(--parchment-dark) transparent;}
+
+/* ── TOC PANEL ── */
+.toc-panel{width:0;overflow:hidden;border-right:0px solid var(--parchment-dark);transition:width .28s ease,border-right-width .28s ease,background .35s;background:var(--sidebar-bg);display:flex;flex-direction:column;flex-shrink:0;}
+.toc-panel.open{width:190px;border-right-width:1px;}
+
+.toc-header{display:flex;align-items:center;justify-content:space-between;padding:10px 11px 7px;border-bottom:1px solid var(--parchment-dark);flex-shrink:0;}
+.toc-title{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);}
+.btn-toc-toggle{background:none;border:none;cursor:pointer;color:var(--muted);padding:2px 4px;border-radius:3px;display:flex;align-items:center;transition:color .2s,background .2s;}
+.btn-toc-toggle:hover{color:var(--amber);background:rgba(200,130,10,.08);}
+.btn-toc-toggle svg{width:12px;height:12px;}
+
+.toc-list{overflow-y:auto;flex:1;padding:6px 0;scrollbar-width:thin;scrollbar-color:var(--parchment-dark) transparent;}
+.toc-entry{display:flex;align-items:baseline;gap:0;cursor:pointer;padding:5px 11px;transition:background .15s;border-left:2px solid transparent;}
+.toc-entry:hover{background:rgba(200,130,10,.07);}
+.toc-entry.active{border-left-color:var(--amber);background:rgba(200,130,10,.1);}
+.toc-entry-num{font-family:'DM Mono',monospace;font-size:.54rem;color:var(--muted);flex-shrink:0;min-width:22px;}
+.toc-entry-title{font-family:'Crimson Pro',serif;font-size:.82rem;color:var(--ink);line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;transition:color .35s;}
+.toc-entry.active .toc-entry-title{color:var(--amber);}
+.toc-wc{font-family:'DM Mono',monospace;font-size:.5rem;color:var(--muted);padding:0 11px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.toc-empty{padding:14px 11px;font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);line-height:1.5;opacity:.7;}
+
+/* Floating TOC toggle button (visible when TOC is closed) */
+.toc-open-btn{position:absolute;left:0;top:50%;transform:translateY(-50%);background:var(--toolbar-bg);border:1px solid var(--parchment-dark);border-left:none;border-radius:0 5px 5px 0;padding:6px 5px;cursor:pointer;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;transition:color .2s,background .2s;z-index:10;}
+.toc-open-btn:hover{color:var(--amber);background:rgba(200,130,10,.08);}
+.toc-open-btn svg{width:12px;height:12px;}
+.toc-open-btn span{writing-mode:vertical-rl;font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;}
+
+/* ── CHAPTER MARKER ── */
+.chapter-marker{text-align:center;padding:32px 0 24px;position:relative;}
+.chapter-marker-rule{height:1px;background:linear-gradient(90deg,transparent,var(--parchment-dark),transparent);margin-bottom:18px;}
+.chapter-marker-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:.02em;line-height:1.3;transition:color .35s;}
+.chapter-marker-num{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;}
+.chapter-marker-rule-bottom{height:1px;background:linear-gradient(90deg,transparent,var(--parchment-dark),transparent);margin-top:18px;}
+/* Chapter marker actions — only Edit and Delete */
+.chapter-marker:hover .chapter-marker-actions{opacity:1;}
+.chapter-marker-actions{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:8px;opacity:0;transition:opacity .2s;}
+
+/* Chapter title inline editor */
+.chapter-title-edit{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);text-align:center;background:var(--input-bg);border:1.5px solid var(--amber);border-radius:4px;padding:4px 10px;outline:none;width:80%;max-width:400px;}
+
+/* ═══════════════════════════════════════════
    MAIN COLUMN
 ═══════════════════════════════════════════ */
-.main{display:grid;grid-template-rows:1fr 6px auto;overflow:hidden;background:var(--bg);transition:background .35s;}
-.story-area{overflow-y:auto;min-height:0;background:var(--story-bg);padding:24px 32px 32px;scrollbar-width:thin;scrollbar-color:var(--parchment-dark) transparent;transition:background .35s;}
+.main{display:grid;grid-template-rows:1fr 6px auto;overflow:hidden;background:var(--bg);transition:background .35s;position:relative;}
 .story-output-title{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:var(--ink);text-align:center;margin-bottom:6px;line-height:1.2;transition:color .35s;}
 .story-output-rule{width:56px;height:2px;background:var(--amber);opacity:.5;margin:0 auto 32px;border-radius:1px;}
 .story-content{max-width:680px;margin:0 auto;background:var(--page);border:1px solid var(--parchment-dark);border-radius:4px;padding:32px 40px 40px;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:background .35s,border-color .35s;}
@@ -533,18 +581,40 @@ input[type="range"]{width:100%;accent-color:var(--amber);margin-top:2px;}
 
   <main class="main">
     <div class="story-area" id="view-story">
-      <div class="story-content" id="storyContent">
-        <div id="titleBlock" style="display:none">
-          <div class="story-output-title" id="outputTitle"></div>
-          <div class="story-output-rule"></div>
+
+      <!-- TOC Panel -->
+      <div class="toc-panel" id="tocPanel">
+        <div class="toc-header">
+          <span class="toc-title">Contents</span>
+          <button class="btn-toc-toggle" onclick="toggleTOC()" title="Close table of contents">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
         </div>
-        <div class="story-placeholder" id="placeholder">
-          <svg viewBox="0 0 64 64" fill="none"><rect x="8" y="12" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/><rect x="16" y="6" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/><rect x="24" y="18" width="18" height="2" rx="1" fill="currentColor" opacity=".5"/><rect x="24" y="23" width="15" height="2" rx="1" fill="currentColor" opacity=".5"/><rect x="24" y="28" width="17" height="2" rx="1" fill="currentColor" opacity=".5"/><path d="M44 40L56 52" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="40" cy="36" r="8" stroke="currentColor" stroke-width="2"/></svg>
-          <p>Your story will appear here. Set the stage in the sidebar, then craft your prompt below.</p>
-          <div class="ornament">· · ❧ · ·</div>
-        </div>
-        <div id="sectionsContainer"></div>
+        <div class="toc-list" id="tocList"></div>
       </div>
+
+      <!-- Floating TOC open button (shown when panel is closed) -->
+      <button class="toc-open-btn" id="tocOpenBtn" onclick="toggleTOC()" title="Open table of contents" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <span>TOC</span>
+      </button>
+
+      <!-- Scrollable story canvas -->
+      <div class="story-canvas" id="storyCanvas">
+        <div class="story-content" id="storyContent">
+          <div id="titleBlock" style="display:none">
+            <div class="story-output-title" id="outputTitle"></div>
+            <div class="story-output-rule"></div>
+          </div>
+          <div class="story-placeholder" id="placeholder">
+            <svg viewBox="0 0 64 64" fill="none"><rect x="8" y="12" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/><rect x="16" y="6" width="30" height="38" rx="3" stroke="currentColor" stroke-width="2"/><rect x="24" y="18" width="18" height="2" rx="1" fill="currentColor" opacity=".5"/><rect x="24" y="23" width="15" height="2" rx="1" fill="currentColor" opacity=".5"/><rect x="24" y="28" width="17" height="2" rx="1" fill="currentColor" opacity=".5"/><path d="M44 40L56 52" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="40" cy="36" r="8" stroke="currentColor" stroke-width="2"/></svg>
+            <p>Your story will appear here. Set the stage in the sidebar, then craft your prompt below.</p>
+            <div class="ornament">· · ❧ · ·</div>
+          </div>
+          <div id="sectionsContainer"></div>
+        </div>
+      </div>
+
     </div>
 
     <div class="resize-handle" id="resizeHandle"></div>
@@ -553,6 +623,9 @@ input[type="range"]{width:100%;accent-color:var(--amber);margin-top:2px;}
       <div class="toolbar">
         <button class="tool-btn" onclick="clearAll()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Clear All
+        </button>
+        <button class="tool-btn" onclick="insertChapter()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Insert Chapter
         </button>
         <span class="ctx-depth-indicator">Context: <strong id="ctxDepthBadge">~2.5K</strong></span>
         <span class="wc" id="wc">0 words</span>
@@ -1295,22 +1368,213 @@ function renderSections(){
   const container=document.getElementById('sectionsContainer');
   const ph=document.getElementById('placeholder');
   container.innerHTML='';
-  if(!appState.sections.length){ ph.style.display='flex'; updateWC(); return; }
+  if(!appState.sections.length){ ph.style.display='flex'; updateWC(); renderTOC(); return; }
   ph.style.display='none';
+
+  // Compute chapter numbers for rendering (dynamic, not stored)
+  let chNum=0;
+
   appState.sections.forEach(sec=>{
-    const wrap=document.createElement('div'); wrap.className='story-section';
-    const textDiv=document.createElement('div'); textDiv.className='sec-text';
-    textDiv.innerHTML=fmtParas(sec.text);
-    wrap.appendChild(textDiv);
-    wrap.appendChild(makeActionsBar(sec.id));
-    container.appendChild(wrap);
+    if(sec.isChapter){
+      chNum++;
+      container.appendChild(makeChapterMarker(sec, chNum));
+    } else {
+      const wrap=document.createElement('div'); wrap.className='story-section';
+      const textDiv=document.createElement('div'); textDiv.className='sec-text';
+      textDiv.innerHTML=fmtParas(sec.text);
+      wrap.appendChild(textDiv);
+      wrap.appendChild(makeActionsBar(sec.id));
+      container.appendChild(wrap);
+    }
   });
   updateWC();
+  renderTOC();
+  initChapterObserver();
 }
 function fmtParas(text){
   return text.split(/\n\n+/).filter(p=>p.trim())
     .map((p,i)=>`<p${i===0?' style="text-indent:0"':''}>${escHtml(p.trim()).replace(/\n/g,'<br>')}</p>`).join('');
 }
+
+/* ── Chapter marker DOM element ── */
+function makeChapterMarker(sec, chNum){
+  const el=document.createElement('div');
+  el.className='chapter-marker story-section';
+  el.dataset.chapterId=sec.id;
+  el.dataset.chapterNum=chNum;
+  el.innerHTML=`
+    <div class="chapter-marker-rule"></div>
+    <div class="chapter-marker-num">Chapter ${chNum}</div>
+    <div class="chapter-marker-title">${escHtml(sec.chapterTitle||'')}</div>
+    <div class="chapter-marker-rule-bottom"></div>
+    <div class="chapter-marker-actions">
+      <button class="btn-sec-action edit-btn" onclick="editChapterTitle(${sec.id})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit Title
+      </button>
+      <button class="btn-sec-action del" onclick="delSec(${sec.id})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete
+      </button>
+    </div>`;
+  return el;
+}
+
+/* ── Insert chapter marker at end of story ── */
+function insertChapter(){
+  const title = prompt('Chapter title (leave blank for none):', '') ?? null;
+  if(title === null) return; // user cancelled
+  appState.sections.push({
+    id:           appState.nextSecId++,
+    text:         '',
+    isChapter:    true,
+    chapterTitle: title.trim()
+  });
+  renderSections();
+  markDirty();
+  // Auto-open TOC on first chapter
+  if(!document.getElementById('tocPanel').classList.contains('open')){
+    openTOC();
+  }
+  requestAnimationFrame(()=>{
+    const canvas=document.getElementById('storyCanvas');
+    canvas.scrollTop=canvas.scrollHeight;
+  });
+}
+
+/* ── Toggle a regular section into/out of chapter marker ── */
+function toggleChapterOnSec(id){
+  const sec=getSec(id); if(!sec) return;
+  if(sec.isChapter){
+    // Demote back to prose section
+    sec.isChapter=false;
+  } else {
+    const title = prompt('Chapter title (leave blank for none):', sec.text.slice(0,60).split('\n')[0] || '') ?? null;
+    if(title === null) return;
+    sec.isChapter=true;
+    sec.chapterTitle=title.trim();
+    sec.text=''; // clear prose — it's now a heading-only marker
+  }
+  renderSections();
+  markDirty();
+}
+
+/* ── Edit an existing chapter title inline ── */
+function editChapterTitle(id){
+  const sec=getSec(id); if(!sec||!sec.isChapter) return;
+  const markerEl=document.querySelector(`[data-chapter-id="${id}"]`); if(!markerEl) return;
+  const titleEl=markerEl.querySelector('.chapter-marker-title'); if(!titleEl) return;
+  const input=document.createElement('input');
+  input.type='text';
+  input.className='chapter-title-edit';
+  input.value=sec.chapterTitle||'';
+  titleEl.replaceWith(input);
+  input.focus(); input.select();
+  const commit=()=>{
+    sec.chapterTitle=input.value.trim();
+    renderSections(); markDirty();
+  };
+  input.addEventListener('blur',commit);
+  input.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){ e.preventDefault(); input.blur(); }
+    if(e.key==='Escape'){ input.value=sec.chapterTitle||''; input.blur(); }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   TABLE OF CONTENTS
+═══════════════════════════════════════════════════════ */
+let _tocObserver=null;
+
+function renderTOC(){
+  const list=document.getElementById('tocList');
+  // Gather chapters with auto-computed numbers
+  const chapters=[];
+  let num=0;
+  appState.sections.forEach(sec=>{
+    if(sec.isChapter){
+      num++;
+      chapters.push({id:sec.id,num,title:sec.chapterTitle||''});
+    }
+  });
+
+  if(!chapters.length){
+    list.innerHTML=`<div class="toc-empty">Insert a chapter marker to start building your table of contents.</div>`;
+    return;
+  }
+
+  // Compute word counts per chapter
+  const secArr=appState.sections;
+  list.innerHTML='';
+  chapters.forEach((ch,ci)=>{
+    // Words from this chapter marker to the next (exclusive)
+    const fromIdx=secArr.findIndex(s=>s.id===ch.id);
+    const toIdx  =ci+1<chapters.length ? secArr.findIndex(s=>s.id===chapters[ci+1].id) : secArr.length;
+    const sliceWc=secArr.slice(fromIdx+1,toIdx)
+      .filter(s=>!s.isChapter)
+      .reduce((sum,s)=>sum+(s.text.trim()?s.text.trim().split(/\s+/).length:0),0);
+
+    const entry=document.createElement('div');
+    entry.className='toc-entry';
+    entry.dataset.chapterId=ch.id;
+    entry.innerHTML=`<span class="toc-entry-num">${ch.num}.</span><span class="toc-entry-title">${escHtml(ch.title||'Chapter '+ch.num)}</span>`;
+    entry.addEventListener('click',()=>scrollToChapter(ch.id));
+    list.appendChild(entry);
+
+    if(sliceWc>0){
+      const wc=document.createElement('div');
+      wc.className='toc-wc';
+      wc.textContent=`${sliceWc.toLocaleString()} words`;
+      list.appendChild(wc);
+    }
+  });
+}
+
+function scrollToChapter(id){
+  const canvas=document.getElementById('storyCanvas');
+  const target=canvas.querySelector(`[data-chapter-id="${id}"]`);
+  if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function openTOC(){
+  const panel=document.getElementById('tocPanel');
+  const btn=document.getElementById('tocOpenBtn');
+  panel.classList.add('open');
+  btn.style.display='none';
+}
+
+function toggleTOC(){
+  const panel=document.getElementById('tocPanel');
+  const btn=document.getElementById('tocOpenBtn');
+  const isOpen=panel.classList.toggle('open');
+  btn.style.display=isOpen?'none':'flex';
+}
+
+/* IntersectionObserver: highlight active chapter in TOC as user scrolls */
+function initChapterObserver(){
+  if(_tocObserver) _tocObserver.disconnect();
+  const canvas=document.getElementById('storyCanvas');
+  const markers=[...canvas.querySelectorAll('.chapter-marker')];
+  if(!markers.length) return;
+
+  _tocObserver=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id=parseInt(entry.target.dataset.chapterId);
+        document.querySelectorAll('.toc-entry').forEach(e=>{
+          e.classList.toggle('active',parseInt(e.dataset.chapterId)===id);
+        });
+        // Scroll the active TOC entry into view
+        const activeEntry=document.querySelector(`.toc-entry[data-chapter-id="${id}"]`);
+        if(activeEntry) activeEntry.scrollIntoView({block:'nearest'});
+      }
+    });
+  },{root:canvas,rootMargin:'-10% 0px -70% 0px',threshold:0});
+
+  markers.forEach(m=>_tocObserver.observe(m));
+}
+
+/* ═══════════════════════════════════════════════════════
+   SECTION ACTION BAR
+═══════════════════════════════════════════════════════ */
 function makeActionsBar(id){
   const outer=document.createElement('div');
   const div=document.createElement('div'); div.className='sec-divider'; div.dataset.divSecId=id;
@@ -1319,6 +1583,7 @@ function makeActionsBar(id){
     <button class="btn-sec-action" onclick="copySec(${id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
     <button class="btn-sec-action" onclick="downloadSecTxt(${id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>TXT</button>
     <button class="btn-sec-action edit-btn" onclick="editSec(${id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>
+    <button class="btn-sec-action" onclick="toggleChapterOnSec(${id})" title="Promote to chapter heading"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>Chapter</button>
     <button class="btn-sec-action del" onclick="delSec(${id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete</button>`;
   const ea=document.createElement('div'); ea.className='sec-actions-edit'; ea.dataset.mode='edit'; ea.style.display='none';
   ea.innerHTML=`
@@ -1373,8 +1638,8 @@ async function generate(){
   const cursor=document.createElement('span'); cursor.className='gen-cursor';
   const sp=document.createElement('p'); sp.style.textIndent='0'; sp.appendChild(cursor);
   st.appendChild(sp); sw.appendChild(st); container.appendChild(sw);
-  const area=document.getElementById('view-story');
-  area.scrollTop=area.scrollHeight;
+  const canvas=document.getElementById('storyCanvas');
+  canvas.scrollTop=canvas.scrollHeight;
   let newText='';
   try{
     const resp=await fetch(`${globalPrefs.lmUrl.replace(/\/$/,'')}/v1/chat/completions`,{
@@ -1399,7 +1664,7 @@ async function generate(){
             newText+=delta;
             const parts=newText.split(/\n\n/);
             sp.innerHTML=parts.map((p,i)=>i<parts.length-1?`<span style="display:block;margin-bottom:1.2em">${escHtml(p)}</span>`:escHtml(p)).join('');
-            sp.appendChild(cursor); area.scrollTop=area.scrollHeight;
+            sp.appendChild(cursor); canvas.scrollTop=canvas.scrollHeight;
           }
         }catch(_){}
       }
@@ -1411,7 +1676,7 @@ async function generate(){
   sw.remove();
   if(newText.trim()){ appState.sections.push({id:appState.nextSecId++,text:newText.trim()}); }
   renderSections(); markDirty();
-  requestAnimationFrame(()=>{ area.scrollTop=area.scrollHeight; });
+  requestAnimationFrame(()=>{ document.getElementById('storyCanvas').scrollTop=document.getElementById('storyCanvas').scrollHeight; });
   isGenerating=false; abortCtrl=null;
   genBtn.disabled=false; genBtn.textContent='✦ Generate'; stopBtn.classList.remove('active');
 }
@@ -1480,15 +1745,51 @@ function clearAll(){ appState.sections=[]; renderSections(); markDirty(); }
    RTF EXPORT
 ═══════════════════════════════════════════════════════ */
 function exportRtf(){
-  if(!appState.sections.length){ notify('Nothing to export yet.',true); return; }
+  if(!appState.sections.filter(s=>!s.isChapter||s.chapterTitle).length){ notify('Nothing to export yet.',true); return; }
   function rtfEsc(s){let o='';for(const ch of s){const cp=ch.codePointAt(0);if(cp===0x0A){o+='\\line ';}else if(cp<0x20){}else if(cp<0x80){if(ch==='\\')o+='\\\\';else if(ch==='{')o+='\\{';else if(ch==='}')o+='\\}';else o+=ch;}else{const sg=cp>32767?cp-65536:cp;o+=`\\u${sg}?`;}}return o;}
-  const pf='\\pard\\sl480\\slmult1\\fi720 ',of='\\pard\\sl480\\slmult1\\qc ',tf='\\pard\\sl480\\slmult1\\qc\\b\\fs32 ';
+
+  // Format strings
+  const pf  ='\\pard\\sl480\\slmult1\\fi720 ';          // body paragraph (indented)
+  const p0  ='\\pard\\sl480\\slmult1 ';                  // first paragraph (no indent)
+  const of  ='\\pard\\sl480\\slmult1\\qc ';              // centred (section break)
+  const tf  ='\\pard\\sl480\\slmult1\\qc\\b\\fs36 ';    // story title
+  const chf ='\\pard\\sb480\\sa120\\qc\\b\\fs28 ';      // chapter heading
+  const chnf='\\pard\\sa60\\qc\\fs20 ';                 // chapter number line above title
+
   let body=''; const title=appState.title;
-  if(title) body+=tf+rtfEsc(title)+'\\par\n'+of+rtfEsc('—————')+'\\par\n\\par\n';
+
+  // Story title
+  if(title) body+=tf+rtfEsc(title)+'\\b0\\par\n'+of+rtfEsc('—————')+'\\par\n\\par\n';
+
+  // Track chapter numbering
+  let chNum=0;
+  let firstProseSeen=false;
+  let lastWasChapter=false;
+
   appState.sections.forEach((sec,si)=>{
-    sec.text.split(/\n\n+/).filter(p=>p.trim()).forEach((p,pi)=>{ body+=((si===0&&pi===0)?'\\pard\\sl480\\slmult1 ':pf)+rtfEsc(p.trim())+'\\par\n'; });
-    if(si<appState.sections.length-1) body+='\\par\n'+of+rtfEsc('* * *')+'\\par\n\\par\n';
+    if(sec.isChapter){
+      chNum++;
+      // Page-break-style spacing before chapter (except first)
+      if(si>0) body+='\\par\n\\par\n';
+      body+=chnf+'Chapter '+chNum+'\\par\n';
+      if(sec.chapterTitle) body+=chf+rtfEsc(sec.chapterTitle)+'\\b0\\par\n';
+      body+='\\par\n';
+      firstProseSeen=false;
+      lastWasChapter=true;
+    } else {
+      const paras=sec.text.split(/\n\n+/).filter(p=>p.trim());
+      if(!paras.length) return;
+      // Section break before non-chapter sections (but not right after a chapter heading)
+      if(!lastWasChapter && firstProseSeen) body+='\\par\n'+of+rtfEsc('* * *')+'\\par\n\\par\n';
+      paras.forEach((p,pi)=>{
+        const fmt=(!firstProseSeen && pi===0) ? p0 : pf;
+        body+=fmt+rtfEsc(p.trim())+'\\par\n';
+      });
+      firstProseSeen=true;
+      lastWasChapter=false;
+    }
   });
+
   const rtf=['{\\rtf1\\ansi\\deff0','{\\fonttbl{\\f0\\froman\\fcharset0 Times New Roman;}}','{\\colortbl ;\\red26\\green18\\blue9;}','\\f0\\fs24\\cf1',body,'}'].join('\n');
   dl(new Blob([rtf],{type:'application/rtf'}),`${slugify(title||'story')}_${fileTs()}.rtf`);
   notify('RTF exported.');

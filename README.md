@@ -356,7 +356,7 @@ Importing always creates a new story. The v1.0 single-string genre format is sti
 | **v17** | Multi-story library, localStorage autosave, story switcher dropdown, storage indicator, per-story context depth, import creates new story |
 | **v16** | appState single source of truth, context depth slider (7 presets), genre array in state, pure system prompt builder |
 | **v14** | Timestamps on all exports, genre in context export/import |
-| **v13** | Resizable prompt panel, genre multi-select (34 options inc. Erotic/Taboo), genre in system prompt |
+| **v13** | Resizable prompt panel, genre multi-select (34 options from Amazon), genre in system prompt |
 | **v11** | SD-Forge-Neo integration in Settings, dual status lights (LM + SD), Settings modal |
 | **v8** | Scrolling story canvas, removed book pagination |
 | **v7** | Edit/Save per section with inline textarea, Ctrl+S shortcut |

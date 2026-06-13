@@ -14,7 +14,7 @@ Writer's Blocks is a distraction-free workspace for AI-assisted long-form storyt
 - **Streaming AI generation** — text streams live from LM Studio as the model writes
 - **Section-based editing** — every AI response is an independent section you can copy, edit, delete, or promote to a chapter heading
 - **Story context depth slider** — control exactly how much story text is sent to the model on each generation
-- **Genre multi-select** — 34 genre options including Erotic and Taboo, stored as tags
+- **Genre multi-select** — 34 genre options including top Genres from Amazon, stored as tags
 - **SD-Forge-Neo integration** — connect your Stable Diffusion server in Settings
 - **RTF export** — manuscript-ready output with chapter headings, double spacing, and section breaks
 - **Dark / Light theme** — persists across sessions

@@ -5,6 +5,13 @@
 Writer's Blocks is a distraction-free workspace for AI-assisted long-form storytelling. Configure your story's world, characters, and narrative voice — then write with your local model. Everything runs in your browser with no installation, no API keys, and no internet connection required after the page loads.
 
 ---
+## Screenshots
+
+**Writing UI tailored toward storytellers**
+![UI_Overview](screenshots/UI_Overview.png)
+![Dark_Mode](screenshots/UI_Overview_Dark.png)
+
+---
 
 ## Features at a Glance
 
